@@ -18,8 +18,8 @@ We ask that Coding Workshop attendees have R and RStudio pre-installed on their 
 Links to materials for each week's workshop will be posted here as provided.
 
 - **Week 1: Basic Syntax and Operators**
-  - slides
-  - code 
+  - [slides](slides/01_basic-syntax-operators.pdf)
+  - [code](code/01_basic-syntax-operators.R)
   - interactive tutorial
 - **Week 2: Reading Files, Data Frames, and Calculations**
   - slides
