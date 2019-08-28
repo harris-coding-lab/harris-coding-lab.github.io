@@ -1,37 +1,39 @@
-## Welcome to GitHub Pages
+## PPHA 31002 Statistics for Data Analysis I: Coding Workshop
 
-You can use the [editor on GitHub](https://github.com/angela-li/harris-workshop/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+This website contains the content for the 5-week Stats I Coding Workshop accompanying PPHA 31002. The course is taught during Fall Quarter 2019 for students of Harris Public Policy School at the University of Chicago. The workshop aims to introduce R programming concepts including basic syntax, operators, reading files, dataframes and calculations, if statements, loops, and functions.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+### Schedule 
 
-### Markdown
+The Coding Workshop will be offered at the following times during the first five weeks of the quarter:
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+- MWTTH 5-6:20pm
+- F 9:30-10:50pm, 11:00-12:20pm
 
-```markdown
-Syntax highlighted code block
+### Materials 
 
-# Header 1
-## Header 2
-### Header 3
+Links to materials for each week's workshop will be posted here as provided.
 
-- Bulleted
-- List
+- **Week 1: Basic Syntax and Operators**
+  - slides
+  - code 
+  - interactive tutorial
+- **Week 2: Reading files, Dataframes, and Calculations**
+  - slides
+  - code 
+  - interactive tutorial
+- **Week 3: If statements**
+  - slides
+  - code 
+  - interactive tutorial
+- **Week 4: Loops**
+  - slides
+  - code 
+  - interactive tutorial
+- **Week 5: Functions**
+  - slides
+  - code 
+  - interactive tutorial
 
-1. Numbered
-2. List
+### Questions?
 
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/angela-li/harris-workshop/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+Please contact Angela Li at ali6@uchicago.edu or Ari Anisfeld at anisfeld@uchicago.edu.
