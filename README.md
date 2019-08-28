@@ -9,6 +9,10 @@ The Coding Workshop will be offered at the following times during the first five
 - MWTTH 5-6:20pm
 - F 9:30-10:50pm, 11:00-12:20pm
 
+### Prerequisites
+
+We ask that Coding Workshop attendees have R and RStudio pre-installed on their local machine. If you need help getting set up, please visit the R Bar at Harris for assistance with installation.
+
 ### Materials 
 
 Links to materials for each week's workshop will be posted here as provided.
@@ -17,11 +21,11 @@ Links to materials for each week's workshop will be posted here as provided.
   - slides
   - code 
   - interactive tutorial
-- **Week 2: Reading files, Dataframes, and Calculations**
+- **Week 2: Reading Files, Data Frames, and Calculations**
   - slides
   - code 
   - interactive tutorial
-- **Week 3: If statements**
+- **Week 3: If Statements**
   - slides
   - code 
   - interactive tutorial
