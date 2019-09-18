@@ -40,4 +40,15 @@ Links to materials for each week's workshop will be posted here as provided.
 
 ### Questions?
 
-Please contact Angela Li at ali6@uchicago.edu or Ari Anisfeld at anisfeld@uchicago.edu.
+Please contact the instructors: Angela Li at ali6@uchicago.edu or Ari Anisfeld at anisfeld@uchicago.edu.
+
+### Teaching Assistants
+
+The teaching assistants for this workshop are:
+
+- Andres Nigenda Zarate	
+- Angelica Valdiviezo Issa
+- Borui Sun
+- Luis Eduardo San Martin
+- Yue Wang
+- Zihan (Zoey) Chen
