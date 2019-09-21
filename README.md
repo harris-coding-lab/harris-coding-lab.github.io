@@ -1,17 +1,17 @@
-## PPHA 31002 Statistics for Data Analysis I: Coding Workshop
+## PPHA 31002 Statistics for Data Analysis I: Coding Lab
 
-This website (bit.ly/harris-workshop) contains the content for the 5-week Stats I Coding Workshop accompanying PPHA 31002. The course is taught during Fall Quarter 2019 for students of Harris Public Policy School at the University of Chicago. The workshop aims to introduce R programming concepts including basic syntax, operators, reading files, dataframes and calculations, if statements, loops, and functions.
+This website (bit.ly/harris-workshop) contains the content for the 5-week Stats I Coding Lab accompanying PPHA 31002. The course is taught during Fall Quarter 2019 for students of Harris Public Policy School at the University of Chicago. The workshop aims to introduce R programming concepts including basic syntax, operators, reading files, dataframes and calculations, if statements, loops, and functions.
 
 ### Schedule 
 
-The Coding Workshop will be offered at the following times during the first five weeks of the quarter:
+The Coding Lab will be offered at the following times during the first five weeks of the quarter:
 
 - MWTTH 5-6:20pm
 - F 9:30-10:50pm, 11:00-12:20pm
 
 ### Prerequisites
 
-We ask that Coding Workshop attendees have R and RStudio pre-installed on their local machine. If you need help getting set up, please visit the R Bar at Harris for assistance with installation.
+We ask that Coding Lab attendees have R and RStudio pre-installed on their local machine. If you need help getting set up, please visit the R Bar at Harris for assistance with installation.
 
 ### Materials 
 
