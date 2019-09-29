@@ -38,6 +38,11 @@ Links to materials for each week's workshop will be posted here as provided.
   - code 
   - interactive tutorial
 
+### Additional Resources
+
+- R for Data Science: free online resource with clear explanations of many `tidyverse` functions
+- DataQuest: tutorials about specific programming concepts, access provided by Harris
+
 ### Questions?
 
 Please contact the instructors: Angela Li at ali6@uchicago.edu or Ari Anisfeld at anisfeld@uchicago.edu.
