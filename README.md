@@ -18,9 +18,9 @@ We ask that Coding Lab attendees have R and RStudio pre-installed on their local
 Links to materials for each week's workshop will be posted here as provided.
 
 - **Week 1: Basic Syntax and Operators**
-  - slides
+  - [slides](slides/01_basic-syntax-operators.html)
   - code
-  - interactive tutorial
+  - [interactive tutorial](https://harris-coding-lab.shinyapps.io/basic-syntax/)
 - **Week 2: Reading Files, Data Frames, and Calculations**
   - slides
   - code 
