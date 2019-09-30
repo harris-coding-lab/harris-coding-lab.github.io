@@ -51,7 +51,6 @@ Links to materials for each week's workshop will be posted here as provided.
   - **Week 3**
     - [control flow](https://app.dataquest.io/m/338/working-with-control-structures)
   - **Week 4**
-    - While loops are a fundemental concept in 
   - **Week 5**
     - [writing custom functions](https://app.dataquest.io/m/340/writing-custom-functions)
     - [working with functionals](https://app.dataquest.io/m/341/working-with-functionals) (includes discussion of map)
