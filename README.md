@@ -18,8 +18,8 @@ We ask that Coding Lab attendees have R and RStudio pre-installed on their local
 Links to materials for each week's workshop will be posted here as provided.
 
 - **Week 1: Basic Syntax and Operators**
-  - [slides](slides/01_basic-syntax-operators.pdf)
-  - [code](code/01_basic-syntax-operators.R)
+  - slides
+  - code
   - interactive tutorial
 - **Week 2: Reading Files, Data Frames, and Calculations**
   - slides
@@ -37,6 +37,30 @@ Links to materials for each week's workshop will be posted here as provided.
   - slides
   - code 
   - interactive tutorial
+
+### Additional Resources
+
+- [R for Data Science](https://r4ds.had.co.nz/): free online book with clear explanations of many `tidyverse` functions, the book to read on data analysis with R
+- [DataQuest.io](https://www.dataquest.io): online modules about specific programming concepts, access provided by Harris. For students who would like additional guided practice we recommend:
+  - **Week 1**
+    - [introduction to programming in r](https://app.dataquest.io/m/332/introduction-to-programming-in-r)
+    - [working with vectors](https://app.dataquest.io/m/333/working-with-vectors)
+  - **Week 2**
+    - [working with data frames](https://app.dataquest.io/m/336/working-with-data-frames/)
+    - [dplyr to investigate frequency distributions of data](https://app.dataquest.io/m/396/frequency-distributions)
+  - **Week 3**
+    - [control flow](https://app.dataquest.io/m/338/working-with-control-structures)
+  - **Week 4**
+  - **Week 5**
+    - [writing custom functions](https://app.dataquest.io/m/340/writing-custom-functions)
+    - [working with functionals](https://app.dataquest.io/m/341/working-with-functionals) (includes discussion of map)
+  - **Extensions**
+     - [vectorized functions](https://app.dataquest.io/m/339/working-with-vectorized-functions)
+     - [random sampling with `sample()`](https://app.dataquest.io/m/393/simple-random-sampling)
+     - [basic string manipulation](https://app.dataquest.io/m/342/fundamentals-of-string-manipulation)
+     - [`gather()` and correlations](https://app.dataquest.io/m/325/correlations-and-reshaping-data/4/gathering-data-into-columns)
+     - "step 2" is all about `ggplot` and potentially useful.
+
 
 ### Questions?
 
