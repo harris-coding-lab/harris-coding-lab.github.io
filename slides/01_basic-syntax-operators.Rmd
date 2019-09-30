@@ -1,35 +1,246 @@
 ---
-title: "Basic Syntax and Operators"
-author: "Angela Li"
-date: "8/28/2019"
-output: beamer_presentation
+title: "Coding Lab: Basic Syntax and Operators in R"
+author: "Ari Anisfeld, Angela Li"
+date: "10/1/2019"
+output:
+  ioslides_presentation
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
 ```
 
-## R Markdown
 
-This is an R Markdown presentation. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+## Why are we here? 
+The purpose of this Coding Lab is to:
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document.
+1. introduce you to basic programming concepts
+2. prepare you to do data analysis in R for the future (additional courses, your next job)
+3. give you the coding skills necessary to complete your Stats I homework
 
-## Slide with Bullets
+We will do things that produce errors and then talk about how to read the error and fix it.
 
-- Bullet 1
-- Bullet 2
-- Bullet 3
+## Survey time {.build}
 
-## Slide with R Output
+- How many people have R and RStudio installed on their computers?
+- How many people know how to install packages and load libraries in R?
+- How many people have experience with a programming language of any type?
 
-```{r cars, echo = TRUE}
-summary(cars)
+## Some tips for computational reasoning {.build}
+
+1. Make small tweaks to the code to see if you understand how the code works - be hands-on!
+2. Be lazy: usually someone else has had your problem and developed a solution.
+3. Find help: Check the documentation with `?`
+
+## Variable assignment
+
+We use `<-` for assigning variables in R. 
+```{r}
+my_number <- 4
+my_number
 ```
 
-## Slide with Plot
+***
 
-```{r pressure}
-plot(pressure)
+The reference is a pointer to the object and can be set to a different value. What will the following expressions return?
+```{r eval=FALSE}
+my_number + 3
 ```
 
+```{r eval=FALSE}
+my_number * 3
+```
+
+***
+
+```{r}
+my_number + 3
+```
+
+```{r}
+my_number * 3
+```
+
+
+## Exercise: variable assignment {.exercise}
+
+Based on the previous exercise, what value will this code return? What's the value of `my_number` after we run both lines of code?
+
+```{r eval=FALSE}
+my_number <- 2
+(12 ^ my_number) + 1
+```
+<!-- Notice that outcomes of the expressions that aren't assigned a name and cannot be referenced later! -->
+
+## Data types
+R has several types which distinguish how R stores data internally. Some of the most common ones are logical, numeric, and character types.
+```{r}
+type_logical <- FALSE
+type_logical <- TRUE
+
+type_double <- 1.0
+type_integer <- 1L
+
+type_character <- "abbreviated as chr, also known as a string"
+```
+
+## Type issues {.build}
+
+Sometimes you'll run into problems because the data is not of the type you expect. For example, you may import data where something that look likes a number is a string.
+```{r}
+a <- "1"
+b <- 2 
+```
+
+What will happen when we try to run the following code?
+
+```{r eval=FALSE}
+a + b
+```
+
+`Error in a + b : non-numeric argument to binary operator`
+
+
+***
+To avoid errors, we can check for the type of the data we have with `typeof()`:
+
+```{r}
+typeof(a)
+typeof(b)
+```
+
+***
+
+We can also use the `class()` function
+```{r}
+class(a)
+class(b)
+```
+
+***
+
+The error we got when we tried `a + b` was because `a` is a character. We can reassign types on the fly:
+```{r}
+as.integer(a) + 3
+as.numeric(a) + 3
+```
+
+Some type reassignment is done by R automatically:
+```{r}
+paste0(a, as.character(b))
+paste0(a, b)
+```
+
+## Exercise: type coercion {.exercise}
+
+<!-- # R reassigns types on the fly if the expected type is less restrictive -->
+<!-- # log < int < dbl < chr -->
+<!-- # ex. paste(a, b) -->
+<!-- # Possible exercise ... type coercion ...  -->
+<!-- # as.numeric("d4") returns NA with warning NAs introduced by coercion  -->
+
+
+## Operators
+
+R is also a calculator! We can do math with numbers, using the following symbols:
+```{r}
+4 + 4
+4 - 4
+4 * 4
+4 / 4
+4 ^ 4
+```
+
+## Operators pt. 2 
+
+We can also compare things. 
+```{r}
+4 < 4
+4 >= 4
+4 == 4
+4 != 4
+```
+
+## Operators...applied to strings?
+
+What do you think is being compared in this case?
+```{r}
+"four" == "four"
+```
+
+```{r}
+"four" == 4
+```
+
+## Exercise: comparing a string and a number {.exercise}
+
+What do you think will happen when you run the following code?
+```{r eval=FALSE}
+"4" == 4
+```
+
+## Data structures
+Usually we want to keep track of more than one thing at time, say a list of numbers. Computer scientists refer to these as data structures. The main workhorse data structure in R is the vector.
+```{r}
+my_numbers <- c(1, 2, 3, 4, 5, 6)
+
+my_numbers
+```
+
+## Adding to vectors
+
+We can do math with vectors!
+
+```{r}
+my_numbers + my_numbers
+my_numbers + 6
+```
+
+***
+
+How would the judges rank this lesson right now?
+```{r}
+my_numbers / c(.1, .2, .3, .4, .5, .6)
+```
+
+*** 
+
+What will the vector `a` look like? Remember, `my_numbers` is a list of numbers from 1 to 6.
+```{r}
+a <- my_numbers + c(1, 2)
+```
+
+```{r}
+a
+```
+
+## Using functions with vectors
+
+Some functions act directly on a vector in a pleasing way:
+```{r}
+sum(a)
+length(a)
+```
+
+## Example: Using vectors to calculate a fraction {.exercise}
+
+Work up to this nice representation of the sum of powers of one-half.
+
+```{r}
+numerator <- rep(1, 10)
+denominator <- 2 ^ c(0:10)
+
+sum(numerator/denominator)
+
+```
+
+## What we learned {.build}
+
+Today we discussed basic syntax and operators in R. You now know how to:
+
+- Assign data to a variable for future reference.
+- Distinguish between types 
+- Worki with atomic vectors, the basic data structure of R
+
+Up next week: data frames (aka, rectangular data)!
