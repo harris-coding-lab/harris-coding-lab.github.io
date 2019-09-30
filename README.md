@@ -40,8 +40,8 @@ Links to materials for each week's workshop will be posted here as provided.
 
 ### Additional Resources
 
-- R for Data Science: free online resource with clear explanations of many `tidyverse` functions
-- DataQuest: tutorials about specific programming concepts, access provided by Harris
+- [R for Data Science](https://r4ds.had.co.nz/): free online book with clear explanations of many `tidyverse` functions, the book to read on data analysis with R
+- [DataQuest.io](https://www.dataquest.io): online modules about specific programming concepts, access provided by Harris
 
 ### Questions?
 
