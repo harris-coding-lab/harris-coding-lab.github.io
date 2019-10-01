@@ -19,7 +19,7 @@ Links to materials for each week's workshop will be posted here as provided.
 
 - **Week 1: Basic Syntax and Operators**
   - [slides](slides/01_basic-syntax-operators.html)
-  - code
+  - [slide code](code/01_basic-syntax-operators.R) (clicking will download an R script with the code to your computer)
   - [interactive tutorial](https://harris-coding-lab.shinyapps.io/basic-syntax/)
 - **Week 2: Reading Files, Data Frames, and Calculations**
   - slides
