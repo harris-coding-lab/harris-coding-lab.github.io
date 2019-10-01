@@ -44,7 +44,7 @@ Our focus is on data analysis and running simulations for stats.
 ## Survey time {.build}
 <!--delta-->
 - How many people have R and RStudio installed on their computers?
-- How many people know how to install packages and load libraries in R?
+<!-- - How many people know how to install packages and load libraries in R?-->
 - How many people have experience with a programming language of any type?
 
 ## Some tips for computational reasoning {.build}
@@ -353,10 +353,14 @@ sum(numerator/denominator)
 
 ```
 
-## Workshop
+## How workshops work:
 
-Now we will put this into practice.
-... will add in a second
+- work in a team of 2-4 on the tutorial
+ - [https://harris-coding-lab.shinyapps.io/basic-syntax/] 
+ - (link available on course webpage as well)
+
+- if you get stuck as a team, add your name to the help list 
+ - [bit.ly/coding_lab_qa]
 
 
 ## What we learned {.build}
