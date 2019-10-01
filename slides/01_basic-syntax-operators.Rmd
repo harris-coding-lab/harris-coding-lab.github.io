@@ -12,26 +12,99 @@ library(tidyverse)
 ```
 
 
+## Agenda
+1. Coding lab overview
+1. Lecture
+1. Workshop
+
 ## Why are we here? 
 The purpose of this Coding Lab is to:
 
 1. introduce you to basic programming concepts
-2. prepare you to do data analysis in R for the future (additional courses, your next job)
-3. give you the coding skills necessary to complete your Stats I homework
+1. prepare you to do data analysis in R for the future (additional courses, your next job)
+1. give you the coding skills necessary to complete your Stats I homework
 
-We will do things that produce errors and then talk about how to read the error and fix it.
+<div class="notes">
+R is a full functional programming language and can do many things.
+Our focus is on data analysis and running simulations for stats.
+</div>
+
+## What will we cover?
+
+1. Learn basic syntax and operators
+1. Reading files, data frames and calculations
+1. If statements
+1. Loops
+1. Functions
+
+[https://harris-coding-lab.github.io/]()
+
+
 
 ## Survey time {.build}
-
+<!--delta-->
 - How many people have R and RStudio installed on their computers?
 - How many people know how to install packages and load libraries in R?
 - How many people have experience with a programming language of any type?
 
 ## Some tips for computational reasoning {.build}
+- Make small tweaks to the code to see if you understand how the code works - be hands-on!
+<!--We will do things that produce errors and then talk about how to read the error and fix it.
+-->
+- Be lazy: usually someone else has had your problem and developed a solution.
+<!--example length built-in-->
+- Find help: Check the documentation with `?`
 
-1. Make small tweaks to the code to see if you understand how the code works - be hands-on!
-2. Be lazy: usually someone else has had your problem and developed a solution.
-3. Find help: Check the documentation with `?`
+Additional resources are listed on the course website.
+
+
+## Finding help with `?`
+
+```{r, eval=FALSE}
+?sum
+```
+
+- Description
+
+`sum returns the sum of all the values present in its arguments.`
+
+- Usage 
+
+`sum(..., na.rm = FALSE)`
+
+- Arguments
+
+`...	numeric or complex or logical vectors.`
+
+- Examples (scroll down!)
+
+`sum(1, 2, 3, 4, 5)`
+
+<div class="notes">
+Do in R if easy enough. Highlight that while it's complicated if they
+understand the structure of help docs they can get far.
+</div>
+
+## Lecture:
+
+ - Operators pt 1
+ - Variables assignment
+ - Types
+ - Operators pt 2
+ - Data structures (Vectors)
+
+## Operators, pt 1.
+
+R is also a calculator! We can do math with numbers, using the following symbols:
+```{r, eval=FALSE}
+4 + 4
+4 - 4
+4 * 4
+4 / 4
+4 ^ 4
+```
+
+
 
 ## Variable assignment
 
@@ -43,7 +116,7 @@ my_number
 
 ***
 
-The reference is a pointer to the object and can be set to a different value. What will the following expressions return?
+What will the following expressions return?
 ```{r eval=FALSE}
 my_number + 3
 ```
@@ -63,31 +136,45 @@ my_number * 3
 ```
 
 
-## Exercise: variable assignment {.exercise}
+## Variable assignment {.exercise}
 
-Based on the previous exercise, what value will this code return? What's the value of `my_number` after we run both lines of code?
-
+We can re-assign a variable as we wish.
 ```{r eval=FALSE}
-my_number <- 2
-(12 ^ my_number) + 1
+my_number <- 4
+my_number <- sqrt((12 * my_number) + 1)
 ```
-<!-- Notice that outcomes of the expressions that aren't assigned a name and cannot be referenced later! -->
+
+***
+
+```{r}
+my_number <- sqrt((12 * my_number) + 1)
+my_number
+```
+
 
 ## Data types
-R has several types which distinguish how R stores data internally. Some of the most common ones are logical, numeric, and character types.
+R has several types which distinguish how R stores data internally. 
+
+- Some of the most common ones (in increasing complexity):
+  - logical, numeric, character
+
 ```{r}
+# logical, also known as booleans
 type_logical <- FALSE
 type_logical <- TRUE
 
-type_double <- 1.0
+# integer and double, together are called: numeric
 type_integer <- 1L
+type_double <- 1.0
 
 type_character <- "abbreviated as chr, also known as a string"
 ```
 
 ## Type issues {.build}
 
-Sometimes you'll run into problems because the data is not of the type you expect. For example, you may import data where something that look likes a number is a string.
+Sometimes you'll run into problems because the data is not of the type you expect. 
+
+- For example, you may import data where something that look likes a number is a string.
 ```{r}
 a <- "1"
 b <- 2 
@@ -110,47 +197,54 @@ typeof(a)
 typeof(b)
 ```
 
-***
 
-We can also use the `class()` function
-```{r}
-class(a)
-class(b)
-```
-
-***
-
+## Type coercion 
 The error we got when we tried `a + b` was because `a` is a character. We can reassign types on the fly:
 ```{r}
 as.integer(a) + 3
 as.numeric(a) + 3
 ```
 
-Some type reassignment is done by R automatically:
+***
+Some type coercion is done by R automatically:
 ```{r}
 paste0(a, as.character(b))
 paste0(a, b)
 ```
 
-## Exercise: type coercion {.exercise}
+***
+logicals are coercible to numeric or character.
+
+What do you think the following code will return?
+```{r, eval=FALSE}
+TRUE + 4
+paste0(FALSE, "?")
+```
+
+*** 
+```{r, eval=TRUE}
+TRUE + 4
+FALSE + 4
+paste0(FALSE, "?")
+```
+
+## Type coercion
+
+Some data cannot be coerced.
+
+```{r}
+as.numeric("d4")
+```
+```[1] NA
+Warning message:
+NAs introduced by coercion
+```
 
 <!-- # R reassigns types on the fly if the expected type is less restrictive -->
 <!-- # log < int < dbl < chr -->
 <!-- # ex. paste(a, b) -->
 <!-- # Possible exercise ... type coercion ...  -->
 <!-- # as.numeric("d4") returns NA with warning NAs introduced by coercion  -->
-
-
-## Operators
-
-R is also a calculator! We can do math with numbers, using the following symbols:
-```{r}
-4 + 4
-4 - 4
-4 * 4
-4 / 4
-4 ^ 4
-```
 
 ## Operators pt. 2 
 
@@ -188,13 +282,30 @@ my_numbers <- c(1, 2, 3, 4, 5, 6)
 my_numbers
 ```
 
+## Creating vectors
+There are some nice shortcuts for creating vectors
+
+google: "create a vector in R that has the same number repeated"
+```{r}
+c("a", "a", "a", "a")
+rep("a", 4)
+```
+
+*** 
+Creating vectors of counting numbers
+```{r}
+c(2, 3, 4, 5)
+2:5
+seq(2, 5)
+```
+
 ## Adding to vectors
 
 We can do math with vectors!
 
 ```{r}
-my_numbers + my_numbers
-my_numbers + 6
+my_numbers + my_numbers # this adds the vectors item by item
+my_numbers + 6 # this adds 6 to each object 
 ```
 
 ***
@@ -206,13 +317,13 @@ my_numbers / c(.1, .2, .3, .4, .5, .6)
 
 *** 
 
-What will the vector `a` look like? Remember, `my_numbers` is a list of numbers from 1 to 6.
+Why does vector `a` look come out this way? Remember, `my_numbers` is a list of numbers from 1 to 6.
 ```{r}
 a <- my_numbers + c(1, 2)
 ```
 
 ```{r}
-a
+a 
 ```
 
 ## Using functions with vectors
@@ -223,8 +334,15 @@ sum(a)
 length(a)
 ```
 
-## Example: Using vectors to calculate a fraction {.exercise}
+## Example: Using vectors to calculate a sum of fractions {.exercise}
 
+Use R to calculate the sum 
+
+$$\sum_{n=0}^{10} \frac{1}{2^n}$$
+
+
+
+## Example:  Using vectors to calculate a sum of fractions 
 Work up to this nice representation of the sum of powers of one-half.
 
 ```{r}
@@ -235,12 +353,18 @@ sum(numerator/denominator)
 
 ```
 
+## Workshop
+
+Now we will put this into practice.
+... will add in a second
+
+
 ## What we learned {.build}
 
 Today we discussed basic syntax and operators in R. You now know how to:
 
 - Assign data to a variable for future reference.
 - Distinguish between types 
-- Worki with atomic vectors, the basic data structure of R
+- Work with atomic vectors, the basic data structure of R
 
 Up next week: data frames (aka, rectangular data)!

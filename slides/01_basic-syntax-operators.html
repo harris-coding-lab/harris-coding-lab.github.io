@@ -4,6 +4,7 @@
   <title>Coding Lab: Basic Syntax and Operators in R</title>
 
   <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
   <meta name="generator" content="pandoc" />
 
@@ -257,6 +258,7 @@ background: black;
 }
 
 slides > slide {
+display: none;
 font-family: 'Open Sans', Arial, sans-serif;
 font-size: 26px;
 color: #797979;
@@ -277,19 +279,17 @@ transition: all 0.6s ease-in-out;
 }
 
 slides > slide.far-past {
+display: none;
 }
 
 slides > slide.past {
+display: block;
 opacity: 0;
 }
 
 slides > slide.current {
 display: block;
 opacity: 1;
-z-index: 1;
-}
-slides > slide:not(.current) {
-z-index: 0;
 }
 
 slides > slide.current .auto-fadein {
@@ -304,11 +304,13 @@ background-size: 100% 100%;
 }
 
 slides > slide.next {
+display: block;
 opacity: 0;
 pointer-events: none;
 }
 
 slides > slide.far-next {
+display: none;
 }
 
 slides > slide.dark {
@@ -380,6 +382,8 @@ width: 1100px;
 
 slides.layout-widescreen > slide.far-past,
 slides.layout-faux-widescreen > slide.far-past {
+display: block;
+display: none;
 -webkit-transform: translate(-2260px);
 -moz-transform: translate(-2260px);
 -ms-transform: translate(-2260px);
@@ -413,6 +417,8 @@ pointer-events: none;
 
 slides.layout-widescreen > slide.far-next,
 slides.layout-faux-widescreen > slide.far-next {
+display: block;
+display: none;
 -webkit-transform: translate(2260px);
 -moz-transform: translate(2260px);
 -ms-transform: translate(2260px);
@@ -1343,13 +1349,6 @@ opacity: 1;
 
 .overview .slide-area {
 display: none;
-}
-slides > slide {
-background: linear-gradient(#ffffff, #ffffff 85%, #e6e6e6);
-background-color: white;
-}
-slides > slide {
-opacity: 0;
 }
 @media print {
 
@@ -3095,10 +3094,6 @@ if (document.readyState !== "loading" &&
       transition: opacity 0.6s ease-in 0.4s;
       opacity: 0;
     }
-/* https://github.com/ropensci/plotly/pull/524#issuecomment-468142578 */
-slide:not(.current) .plotly.html-widget{
-  display: block;
-}
 
   </style>
 
@@ -3119,7 +3114,15 @@ slide:not(.current) .plotly.html-widget{
           </hgroup>
   </slide>
 
-<slide class=""><hgroup><h2>Why are we here?</h2></hgroup><article  id="why-are-we-here">
+<slide class=""><hgroup><h2>Agenda</h2></hgroup><article  id="agenda">
+
+<ol>
+<li>Coding lab overview</li>
+<li>Lecture</li>
+<li>Workshop</li>
+</ol>
+
+</article></slide><slide class=""><hgroup><h2>Why are we here?</h2></hgroup><article  id="why-are-we-here">
 
 <p>The purpose of this Coding Lab is to:</p>
 
@@ -3129,9 +3132,23 @@ slide:not(.current) .plotly.html-widget{
 <li>give you the coding skills necessary to complete your Stats I homework</li>
 </ol>
 
-<p>We will do things that produce errors and then talk about how to read the error and fix it.</p>
+<aside class='note'><section><p>R is a full functional programming language and can do many things. Our focus is on data analysis and running simulations for stats.</p></section></aside>
+
+</article></slide><slide class=""><hgroup><h2>What will we cover?</h2></hgroup><article  id="what-will-we-cover">
+
+<ol>
+<li>Learn basic syntax and operators</li>
+<li>Reading files, data frames and calculations</li>
+<li>If statements</li>
+<li>Loops</li>
+<li>Functions</li>
+</ol>
+
+<p><a href='' title=''>https://harris-coding-lab.github.io/</a></p>
 
 </article></slide><slide class=""><hgroup><h2>Survey time</h2></hgroup><article  id="survey-time" class="build">
+
+<!--delta-->
 
 <ul>
 <li>How many people have R and RStudio installed on their computers?</li>
@@ -3141,11 +3158,64 @@ slide:not(.current) .plotly.html-widget{
 
 </article></slide><slide class=""><hgroup><h2>Some tips for computational reasoning</h2></hgroup><article  id="some-tips-for-computational-reasoning" class="build">
 
-<ol>
-<li>Make small tweaks to the code to see if you understand how the code works - be hands-on!</li>
-<li>Be lazy: usually someone else has had your problem and developed a solution.</li>
+<ul>
+<li>Make small tweaks to the code to see if you understand how the code works - be hands-on! <!--We will do things that produce errors and then talk about how to read the error and fix it.
+--></li>
+<li>Be lazy: usually someone else has had your problem and developed a solution. <!--example length built-in--></li>
 <li>Find help: Check the documentation with <code>?</code></li>
-</ol>
+</ul>
+
+<p>Additional resources are listed on the course website.</p>
+
+</article></slide><slide class=""><hgroup><h2>Finding help with <code>?</code></h2></hgroup><article  id="finding-help-with">
+
+<pre class = 'prettyprint lang-r'>?sum</pre>
+
+<ul>
+<li>Description</li>
+</ul>
+
+<p><code>sum returns the sum of all the values present in its arguments.</code></p>
+
+<ul>
+<li>Usage</li>
+</ul>
+
+<p><code>sum(..., na.rm = FALSE)</code></p>
+
+<ul>
+<li>Arguments</li>
+</ul>
+
+<p><code>...    numeric or complex or logical vectors.</code></p>
+
+<ul>
+<li>Examples (scroll down!)</li>
+</ul>
+
+<p><code>sum(1, 2, 3, 4, 5)</code></p>
+
+<aside class='note'><section><p>Do in R if easy enough. Highlight that while it’s complicated if they understand the structure of help docs they can get far.</p></section></aside>
+
+</article></slide><slide class=""><hgroup><h2>Lecture:</h2></hgroup><article  id="lecture">
+
+<ul>
+<li>Operators pt 1</li>
+<li>Variables assignment</li>
+<li>Types</li>
+<li>Operators pt 2</li>
+<li>Data structures (Vectors)</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Operators, pt 1.</h2></hgroup><article  id="operators-pt-1.">
+
+<p>R is also a calculator! We can do math with numbers, using the following symbols:</p>
+
+<pre class = 'prettyprint lang-r'>4 + 4
+4 - 4
+4 * 4
+4 / 4
+4 ^ 4</pre>
 
 </article></slide><slide class=""><hgroup><h2>Variable assignment</h2></hgroup><article  id="variable-assignment">
 
@@ -3158,7 +3228,7 @@ my_number</pre>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article >
 
-<p>The reference is a pointer to the object and can be set to a different value. What will the following expressions return?</p>
+<p>What will the following expressions return?</p>
 
 <pre class = 'prettyprint lang-r'>my_number + 3</pre>
 
@@ -3174,30 +3244,49 @@ my_number</pre>
 
 <pre >## [1] 12</pre>
 
-</article></slide><slide class=""><hgroup><h2>Exercise: variable assignment</h2></hgroup><article  id="exercise-variable-assignment" class="exercise">
+</article></slide><slide class=""><hgroup><h2>Variable assignment</h2></hgroup><article  id="variable-assignment-1" class="exercise">
 
-<p>Based on the previous exercise, what value will this code return? What’s the value of <code>my_number</code> after we run both lines of code?</p>
+<p>We can re-assign a variable as we wish.</p>
 
-<pre class = 'prettyprint lang-r'>my_number &lt;- 2
-(12 ^ my_number) + 1</pre>
+<pre class = 'prettyprint lang-r'>my_number &lt;- 4
+my_number &lt;- sqrt((12 * my_number) + 1)</pre>
 
-<!-- Notice that outcomes of the expressions that aren't assigned a name and cannot be referenced later! -->
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article >
+
+<pre class = 'prettyprint lang-r'>my_number &lt;- sqrt((12 * my_number) + 1)
+my_number</pre>
+
+<pre >## [1] 7</pre>
 
 </article></slide><slide class=""><hgroup><h2>Data types</h2></hgroup><article  id="data-types">
 
-<p>R has several types which distinguish how R stores data internally. Some of the most common ones are logical, numeric, and character types.</p>
+<p>R has several types which distinguish how R stores data internally.</p>
 
-<pre class = 'prettyprint lang-r'>type_logical &lt;- FALSE
+<ul>
+<li>Some of the most common ones (in increasing complexity):
+
+<ul>
+<li>logical, numeric, character</li>
+</ul></li>
+</ul>
+
+<pre class = 'prettyprint lang-r'># logical, also known as booleans
+type_logical &lt;- FALSE
 type_logical &lt;- TRUE
 
-type_double &lt;- 1.0
+# integer and double, together are called: numeric
 type_integer &lt;- 1L
+type_double &lt;- 1.0
 
 type_character &lt;- &quot;abbreviated as chr, also known as a string&quot;</pre>
 
 </article></slide><slide class=""><hgroup><h2>Type issues</h2></hgroup><article  id="type-issues" class="build">
 
-<p>Sometimes you’ll run into problems because the data is not of the type you expect. For example, you may import data where something that look likes a number is a string.</p>
+<p>Sometimes you’ll run into problems because the data is not of the type you expect.</p>
+
+<ul>
+<li>For example, you may import data where something that look likes a number is a string.</li>
+</ul>
 
 <pre class = 'prettyprint lang-r'>a &lt;- &quot;1&quot;
 b &lt;- 2 </pre>
@@ -3220,19 +3309,7 @@ b &lt;- 2 </pre>
 
 <pre >## [1] &quot;double&quot;</pre>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article >
-
-<p>We can also use the <code>class()</code> function</p>
-
-<pre class = 'prettyprint lang-r'>class(a)</pre>
-
-<pre >## [1] &quot;character&quot;</pre>
-
-<pre class = 'prettyprint lang-r'>class(b)</pre>
-
-<pre >## [1] &quot;numeric&quot;</pre>
-
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article >
+</article></slide><slide class=""><hgroup><h2>Type coercion</h2></hgroup><article  id="type-coercion">
 
 <p>The error we got when we tried <code>a + b</code> was because <code>a</code> is a character. We can reassign types on the fly:</p>
 
@@ -3244,7 +3321,9 @@ b &lt;- 2 </pre>
 
 <pre >## [1] 4</pre>
 
-<p>Some type reassignment is done by R automatically:</p>
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article >
+
+<p>Some type coercion is done by R automatically:</p>
 
 <pre class = 'prettyprint lang-r'>paste0(a, as.character(b))</pre>
 
@@ -3254,7 +3333,40 @@ b &lt;- 2 </pre>
 
 <pre >## [1] &quot;12&quot;</pre>
 
-</article></slide><slide class=""><hgroup><h2>Exercise: type coercion</h2></hgroup><article  id="exercise-type-coercion" class="exercise">
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article >
+
+<p>logicals are coercible to numeric or character.</p>
+
+<p>What do you think the following code will return?</p>
+
+<pre class = 'prettyprint lang-r'>TRUE + 4
+paste0(FALSE, &quot;?&quot;)</pre>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article >
+
+<pre class = 'prettyprint lang-r'>TRUE + 4</pre>
+
+<pre >## [1] 5</pre>
+
+<pre class = 'prettyprint lang-r'>FALSE + 4</pre>
+
+<pre >## [1] 4</pre>
+
+<pre class = 'prettyprint lang-r'>paste0(FALSE, &quot;?&quot;)</pre>
+
+<pre >## [1] &quot;FALSE?&quot;</pre>
+
+</article></slide><slide class=""><hgroup><h2>Type coercion</h2></hgroup><article  id="type-coercion-1">
+
+<p>Some data cannot be coerced.</p>
+
+<pre class = 'prettyprint lang-r'>as.numeric(&quot;d4&quot;)</pre>
+
+<pre >## Warning: NAs introduced by coercion</pre>
+
+<pre >## [1] NA</pre>
+
+<p><code>[1] NA Warning message: NAs introduced by coercion</code></p>
 
 <!-- # R reassigns types on the fly if the expected type is less restrictive -->
 
@@ -3265,30 +3377,6 @@ b &lt;- 2 </pre>
 <!-- # Possible exercise ... type coercion ...  -->
 
 <!-- # as.numeric("d4") returns NA with warning NAs introduced by coercion  -->
-
-</article></slide><slide class=""><hgroup><h2>Operators</h2></hgroup><article  id="operators">
-
-<p>R is also a calculator! We can do math with numbers, using the following symbols:</p>
-
-<pre class = 'prettyprint lang-r'>4 + 4</pre>
-
-<pre >## [1] 8</pre>
-
-<pre class = 'prettyprint lang-r'>4 - 4</pre>
-
-<pre >## [1] 0</pre>
-
-<pre class = 'prettyprint lang-r'>4 * 4</pre>
-
-<pre >## [1] 16</pre>
-
-<pre class = 'prettyprint lang-r'>4 / 4</pre>
-
-<pre >## [1] 1</pre>
-
-<pre class = 'prettyprint lang-r'>4 ^ 4</pre>
-
-<pre >## [1] 256</pre>
 
 </article></slide><slide class=""><hgroup><h2>Operators pt. 2</h2></hgroup><article  id="operators-pt.-2">
 
@@ -3338,15 +3426,45 @@ my_numbers</pre>
 
 <pre >## [1] 1 2 3 4 5 6</pre>
 
+</article></slide><slide class=""><hgroup><h2>Creating vectors</h2></hgroup><article  id="creating-vectors">
+
+<p>There are some nice shortcuts for creating vectors</p>
+
+<p>google: &ldquo;create a vector in R that has the same number repeated&rdquo;</p>
+
+<pre class = 'prettyprint lang-r'>c(&quot;a&quot;, &quot;a&quot;, &quot;a&quot;, &quot;a&quot;)</pre>
+
+<pre >## [1] &quot;a&quot; &quot;a&quot; &quot;a&quot; &quot;a&quot;</pre>
+
+<pre class = 'prettyprint lang-r'>rep(&quot;a&quot;, 4)</pre>
+
+<pre >## [1] &quot;a&quot; &quot;a&quot; &quot;a&quot; &quot;a&quot;</pre>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article >
+
+<p>Creating vectors of counting numbers</p>
+
+<pre class = 'prettyprint lang-r'>c(2, 3, 4, 5)</pre>
+
+<pre >## [1] 2 3 4 5</pre>
+
+<pre class = 'prettyprint lang-r'>2:5</pre>
+
+<pre >## [1] 2 3 4 5</pre>
+
+<pre class = 'prettyprint lang-r'>seq(2, 5)</pre>
+
+<pre >## [1] 2 3 4 5</pre>
+
 </article></slide><slide class=""><hgroup><h2>Adding to vectors</h2></hgroup><article  id="adding-to-vectors">
 
 <p>We can do math with vectors!</p>
 
-<pre class = 'prettyprint lang-r'>my_numbers + my_numbers</pre>
+<pre class = 'prettyprint lang-r'>my_numbers + my_numbers # this adds the vectors item by item</pre>
 
 <pre >## [1]  2  4  6  8 10 12</pre>
 
-<pre class = 'prettyprint lang-r'>my_numbers + 6</pre>
+<pre class = 'prettyprint lang-r'>my_numbers + 6 # this adds 6 to each object </pre>
 
 <pre >## [1]  7  8  9 10 11 12</pre>
 
@@ -3360,11 +3478,11 @@ my_numbers</pre>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article >
 
-<p>What will the vector <code>a</code> look like? Remember, <code>my_numbers</code> is a list of numbers from 1 to 6.</p>
+<p>Why does vector <code>a</code> look come out this way? Remember, <code>my_numbers</code> is a list of numbers from 1 to 6.</p>
 
 <pre class = 'prettyprint lang-r'>a &lt;- my_numbers + c(1, 2)</pre>
 
-<pre class = 'prettyprint lang-r'>a</pre>
+<pre class = 'prettyprint lang-r'>a </pre>
 
 <pre >## [1] 2 4 4 6 6 8</pre>
 
@@ -3380,7 +3498,13 @@ my_numbers</pre>
 
 <pre >## [1] 6</pre>
 
-</article></slide><slide class=""><hgroup><h2>Example: Using vectors to calculate a fraction</h2></hgroup><article  id="example-using-vectors-to-calculate-a-fraction" class="exercise">
+</article></slide><slide class=""><hgroup><h2>Example: Using vectors to calculate a sum of fractions</h2></hgroup><article  id="example-using-vectors-to-calculate-a-sum-of-fractions" class="exercise">
+
+<p>Use R to calculate the sum</p>
+
+<p>\[\sum_{n=0}^{10} \frac{1}{2^n}\]</p>
+
+</article></slide><slide class=""><hgroup><h2>Example: Using vectors to calculate a sum of fractions</h2></hgroup><article  id="example-using-vectors-to-calculate-a-sum-of-fractions-1">
 
 <p>Work up to this nice representation of the sum of powers of one-half.</p>
 
