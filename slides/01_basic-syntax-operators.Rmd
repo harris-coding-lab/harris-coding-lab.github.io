@@ -2,8 +2,7 @@
 title: "Coding Lab: Basic Syntax and Operators in R"
 author: "Ari Anisfeld, Angela Li"
 date: "10/1/2019"
-output:
-  ioslides_presentation
+
 ---
 
 ```{r setup, include=FALSE}
@@ -139,16 +138,17 @@ my_number * 3
 ## Variable assignment {.exercise}
 
 We can re-assign a variable as we wish.
+ - useful if we want to tray the same math with various different numbers
 ```{r eval=FALSE}
-my_number <- 4
-my_number <- sqrt((12 * my_number) + 1)
+my_number <- 2
+my_output <- sqrt((12 * my_number) + 1) 
 ```
 
 ***
 
 ```{r}
-my_number <- sqrt((12 * my_number) + 1)
-my_number
+my_output <- sqrt((12 * my_number) + 1)
+my_output
 ```
 
 
