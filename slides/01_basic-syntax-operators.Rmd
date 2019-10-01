@@ -2,7 +2,8 @@
 title: "Coding Lab: Basic Syntax and Operators in R"
 author: "Ari Anisfeld, Angela Li"
 date: "10/1/2019"
-
+output:
+  ioslides_presentation
 ---
 
 ```{r setup, include=FALSE}
@@ -47,10 +48,10 @@ Our focus is on data analysis and running simulations for stats.
 - How many people have experience with a programming language of any type?
 
 ## Some tips for computational reasoning {.build}
-- Make small tweaks to the code to see if you understand how the code works - be hands-on!
+- Be hands-on: make small tweaks to the code to see if you understand how it works.
 <!--We will do things that produce errors and then talk about how to read the error and fix it.
 -->
-- Be lazy: usually someone else has had your problem and developed a solution.
+- Be resourceful: usually someone else has had your problem and developed a solution.
 <!--example length built-in-->
 - Find help: Check the documentation with `?`
 
@@ -84,17 +85,17 @@ Do in R if easy enough. Highlight that while it's complicated if they
 understand the structure of help docs they can get far.
 </div>
 
-## Lecture:
+## Lecture outline
 
  - Operators pt 1
- - Variables assignment
+ - Variable assignment
  - Types
  - Operators pt 2
  - Data structures (Vectors)
 
-## Operators, pt 1.
+## Operators, pt 1
 
-R is also a calculator! We can do math with numbers, using the following symbols:
+R is a calculator! We can do math with numbers, using the following symbols:
 ```{r, eval=FALSE}
 4 + 4
 4 - 4
@@ -112,8 +113,6 @@ We use `<-` for assigning variables in R.
 my_number <- 4
 my_number
 ```
-
-***
 
 What will the following expressions return?
 ```{r eval=FALSE}
@@ -135,7 +134,7 @@ my_number * 3
 ```
 
 
-## Variable assignment {.exercise}
+## Variable assignment
 
 We can re-assign a variable as we wish.
  - useful if we want to tray the same math with various different numbers
@@ -144,9 +143,10 @@ my_number <- 2
 my_output <- sqrt((12 * my_number) + 1) 
 ```
 
-***
+## Variable assignment, continued {.build}
 
 ```{r}
+my_number <- 2
 my_output <- sqrt((12 * my_number) + 1)
 my_output
 ```
@@ -213,11 +213,12 @@ paste0(a, b)
 ```
 
 ***
-logicals are coercible to numeric or character.
+Logicals are coercible to numeric or character.
 
 What do you think the following code will return?
 ```{r, eval=FALSE}
 TRUE + 4
+FALSE + 4
 paste0(FALSE, "?")
 ```
 
@@ -232,7 +233,7 @@ paste0(FALSE, "?")
 
 Some data cannot be coerced.
 
-```{r}
+```{r eval=FALSE}
 as.numeric("d4")
 ```
 ```[1] NA
@@ -267,10 +268,11 @@ What do you think is being compared in this case?
 "four" == 4
 ```
 
-## Exercise: comparing a string and a number {.exercise}
+## Exercise: comparing a string and a number {.build}
 
 What do you think will happen when you run the following code?
-```{r eval=FALSE}
+
+```{r}
 "4" == 4
 ```
 
@@ -283,16 +285,16 @@ my_numbers
 ```
 
 ## Creating vectors
-There are some nice shortcuts for creating vectors
+There are some nice shortcuts for creating vectors.
 
-google: "create a vector in R that has the same number repeated"
+You can Google "create a vector in R that has the same letter repeated" for some ideas.
 ```{r}
 c("a", "a", "a", "a")
 rep("a", 4)
 ```
 
 *** 
-Creating vectors of counting numbers
+There are also several ways to create vectors of sequential numbers:
 ```{r}
 c(2, 3, 4, 5)
 2:5
@@ -317,7 +319,7 @@ my_numbers / c(.1, .2, .3, .4, .5, .6)
 
 *** 
 
-Why does vector `a` look come out this way? Remember, `my_numbers` is a list of numbers from 1 to 6.
+Why does vector `a` come out this way? Remember, `my_numbers` is a list of numbers from 1 to 6.
 ```{r}
 a <- my_numbers + c(1, 2)
 ```
@@ -340,12 +342,13 @@ Use R to calculate the sum
 
 $$\sum_{n=0}^{10} \frac{1}{2^n}$$
 
-
+How would you translate this into code?
 
 ## Example:  Using vectors to calculate a sum of fractions 
-Work up to this nice representation of the sum of powers of one-half.
 
-```{r}
+We go from math notation $$\sum_{n=0}^{10} \frac{1}{2^n}$$ to R code:
+
+```{r warning=FALSE}
 numerator <- rep(1, 10)
 denominator <- 2 ^ c(0:10)
 
@@ -353,17 +356,7 @@ sum(numerator/denominator)
 
 ```
 
-## How workshops work:
-
-- work in a team of 2-4 on the tutorial
- - [https://harris-coding-lab.shinyapps.io/basic-syntax/] 
- - (link available on course webpage as well)
-
-- if you get stuck as a team, add your name to the help list 
- - [bit.ly/coding_lab_qa]
-
-
-## What we learned {.build}
+## What we learned
 
 Today we discussed basic syntax and operators in R. You now know how to:
 
@@ -372,3 +365,12 @@ Today we discussed basic syntax and operators in R. You now know how to:
 - Work with atomic vectors, the basic data structure of R
 
 Up next week: data frames (aka, rectangular data)!
+
+## How workshops work
+
+- Work in a team of 2-4 on the tutorial, which can be found here:
+  + [https://harris-coding-lab.shinyapps.io/basic-syntax/](https://harris-coding-lab.shinyapps.io/basic-syntax/]) 
+  + (link available on course webpage as well)
+
+- If you get stuck as a team, add your name to the help list:
+  + [bit.ly/coding_lab_qa](bit.ly/coding_lab_qa)
