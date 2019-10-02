@@ -6,9 +6,12 @@ This website (harris-coding-lab.github.io) contains the content for the 5-week S
 
 The Coding Lab will be offered at the following times during the first five weeks of the quarter:
 
-- MWTTH 5-6:20pm
-- F 9:30-10:50pm, 11:00-12:20pm
 
+
+| Monday | Tuesday | Wednesday | Thursday | Friday |
+|--|--|--|--|--|
+| 5 - 6:20pm| 5 - 6:20pm| 5 - 6:20pm| 5 - 6:20pm| 9:30 - 10:50am & 11:00 - 12:20 pm|
+| KC0001 | KC1002	| KC1002|	KC1022	|KC0001	|
 ### Prerequisites
 
 We ask that Coding Lab attendees have R and RStudio pre-installed on their local machine. If you need help getting set up, please visit the R Bar at Harris for assistance with installation.
