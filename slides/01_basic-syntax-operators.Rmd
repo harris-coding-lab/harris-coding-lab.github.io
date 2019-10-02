@@ -366,7 +366,7 @@ Up next week: data frames (aka, rectangular data)!
 ## How workshops work
 
 - Work in a team of 2-4 on the tutorial, which can be found here:
-  + [https://harris-coding-lab.shinyapps.io/basic-syntax/](https://harris-coding-lab.shinyapps.io/basic-syntax/]) 
+  + [https://harris-coding-lab.shinyapps.io/basic-syntax-2/](https://harris-coding-lab.shinyapps.io/basic-syntax-2/]) 
   + (link available on course webpage as well)
 
 - If you get stuck as a team, add your name to the help list:
