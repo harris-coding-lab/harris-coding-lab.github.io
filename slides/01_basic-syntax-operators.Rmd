@@ -136,8 +136,7 @@ my_number * 3
 
 ## Variable assignment
 
-We can re-assign a variable as we wish.
- - useful if we want to tray the same math with various different numbers
+We can re-assign a variable as we wish. This is useful if we want to try the same math with various different numbers.
 ```{r eval=FALSE}
 my_number <- 2
 my_output <- sqrt((12 * my_number) + 1) 
@@ -173,7 +172,6 @@ type_character <- "abbreviated as chr, also known as a string"
 ## Type issues {.build}
 
 Sometimes you'll run into problems because the data is not of the type you expect. 
-
 - For example, you may import data where something that look likes a number is a string.
 ```{r}
 a <- "1"
@@ -187,7 +185,6 @@ a + b
 ```
 
 `Error in a + b : non-numeric argument to binary operator`
-
 
 ***
 To avoid errors, we can check for the type of the data we have with `typeof()`:
