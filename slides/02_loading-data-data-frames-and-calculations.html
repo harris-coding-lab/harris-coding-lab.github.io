@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Coding Lab: Basic Syntax and Operators in R</title>
+  <title>Coding Lab: Reading Files, Data Frames and Calculations</title>
 
   <meta charset="utf-8">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -20,7 +20,7 @@
     var SLIDE_CONFIG = {
       // Slide settings
       settings: {
-                title: 'Coding Lab: Basic Syntax and Operators in R',
+                title: 'Coding Lab: Reading Files, Data Frames and Calculations',
                         useBuilds: true,
         usePrettify: true,
         enableSlideAreas: true,
@@ -3110,443 +3110,289 @@ if (document.readyState !== "loading" &&
       <h1 data-config-title><!-- populated from slide_config.json --></h1>
       <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
       <p data-config-presenter><!-- populated from slide_config.json --></p>
-            <p style="margin-top: 6px; margin-left: -2px;">10/1/2019</p>
+            <p style="margin-top: 6px; margin-left: -2px;">10/8/2019</p>
           </hgroup>
   </slide>
 
-<slide class=""><hgroup><h2>Agenda</h2></hgroup><article  id="agenda">
+<slide class=""><hgroup><h2>baseR vs tidyverse</h2></hgroup><article  id="baser-vs-tidyverse">
 
-<ol>
-<li>Coding lab overview</li>
-<li>Lecture</li>
-<li>Workshop</li>
-</ol>
+<!--needs some work ... -->
 
-</article></slide><slide class=""><hgroup><h2>Why are we here?</h2></hgroup><article  id="why-are-we-here">
+<p>R is a programming language that is &lsquo;extensible&rsquo;.</p>
 
-<p>The purpose of this Coding Lab is to:</p>
+<p>This means we can write new &lsquo;packages&rsquo; that extend the capabilities of R, so that we don’t have to do everything from scratch.</p>
 
-<ol>
-<li>introduce you to basic programming concepts</li>
-<li>prepare you to do data analysis in R for the future (additional courses, your next job)</li>
-<li>give you the coding skills necessary to complete your Stats I homework</li>
-</ol>
+<p><code>tidyverse</code> is a set of packages that drastically improve R’s usability.</p>
 
-<aside class='note'><section><p>R is a full functional programming language and can do many things. Our focus is on data analysis and running simulations for stats.</p></section></aside>
+<!--maybe show them two stackoverflow posts that use base v tidy R-->
 
-</article></slide><slide class=""><hgroup><h2>What will we cover?</h2></hgroup><article  id="what-will-we-cover">
+</article></slide><slide class=""><hgroup><h2>installing and loading packages</h2></hgroup><article  id="installing-and-loading-packages">
 
-<ol>
-<li>Learn basic syntax and operators</li>
-<li>Reading files, data frames and calculations</li>
-<li>If statements</li>
-<li>Loops</li>
-<li>Functions</li>
-</ol>
+<p>To use a package we need to - install it once from the internet</p>
 
-<p><a href='' title=''>https://harris-coding-lab.github.io/</a></p>
-
-</article></slide><slide class=""><hgroup><h2>Survey time</h2></hgroup><article  id="survey-time" class="build">
-
-<!--delta-->
+<pre class = 'prettyprint lang-r'>install.packages(&quot;readxl&quot;) </pre>
 
 <ul>
-<li>How many people have R and RStudio installed on their computers? <!-- - How many people know how to install packages and load libraries in R?--></li>
-<li>How many people have experience with a programming language of any type?</li>
+<li>load each time we restart R</li>
 </ul>
 
-</article></slide><slide class=""><hgroup><h2>Some tips for computational reasoning</h2></hgroup><article  id="some-tips-for-computational-reasoning" class="build">
+<pre class = 'prettyprint lang-r'>library(readxl)</pre>
 
-<ul>
-<li>Be hands-on: make small tweaks to the code to see if you understand how it works. <!--We will do things that produce errors and then talk about how to read the error and fix it.
---></li>
-<li>Be resourceful: usually someone else has had your problem and developed a solution. <!--example length built-in--></li>
-<li>Find help: Check the documentation with <code>?</code></li>
-</ul>
-
-<p>Additional resources are listed on the course website.</p>
-
-</article></slide><slide class=""><hgroup><h2>Finding help with <code>?</code></h2></hgroup><article  id="finding-help-with">
-
-<pre class = 'prettyprint lang-r'>?sum</pre>
-
-<ul>
-<li>Description</li>
-</ul>
-
-<p><code>sum returns the sum of all the values present in its arguments.</code></p>
-
-<ul>
-<li>Usage</li>
-</ul>
-
-<p><code>sum(..., na.rm = FALSE)</code></p>
-
-<ul>
-<li>Arguments</li>
-</ul>
-
-<p><code>...    numeric or complex or logical vectors.</code></p>
-
-<ul>
-<li>Examples (scroll down!)</li>
-</ul>
-
-<p><code>sum(1, 2, 3, 4, 5)</code></p>
-
-<aside class='note'><section><p>Do in R if easy enough. Highlight that while it’s complicated if they understand the structure of help docs they can get far.</p></section></aside>
-
-</article></slide><slide class=""><hgroup><h2>Lecture outline</h2></hgroup><article  id="lecture-outline">
-
-<ul>
-<li>Operators pt 1</li>
-<li>Variable assignment</li>
-<li>Types</li>
-<li>Operators pt 2</li>
-<li>Data structures (Vectors)</li>
-</ul>
-
-</article></slide><slide class=""><hgroup><h2>Operators, pt 1</h2></hgroup><article  id="operators-pt-1">
-
-<p>R is a calculator! We can do math with numbers, using the following symbols:</p>
-
-<pre class = 'prettyprint lang-r'>4 + 4
-4 - 4
-4 * 4
-4 / 4
-4 ^ 4</pre>
-
-</article></slide><slide class=""><hgroup><h2>Variable assignment</h2></hgroup><article  id="variable-assignment">
-
-<p>We use <code>&lt;-</code> for assigning variables in R.</p>
-
-<pre class = 'prettyprint lang-r'>my_number &lt;- 4
-my_number</pre>
-
-<pre >## [1] 4</pre>
-
-<p>What will the following expressions return?</p>
-
-<pre class = 'prettyprint lang-r'>my_number + 3</pre>
-
-<pre class = 'prettyprint lang-r'>my_number * 3</pre>
+<aside class='note'><section><p>Names of functions are important. library is a bad name!</p></section></aside>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article >
 
-<pre class = 'prettyprint lang-r'>my_number + 3</pre>
+<p>The package &lsquo;haven&rsquo; provides a function to read dta files called <code>read_dta()</code>. What went wrong here?</p>
 
-<pre >## [1] 7</pre>
+<pre class = 'prettyprint lang-r'>install.packages(&quot;haven&quot;)
+our_data &lt;- read_dta(&quot;my_file.dta&quot;)</pre>
 
-<pre class = 'prettyprint lang-r'>my_number * 3</pre>
+<p>Error in read_dta(&ldquo;my_file.dta&rdquo;) : could not find function &ldquo;read_dta&rdquo;</p>
 
-<pre >## [1] 12</pre>
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article >
 
-</article></slide><slide class=""><hgroup><h2>Variable assignment</h2></hgroup><article  id="variable-assignment-1">
+<pre class = 'prettyprint lang-r'>library(haven)
+our_data &lt;- read_dta(&quot;my_file.dta&quot;)</pre>
 
-<p>We can re-assign a variable as we wish. - useful if we want to tray the same math with various different numbers</p>
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article >
 
-<pre class = 'prettyprint lang-r'>my_number &lt;- 2
-my_output &lt;- sqrt((12 * my_number) + 1) </pre>
+<p>When you load the <code>tidyverse</code> you actually load 8 packages.</p>
 
-</article></slide><slide class=""><hgroup><h2>Variable assignment, continued</h2></hgroup><article  id="variable-assignment-continued" class="build">
+<pre class = 'prettyprint lang-r'>library(tidyverse)</pre>
 
-<pre class = 'prettyprint lang-r'>my_number &lt;- 2
-my_output &lt;- sqrt((12 * my_number) + 1)
-my_output</pre>
+<p>── Attaching packages ──────────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ── ✔ ggplot2 3.1.0 ✔ purrr 0.3.0 ✔ tibble 2.0.1 ✔ dplyr 0.8.3 ✔ tidyr 0.8.2 ✔ stringr 1.3.1 ✔ readr 1.3.1 ✔ forcats 0.3.0 ── Conflicts ─────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ── ✖ dplyr::filter() masks stats::filter() ✖ dplyr::lag() masks stats::lag()</p>
 
-<pre >## [1] 5</pre>
+</article></slide><slide class=""><hgroup><h2>working with data</h2></hgroup><article  id="working-with-data">
 
-</article></slide><slide class=""><hgroup><h2>Data types</h2></hgroup><article  id="data-types">
+<p>tibble vs. data.frame - less surly etc.</p>
 
-<p>R has several types which distinguish how R stores data internally.</p>
+</article></slide><slide class=""><hgroup><h2>tidy data</h2></hgroup><article  id="tidy-data">
+
+<p>insert picture discuss - row = observation - column = feature / variable</p>
+
+</article></slide><slide class=""><hgroup><h2>loading data</h2></hgroup><article  id="loading-data">
+
+<pre class = 'prettyprint lang-r'># this_data &lt;- read_csv()</pre>
+
+<table class = 'rmdtable'>
+<tr class="header">
+<th align="left">file type</th>
+<th align="left">function</th>
+<th align="left">package</th>
+</tr>
+<tr class="odd">
+<td align="left">csv</td>
+<td align="left">readr</td>
+<td align="left">read_csv</td>
+</tr>
+<tr class="even">
+<td align="left">dta (stata)</td>
+<td align="left">haven</td>
+<td align="left">read_dta</td>
+</tr>
+<tr class="odd">
+<td align="left">xlsx</td>
+<td align="left">readxl</td>
+<td align="left">read_xlsx</td>
+</tr>
+</table>
+
+<p>Note: <code>readr</code> is loaded with <code>tidyverse</code></p>
+
+</article></slide><slide class=""><hgroup><h2>loading data</h2></hgroup><article  id="loading-data-1">
+
+<p>While often you can just load the data directly, somethings require finesse</p>
+
+<pre class = 'prettyprint lang-r'># library(readxl)
+# this_data &lt;- read_xlsx()
+# glimpse(this_data)</pre>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article >
+
+<pre class = 'prettyprint lang-r'># this_data &lt;- read_xlsx(&quot;SCE-Public-LM-Quarterly-Microdata.xlsx&quot;, 
+#                        sheet = &quot;Data 2013&quot;, 
+#                        skip = 1)
+# glimpse(this_data)</pre>
+
+</article></slide><slide class=""><hgroup><h2>detour: directory structure</h2></hgroup><article  id="detour-directory-structure">
+
+<p>Computer hard drives are organized using a <strong>file system</strong>. In this way, each file has a unique &ldquo;address&rdquo;.</p>
+
+<p>e.g.:</p>
 
 <ul>
-<li>Some of the most common ones (in increasing complexity):
-
-<ul>
-<li>logical, numeric, character</li>
-</ul></li>
+<li><code>~/Downloads/SCE-Public-LM-Quarterly-Microdata.xlsx</code> is where my data ended up when I downloaded it.</li>
+<li><code>~/Documents/teaching/coding_lab/presentations/workshop_2.html</code> is where this presentation might be stored</li>
 </ul>
 
-<pre class = 'prettyprint lang-r'># logical, also known as booleans
-type_logical &lt;- FALSE
-type_logical &lt;- TRUE
-
-# integer and double, together are called: numeric
-type_integer &lt;- 1L
-type_double &lt;- 1.0
-
-type_character &lt;- &quot;abbreviated as chr, also known as a string&quot;</pre>
-
-</article></slide><slide class=""><hgroup><h2>Type issues</h2></hgroup><article  id="type-issues" class="build">
-
-<p>Sometimes you’ll run into problems because the data is not of the type you expect.</p>
+<p>Those files are stored in folders or directories which are analagous to &ldquo;zip codes&rdquo; in the postal metaphor.</p>
 
 <ul>
-<li>For example, you may import data where something that look likes a number is a string.</li>
+<li><code>~/Downloads/</code></li>
+<li><code>~/Documents/teaching/coding_lab/presentations/</code></li>
 </ul>
 
-<pre class = 'prettyprint lang-r'>a &lt;- &quot;1&quot;
-b &lt;- 2 </pre>
-
-<p>What will happen when we try to run the following code?</p>
-
-<pre class = 'prettyprint lang-r'>a + b</pre>
-
-<p><code>Error in a + b : non-numeric argument to binary operator</code></p>
+<p>In Windows, the directory usually looks like:p</p>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article >
 
-<p>To avoid errors, we can check for the type of the data we have with <code>typeof()</code>:</p>
+<p>The &lsquo;working directory&rsquo; in an R session is the directory your script knows about. If the data you want is in that directory you can refer to it directly.</p>
 
-<pre class = 'prettyprint lang-r'>typeof(a)</pre>
+<pre class = 'prettyprint lang-r'># this_data &lt;- read_xlsx(&quot;SCE-Public-LM-Quarterly-Microdata.xlsx&quot;)</pre>
 
-<pre >## [1] &quot;character&quot;</pre>
-
-<pre class = 'prettyprint lang-r'>typeof(b)</pre>
-
-<pre >## [1] &quot;double&quot;</pre>
-
-</article></slide><slide class=""><hgroup><h2>Type coercion</h2></hgroup><article  id="type-coercion">
-
-<p>The error we got when we tried <code>a + b</code> was because <code>a</code> is a character. We can reassign types on the fly:</p>
-
-<pre class = 'prettyprint lang-r'>as.integer(a) + 3</pre>
-
-<pre >## [1] 4</pre>
-
-<pre class = 'prettyprint lang-r'>as.numeric(a) + 3</pre>
-
-<pre >## [1] 4</pre>
-
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article >
-
-<p>Some type coercion is done by R automatically:</p>
-
-<pre class = 'prettyprint lang-r'>paste0(a, as.character(b))</pre>
-
-<pre >## [1] &quot;12&quot;</pre>
-
-<pre class = 'prettyprint lang-r'>paste0(a, b)</pre>
-
-<pre >## [1] &quot;12&quot;</pre>
-
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article >
-
-<p>Logicals are coercible to numeric or character.</p>
-
-<p>What do you think the following code will return?</p>
-
-<pre class = 'prettyprint lang-r'>TRUE + 4
-FALSE + 4
-paste0(FALSE, &quot;?&quot;)</pre>
-
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article >
-
-<pre class = 'prettyprint lang-r'>TRUE + 4</pre>
-
-<pre >## [1] 5</pre>
-
-<pre class = 'prettyprint lang-r'>FALSE + 4</pre>
-
-<pre >## [1] 4</pre>
-
-<pre class = 'prettyprint lang-r'>paste0(FALSE, &quot;?&quot;)</pre>
-
-<pre >## [1] &quot;FALSE?&quot;</pre>
-
-</article></slide><slide class=""><hgroup><h2>Type coercion</h2></hgroup><article  id="type-coercion-1">
-
-<p>Some data cannot be coerced.</p>
-
-<pre class = 'prettyprint lang-r'>as.numeric(&quot;d4&quot;)</pre>
-
-<p><code>[1] NA Warning message: NAs introduced by coercion</code></p>
-
-<!-- # R reassigns types on the fly if the expected type is less restrictive -->
-
-<!-- # log < int < dbl < chr -->
-
-<!-- # ex. paste(a, b) -->
-
-<!-- # Possible exercise ... type coercion ...  -->
-
-<!-- # as.numeric("d4") returns NA with warning NAs introduced by coercion  -->
-
-</article></slide><slide class=""><hgroup><h2>Operators pt. 2</h2></hgroup><article  id="operators-pt.-2">
-
-<p>We can also compare things.</p>
-
-<pre class = 'prettyprint lang-r'>4 &lt; 4</pre>
-
-<pre >## [1] FALSE</pre>
-
-<pre class = 'prettyprint lang-r'>4 &gt;= 4</pre>
-
-<pre >## [1] TRUE</pre>
-
-<pre class = 'prettyprint lang-r'>4 == 4</pre>
-
-<pre >## [1] TRUE</pre>
-
-<pre class = 'prettyprint lang-r'>4 != 4</pre>
-
-<pre >## [1] FALSE</pre>
-
-</article></slide><slide class=""><hgroup><h2>Operators…applied to strings?</h2></hgroup><article  id="operatorsapplied-to-strings">
-
-<p>What do you think is being compared in this case?</p>
-
-<pre class = 'prettyprint lang-r'>&quot;four&quot; == &quot;four&quot;</pre>
-
-<pre >## [1] TRUE</pre>
-
-<pre class = 'prettyprint lang-r'>&quot;four&quot; == 4</pre>
-
-<pre >## [1] FALSE</pre>
-
-</article></slide><slide class=""><hgroup><h2>Exercise: comparing a string and a number</h2></hgroup><article  id="exercise-comparing-a-string-and-a-number" class="build">
-
-<p>What do you think will happen when you run the following code?</p>
-
-<pre class = 'prettyprint lang-r'>&quot;4&quot; == 4</pre>
-
-<pre >## [1] TRUE</pre>
-
-</article></slide><slide class=""><hgroup><h2>Data structures</h2></hgroup><article  id="data-structures">
-
-<p>Usually we want to keep track of more than one thing at time, say a list of numbers. Computer scientists refer to these as data structures. The main workhorse data structure in R is the vector.</p>
-
-<pre class = 'prettyprint lang-r'>my_numbers &lt;- c(1, 2, 3, 4, 5, 6)
-
-my_numbers</pre>
-
-<pre >## [1] 1 2 3 4 5 6</pre>
-
-</article></slide><slide class=""><hgroup><h2>Creating vectors</h2></hgroup><article  id="creating-vectors">
-
-<p>There are some nice shortcuts for creating vectors.</p>
-
-<p>You can Google &ldquo;create a vector in R that has the same letter repeated&rdquo; for some ideas.</p>
-
-<pre class = 'prettyprint lang-r'>c(&quot;a&quot;, &quot;a&quot;, &quot;a&quot;, &quot;a&quot;)</pre>
-
-<pre >## [1] &quot;a&quot; &quot;a&quot; &quot;a&quot; &quot;a&quot;</pre>
-
-<pre class = 'prettyprint lang-r'>rep(&quot;a&quot;, 4)</pre>
-
-<pre >## [1] &quot;a&quot; &quot;a&quot; &quot;a&quot; &quot;a&quot;</pre>
-
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article >
-
-<p>There are also several ways to create vectors of sequential numbers:</p>
-
-<pre class = 'prettyprint lang-r'>c(2, 3, 4, 5)</pre>
-
-<pre >## [1] 2 3 4 5</pre>
-
-<pre class = 'prettyprint lang-r'>2:5</pre>
-
-<pre >## [1] 2 3 4 5</pre>
-
-<pre class = 'prettyprint lang-r'>seq(2, 5)</pre>
-
-<pre >## [1] 2 3 4 5</pre>
-
-</article></slide><slide class=""><hgroup><h2>Adding to vectors</h2></hgroup><article  id="adding-to-vectors">
-
-<p>We can do math with vectors!</p>
-
-<pre class = 'prettyprint lang-r'>my_numbers + my_numbers # this adds the vectors item by item</pre>
-
-<pre >## [1]  2  4  6  8 10 12</pre>
-
-<pre class = 'prettyprint lang-r'>my_numbers + 6 # this adds 6 to each object </pre>
-
-<pre >## [1]  7  8  9 10 11 12</pre>
-
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article >
-
-<p>How would the judges rank this lesson right now?</p>
-
-<pre class = 'prettyprint lang-r'>my_numbers / c(.1, .2, .3, .4, .5, .6)</pre>
-
-<pre >## [1] 10 10 10 10 10 10</pre>
-
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article >
-
-<p>Why does vector <code>a</code> come out this way? Remember, <code>my_numbers</code> is a list of numbers from 1 to 6.</p>
-
-<pre class = 'prettyprint lang-r'>a &lt;- my_numbers + c(1, 2)</pre>
-
-<pre class = 'prettyprint lang-r'>a </pre>
-
-<pre >## [1] 2 4 4 6 6 8</pre>
-
-</article></slide><slide class=""><hgroup><h2>Using functions with vectors</h2></hgroup><article  id="using-functions-with-vectors">
-
-<p>Some functions act directly on a vector in a pleasing way:</p>
-
-<pre class = 'prettyprint lang-r'>sum(a)</pre>
-
-<pre >## [1] 30</pre>
-
-<pre class = 'prettyprint lang-r'>length(a)</pre>
-
-<pre >## [1] 6</pre>
-
-</article></slide><slide class=""><hgroup><h2>Example: Using vectors to calculate a sum of fractions</h2></hgroup><article  id="example-using-vectors-to-calculate-a-sum-of-fractions" class="exercise">
-
-<p>Use R to calculate the sum</p>
-
-<p>\[\sum_{n=0}^{10} \frac{1}{2^n}\]</p>
-
-<p>How would you translate this into code?</p>
-
-</article></slide><slide class=""><hgroup><h2>Example: Using vectors to calculate a sum of fractions</h2></hgroup><article  id="example-using-vectors-to-calculate-a-sum-of-fractions-1">
-
-<p>We go from math notation \[\sum_{n=0}^{10} \frac{1}{2^n}\] to R code:</p>
-
-<pre class = 'prettyprint lang-r'>numerator &lt;- rep(1, 10)
-denominator &lt;- 2 ^ c(0:10)
-
-sum(numerator/denominator)</pre>
-
-<pre >## [1] 1.999023</pre>
-
-</article></slide><slide class=""><hgroup><h2>What we learned</h2></hgroup><article  id="what-we-learned">
-
-<p>Today we discussed basic syntax and operators in R. You now know how to:</p>
+<p>if the data were not in your current working directory you could:</p>
 
 <ul>
-<li>Assign data to a variable for future reference.</li>
-<li>Distinguish between types</li>
-<li>Work with atomic vectors, the basic data structure of R</li>
+<li>give the full address: <code>read_xlsx(&quot;~/Downloads/SCE-Public-LM-Quarterly-Microdata.xlsx&quot;)</code></li>
+<li>move the file to the current working directory: drag and drop</li>
+<li>change the current working directory: <code>setwd(&quot;~/Downloads/&quot;)</code></li>
 </ul>
 
-<p>Up next week: data frames (aka, rectangular data)!</p>
+<p><code>getwd()</code> shows your current working directory <!--point out that if they don't know what a directory structure looks like on their computer (windows) they can see it there -->.</p>
 
-</article></slide><slide class=""><hgroup><h2>How workshops work</h2></hgroup><article  id="how-workshops-work">
+<p>When working with R scripts and data you might need to <code>setwd()</code></p>
 
-<ul>
-<li>Work in a team of 2-4 on the tutorial, which can be found here:
+</article></slide><slide class=""><hgroup><h2>looking at data</h2></hgroup><article  id="looking-at-data">
 
-<ul>
-<li><a href='https://harris-coding-lab.shinyapps.io/basic-syntax/%5D' title=''>https://harris-coding-lab.shinyapps.io/basic-syntax/</a></li>
-<li>(link available on course webpage as well)</li>
-<li>Note, there are a few oddities in our system.
+<p>We just used <code>glimpse()</code> to look at our data.</p>
 
-<ul>
-<li>variables are not &ldquo;saved&rdquo; from input box to input box</li>
-<li>in the background, we have all the variables you need assigned according to our definitions.</li>
-</ul></li>
-</ul></li>
-<li>If you get stuck as a team, add your name to the help list:
+<p>For a more spreadsheet-like experience use <code>View()</code>.</p>
 
-<ul>
-<li><a href='bit.ly/coding_lab_qa' title=''>bit.ly/coding_lab_qa</a></li>
-</ul></li>
-</ul></article></slide>
+</article></slide><slide class=""><hgroup><h2>data manipulation: selecting columns with <code>select()</code></h2></hgroup><article  id="data-manipulation-selecting-columns-with-select">
+
+<!-- I need to find a less confusing example of data-->
+
+<!-- Unclear how much justice we can do here with the time available. Probably could do a full class on these-->
+
+</article></slide><slide class=""><hgroup><h2>data manipulation: creating columns with <code>mutate()</code></h2></hgroup><article  id="data-manipulation-creating-columns-with-mutate">
+
+</article></slide><slide class=""><hgroup><h2>data manipulation: summarizing data with <code>summarize()</code></h2></hgroup><article  id="data-manipulation-summarizing-data-with-summarize">
+
+</article></slide><slide class=""><hgroup><h2>data manipulation: *** with <code>group_by()</code> + <code>summarize()</code></h2></hgroup><article  id="data-manipulation-with-group_by-summarize">
+
+</article></slide><slide class=""><hgroup><h2>dplyr functions overview:</h2></hgroup><article  id="dplyr-functions-overview">
+
+<aside class='note'><section><p>We should stress that we will introduce these verbs over time, but they may show up before we learn them fully in the workshop. In which case, the code or steps to write code will be provided.</p></section></aside>
+
+<table class = 'rmdtable'>
+<tr class="header">
+<th align="left">function</th>
+<th align="left">job</th>
+<th align="left">when to learn</th>
+</tr>
+<tr class="odd">
+<td align="left"><code>select()</code></td>
+<td align="left">to select columns of interest</td>
+<td align="left">today</td>
+</tr>
+<tr class="even">
+<td align="left"><code>mutate()</code></td>
+<td align="left">to create new columns</td>
+<td align="left">today</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>summarize()</code></td>
+<td align="left">to summarize data according to a function</td>
+<td align="left">today</td>
+</tr>
+<tr class="even">
+<td align="left"><code>group_by()</code> + <code>summarize()</code></td>
+<td align="left">to summarize grouped data</td>
+<td align="left">today</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>arrange()</code></td>
+<td align="left">to sort data</td>
+<td align="left">learn during workshop</td>
+</tr>
+<tr class="even">
+<td align="left"><code>left_join()</code></td>
+<td align="left">to combine data with similar names</td>
+<td align="left">next week?</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>filter()</code></td>
+<td align="left">to capture rows that meet a criteria</td>
+<td align="left">next week</td>
+</tr>
+</table>
+
+</article></slide><slide class=""><hgroup><h2>Detour 2: base R data manipulation</h2></hgroup><article  id="detour-2-base-r-data-manipulation">
+
+<p>While as data analysts we prefer <code>tidyverse</code> style code, you will come across code in baseR in Stats I.</p>
+
+<p><strong>refer to or extract a column with <code>$</code></strong></p>
+
+<pre class = 'prettyprint lang-r'>this_data$column_name </pre>
+
+<p>More generally, the <code>$</code> is used to refer to sub-objects. For example,</p>
+
+<pre class = 'prettyprint lang-r'>outcome_of_t_test &lt;- t.test(c(1,2,3,4), c(3,4,4,4))
+outcome_of_t_test$statistic</pre>
+
+<pre >##         t 
+## -1.805788</pre>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article >
+
+<p><strong>subsetting with <code>[]</code></strong></p>
+
+<pre class = 'prettyprint lang-r'>letters &lt;- c(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;, &quot;e&quot;)
+letters[3]</pre>
+
+<pre >## [1] &quot;c&quot;</pre>
+
+<pre class = 'prettyprint lang-r'>letters[c(1,5)]</pre>
+
+<pre >## [1] &quot;a&quot; &quot;e&quot;</pre>
+
+<p>For tibbles we have two dimensions: rows and columns</p>
+
+<pre class = 'prettyprint lang-r'>this_data[1, ]   # get row 1
+this_data[ , 4]  # get column 4
+this_data[1, 4]  # get the value of observation 1 with variable in column 4</pre>
+
+</article></slide><slide class=""><hgroup><h2>baseR functions (appendix)</h2></hgroup><article  id="baser-functions-appendix">
+
+<p>We can do more data manipulation in baseR</p>
+
+<table class = 'rmdtable'>
+<col width="30.769231%" />
+<col width="38.461538%" />
+<col width="30.769231%" />
+<tr class="header">
+<th align="left">operator</th>
+<th align="left">example</th>
+<th align="left">job</th>
+</tr>
+<tr class="odd">
+<td align="left"><code>$</code></td>
+<td align="left"><code>df$column_name</code> or <code>df[[&quot;column_name&quot;]]</code></td>
+<td align="left">to pull a single column as a vector</td>
+</tr>
+<tr class="even">
+<td align="left"><code>[,]</code></td>
+<td align="left"><code>df[boolean, ]</code></td>
+<td align="left">to filter rows</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>[,]</code></td>
+<td align="left"><code>df[row_numbers, ]</code></td>
+<td align="left">to select rows by number</td>
+</tr>
+<tr class="even">
+<td align="left"><code>[,]</code></td>
+<td align="left"><code>df[, column_names]</code></td>
+<td align="left">to select columns</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>$</code></td>
+<td align="left"><code>df$new_column_name &lt;-</code></td>
+<td align="left">to create new columns</td>
+</tr>
+</table>
+
+<p><code>df</code>: any data frame. <code>column_name</code>: any column <code>boolean</code>: a boolean expression relative to the data (e.g. <code>df$column_name == 1</code>)</p></article></slide>
 
 
   <slide class="backdrop"></slide>

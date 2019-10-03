@@ -1,0 +1,246 @@
+---
+title: "Coding Lab: Reading Files, Data Frames and Calculations"
+author: "Ari Anisfeld, Angela Li"
+date: "10/8/2019"
+output:
+  ioslides_presentation
+---
+
+## baseR vs tidyverse
+
+<!--needs some work ... --> 
+R is a programming language that is 'extensible'.
+
+This means we can write new 'packages' that extend the capabilities of R, so that we don't have to do everything from scratch.
+
+`tidyverse` is a set of packages that drastically improve R's usability. 
+
+<!--maybe show them two stackoverflow posts that use base v tidy R-->
+
+## installing and loading packages
+
+To use a package we need to 
+- install it once from the internet
+
+```{r, eval=FALSE}
+install.packages("readxl") 
+```
+
+
+- load each time we restart R
+
+```{r, eval=FALSE}
+library(readxl)
+```
+
+<div class="notes">
+Names of functions are important. library is a bad name!
+</div>
+
+
+***
+
+The package 'haven' provides a function to read dta files called `read_dta()`.
+What went wrong here?
+```{r, eval=FALSE}
+install.packages("haven")
+our_data <- read_dta("my_file.dta")
+```
+Error in read_dta("my_file.dta") : could not find function "read_dta"
+
+***
+```{r, eval=FALSE}
+library(haven)
+our_data <- read_dta("my_file.dta")
+```
+
+
+
+***
+When you load the `tidyverse` you actually load 8 packages.
+```{r, eval=FALSE}
+library(tidyverse)
+```
+
+── Attaching packages ──────────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
+✔ ggplot2 3.1.0     ✔ purrr   0.3.0
+✔ tibble  2.0.1     ✔ dplyr   0.8.3
+✔ tidyr   0.8.2     ✔ stringr 1.3.1
+✔ readr   1.3.1     ✔ forcats 0.3.0
+── Conflicts ─────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+
+
+## working with data
+tibble vs. data.frame
+- less surly etc.
+
+## tidy data
+insert picture discuss
+- row = observation
+- column = feature / variable
+
+
+## loading data
+
+```{r}
+# this_data <- read_csv()
+```
+
+file type  | function | package 
+-----------|----------|----------
+csv        | readr    | read_csv
+dta (stata)| haven    | read_dta
+xlsx       | readxl   | read_xlsx
+
+Note: `readr` is loaded with `tidyverse`
+
+## loading data
+
+While often you can just load the data directly, somethings require finesse
+
+```{r}
+# library(readxl)
+# this_data <- read_xlsx()
+# glimpse(this_data)
+```
+
+
+***
+
+
+```{r}
+# this_data <- read_xlsx("SCE-Public-LM-Quarterly-Microdata.xlsx", 
+#                        sheet = "Data 2013", 
+#                        skip = 1)
+# glimpse(this_data)
+```
+
+## detour: directory structure
+
+Computer hard drives are organized using a **file system**. In this way, each file has a unique "address".
+
+e.g.:
+
+- `~/Downloads/SCE-Public-LM-Quarterly-Microdata.xlsx` is where my data ended up when I downloaded it.
+- `~/Documents/teaching/coding_lab/presentations/workshop_2.html` is where this presentation might be stored
+
+Those files are stored in folders or directories which are analagous to "zip codes" in the postal metaphor.
+
+- `~/Downloads/`
+- `~/Documents/teaching/coding_lab/presentations/`
+
+In Windows, the directory usually looks like:p
+
+***
+
+The 'working directory' in an R session is the directory your script knows about. If the data you want is in that directory
+you can refer to it directly.
+
+```{r}
+# this_data <- read_xlsx("SCE-Public-LM-Quarterly-Microdata.xlsx")
+```
+
+if the data were not in your current working directory you could:
+
+- give the full address: `read_xlsx("~/Downloads/SCE-Public-LM-Quarterly-Microdata.xlsx")`
+- move the file to the current working directory: drag and drop
+- change the current working directory: `setwd("~/Downloads/")`
+
+`getwd()` shows your current working directory <!--point out that if they don't know what a directory structure looks like on their computer (windows) they can see it there -->.
+
+When working with R scripts and data you might need to `setwd()`
+
+
+
+
+
+## looking at data
+
+We just used `glimpse()` to look at our data. 
+
+For a more spreadsheet-like experience use `View()`.
+
+
+## data manipulation: selecting columns with `select()`
+<!-- I need to find a less confusing example of data-->
+<!-- Unclear how much justice we can do here with the time available. Probably could do a full class on these-->
+
+
+## data manipulation: creating columns with `mutate()`
+
+
+## data manipulation: summarizing data with `summarize()`
+
+## data manipulation: *** with `group_by()` + `summarize()`
+
+
+## dplyr functions overview: 
+<div class="notes">
+We should stress that we will introduce these verbs over time, 
+but they may show up before we learn them fully in the workshop. 
+In which case, the code or steps to write code will be provided.
+</div>
+
+function | job | when to learn
+----| --- | ---
+`select()` | to select columns of interest | today 
+`mutate()` | to create new columns | today
+`summarize()` | to summarize data according to a function | today
+`group_by()` + `summarize()` | to summarize grouped data | today
+`arrange()` | to sort data | learn during workshop
+`left_join()` | to combine data with similar names | next week?
+`filter()` | to capture rows that meet a criteria | next week
+
+
+## Detour 2: base R data manipulation 
+
+While as data analysts we prefer `tidyverse` style code, you will come across code in baseR in Stats I.
+
+**refer to or extract a column with `$`**
+
+```{r, eval = FALSE}
+this_data$column_name 
+```
+
+More generally, the `$` is used to refer to sub-objects. For example,
+
+```{r}
+outcome_of_t_test <- t.test(c(1,2,3,4), c(3,4,4,4))
+outcome_of_t_test$statistic
+```
+
+****
+
+**subsetting with `[]`**
+```{r}
+letters <- c("a", "b", "c", "d", "e")
+letters[3]
+letters[c(1,5)]
+```
+
+For tibbles we have two dimensions: rows and columns
+```{r, eval = FALSE}
+this_data[1, ]   # get row 1
+this_data[ , 4]  # get column 4
+this_data[1, 4]  # get the value of observation 1 with variable in column 4
+```
+
+
+
+## baseR functions (appendix)
+
+We can do more data manipulation in baseR
+
+|operator | example                                 |job                                     |
+|----|-----                                     | ----                                   |
+| `$`|`df$column_name` or `df[["column_name"]]` | to pull  a single column as a vector   |
+|`[,]`|`df[boolean, ]`                           | to filter rows                         |
+|`[,]`|`df[row_numbers, ]`                       | to select rows by number               |
+|`[,]`|`df[, column_names]`                      | to select columns                      |
+|`$`|`df$new_column_name <-`                   | to create new columns                  |
+
+
+`df`: any data frame. `column_name`: any column
+`boolean`:  a boolean expression relative to the data (e.g. `df$column_name == 1`)
