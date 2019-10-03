@@ -369,6 +369,9 @@ Up next week: data frames (aka, rectangular data)!
 - Work in a team of 2-4 on the tutorial, which can be found here:
   + [https://harris-coding-lab.shinyapps.io/basic-syntax-2/](https://harris-coding-lab.shinyapps.io/basic-syntax-2/]) 
   + (link available on course webpage as well)
+  + Note, there are a few oddities in our system. 
+    + variables are not "saved" from input box to input box
+    + in the background, we have all the variables you need assigned according to our definitions.
 
 - If you get stuck as a team, add your name to the help list:
   + [bit.ly/coding_lab_qa](https://bit.ly/coding_lab_qa)
