@@ -3285,7 +3285,11 @@ type_character &lt;- &quot;abbreviated as chr, also known as a string&quot;</pre
 
 </article></slide><slide class=""><hgroup><h2>Type issues</h2></hgroup><article  class="build" id="type-issues">
 
-<p>Sometimes you’ll run into problems because the data is not of the type you expect. - For example, you may import data where something that look likes a number is a string.</p>
+<p>Sometimes you’ll run into problems because the data is not of the type you expect.</p>
+
+<ul>
+<li>For example, you may import data where something that look likes a number is a string.</li>
+</ul>
 
 <pre class = 'prettyprint lang-r'>a &lt;- &quot;1&quot;
 b &lt;- 2 </pre>
@@ -3508,7 +3512,7 @@ my_numbers</pre>
 
 <p>We go from math notation \[\sum_{n=0}^{10} \frac{1}{2^n}\] to R code:</p>
 
-<pre class = 'prettyprint lang-r'>numerator &lt;- rep(1, 10)
+<pre class = 'prettyprint lang-r'>numerator &lt;- rep(1, 11)
 denominator &lt;- 2 ^ c(0:10)
 
 sum(numerator/denominator)</pre>

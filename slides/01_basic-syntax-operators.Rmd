@@ -172,6 +172,7 @@ type_character <- "abbreviated as chr, also known as a string"
 ## Type issues {.build}
 
 Sometimes you'll run into problems because the data is not of the type you expect. 
+
 - For example, you may import data where something that look likes a number is a string.
 ```{r}
 a <- "1"
@@ -346,7 +347,7 @@ How would you translate this into code?
 We go from math notation $$\sum_{n=0}^{10} \frac{1}{2^n}$$ to R code:
 
 ```{r warning=FALSE}
-numerator <- rep(1, 10)
+numerator <- rep(1, 11)
 denominator <- 2 ^ c(0:10)
 
 sum(numerator/denominator)
