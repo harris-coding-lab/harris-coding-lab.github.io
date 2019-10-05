@@ -5,19 +5,39 @@ date: "10/8/2019"
 output:
   ioslides_presentation
 ---
+```{r, setup=TRUE, message=FALSE, echo=FALSE}
+library(tidyverse)
+library(readxl)
+```
 
-## baseR vs tidyverse
+## Lecture outline
 
-<!--needs some work ... --> 
-R is a programming language that is 'extensible'.
+ - packages and `tidyverse`
+ - reading data files into R
+ - detour: directory structures
+ - manipulating data with `dplyr`
+ - detour: manipulating data with `baseR`
+ - workshop
 
-This means we can write new 'packages' that extend the capabilities of R, so that we don't have to do everything from scratch.
+## what are packages?
+
+'packages' extend the capabilities of R, so we don't have to start from scratch.
+
+In practice, a package makes a new set of functions available to you.
 
 `tidyverse` is a set of packages that drastically improve R's usability. 
 
-<!--maybe show them two stackoverflow posts that use base v tidy R-->
+```
+Analogy:
+- base R comes with a screw driver and hand saw.
+- `tidyverse` gives you power tools
+```
 
-## installing and loading packages
+<div class="notes">
+Last week we only used baseR ... this week we will extend the capabilities
+</div>
+
+## installing and loading packages {.build}
 
 To use a package we need to 
 - install it once from the internet
@@ -26,154 +46,376 @@ To use a package we need to
 install.packages("readxl") 
 ```
 
-
 - load each time we restart R
-
 ```{r, eval=FALSE}
 library(readxl)
+read_xlsx("some_data.xls")
 ```
 
+sometimes you see `package::command()` which let's you call a function without loading the library.
+
+```{r, eval=FALSE}
+readxl::read_xlsx("some_data.xls")
+```
+
+
 <div class="notes">
-Names of functions are important. library is a bad name!
+Potentially worth pointing out: Names of functions are important. library is a bad name!
 </div>
 
 
-***
+## common package error {.build}
 
 The package 'haven' provides a function to read dta files called `read_dta()`.
-What went wrong here?
+What goes wrong here?
 ```{r, eval=FALSE}
 install.packages("haven")
 our_data <- read_dta("my_file.dta")
 ```
 Error in read_dta("my_file.dta") : could not find function "read_dta"
 
-***
+## common package error
+We need to load the package using `library()`!
 ```{r, eval=FALSE}
 library(haven)
 our_data <- read_dta("my_file.dta")
 ```
 
 
+## `tidyverse`: set of useful packages
 
-***
-When you load the `tidyverse` you actually load 8 packages.
+Think of the `tidyverse` packages providing a new dialect for R.
+
+- the underlying language is the same
+- but our code will look distinctly `tidyverse`
+
 ```{r, eval=FALSE}
 library(tidyverse)
 ```
 
-── Attaching packages ──────────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
+```
+── Attaching packages ──
+───── tidyverse 1.2.1 ──
 ✔ ggplot2 3.1.0     ✔ purrr   0.3.0
 ✔ tibble  2.0.1     ✔ dplyr   0.8.3
 ✔ tidyr   0.8.2     ✔ stringr 1.3.1
 ✔ readr   1.3.1     ✔ forcats 0.3.0
-── Conflicts ─────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+── Conflicts ──────────
+──── tidyverse_conflicts() ──
 ✖ dplyr::filter() masks stats::filter()
 ✖ dplyr::lag()    masks stats::lag()
-
-
-## working with data
-tibble vs. data.frame
-- less surly etc.
-
-## tidy data
-insert picture discuss
-- row = observation
-- column = feature / variable
-
-
-## loading data
-
-```{r}
-# this_data <- read_csv()
 ```
 
-file type  | function | package 
------------|----------|----------
-csv        | readr    | read_csv
-dta (stata)| haven    | read_dta
-xlsx       | readxl   | read_xlsx
+## loading data {.build}
+
+We can load data into R with different functions depending on the data format. 
+
+```{r, eval=FALSE}
+texas_housing_data <- read_csv("texas_housing_data.csv")
+```
+
+file type  | package  | function 
+-----------|----------|-------------
+csv        | readr    | `read_csv()`
+dta (stata)| haven    | `read_dta()`
+xlsx       | readxl   | `read_xlsx()`
 
 Note: `readr` is loaded with `tidyverse`
 
-## loading data
+## looking at data
+We can see what the data looks like:
+```{r, echo=FALSE}
+texas_housing_data <- get("txhousing")
+```
+
+```{r}
+head(texas_housing_data)
+```
+
+
+
+## loading data {.build}
 
 While often you can just load the data directly, somethings require finesse
 
 ```{r}
-# library(readxl)
-# this_data <- read_xlsx()
-# glimpse(this_data)
+fed_data <-
+  read_xlsx("../data/SCE-Public-LM-Quarterly-Microdata.xlsx")
+head(fed_data)
+```
+
+<div class="notes">
+  open excel workbook. ?read_xlsx
+</div>
+
+***
+```{r}
+fed_data <- 
+  read_xlsx("../data/SCE-Public-LM-Quarterly-Microdata.xlsx", 
+            sheet = "Data 2013", 
+            skip = 1)
+head(fed_data)
+```
+
+## looking at data: `head()`, `glimpse()` or `View()`
+
+- `head()` and `glimpse()` provide ways to see part of your data.
+
+- `View()` provides a more spreadsheet-like experience.
+
+## getting meta data 
+Get number of rows and columns
+```{r}
+dim(fed_data) 
+```
+
+See column names
+```{r}
+names(fed_data)
 ```
 
 
-***
+## detour: directory structure
 
+Computer hard drives are organized using a **file system**. 
+In this way, each file has a unique "address".
 
-```{r}
-# this_data <- read_xlsx("SCE-Public-LM-Quarterly-Microdata.xlsx", 
-#                        sheet = "Data 2013", 
-#                        skip = 1)
-# glimpse(this_data)
+```{}
+- `~/Downloads/some_data.csv` 
+- `~/Documents/teaching/coding_lab/presentations/workshop_2.html` 
+```
+
+## detour: directory structure 
+
+The files are stored in folders or directories which are analagous to "zip codes".
+
+```{}
+- `~/Downloads/`
+- `~/Documents/teaching/coding_lab/presentations/`
+```
+
+In Windows, the directory usually look slighly different (e.g. `C://...`)
+
+## detour: directory structure
+
+The 'working directory' in an R session is the directory your script knows about. 
+If the data you want is in that directory you can refer to it directly.
+
+```{r, eval=FALSE}
+fed_data <- read_xlsx("SCE-Public-LM-Quarterly-Microdata.xlsx")
 ```
 
 ## detour: directory structure
 
-Computer hard drives are organized using a **file system**. In this way, each file has a unique "address".
-
-e.g.:
-
-- `~/Downloads/SCE-Public-LM-Quarterly-Microdata.xlsx` is where my data ended up when I downloaded it.
-- `~/Documents/teaching/coding_lab/presentations/workshop_2.html` is where this presentation might be stored
-
-Those files are stored in folders or directories which are analagous to "zip codes" in the postal metaphor.
-
-- `~/Downloads/`
-- `~/Documents/teaching/coding_lab/presentations/`
-
-In Windows, the directory usually looks like:p
-
-***
-
-The 'working directory' in an R session is the directory your script knows about. If the data you want is in that directory
-you can refer to it directly.
-
-```{r}
-# this_data <- read_xlsx("SCE-Public-LM-Quarterly-Microdata.xlsx")
-```
-
 if the data were not in your current working directory you could:
 
-- give the full address: `read_xlsx("~/Downloads/SCE-Public-LM-Quarterly-Microdata.xlsx")`
-- move the file to the current working directory: drag and drop
-- change the current working directory: `setwd("~/Downloads/")`
+- give the full address: `read_csv("~/Documents/stat1/data/file.csv")`
+- give a relative address:
+`read_csv("../data/file.csv")`
+- move the file to the current working directory: `drag and drop`
+- change the current working directory: `setwd("~/Documents/stat1/data")`
 
-`getwd()` shows your current working directory <!--point out that if they don't know what a directory structure looks like on their computer (windows) they can see it there -->.
+Hint: `getwd()` shows your current working directory <!--point out that if they don't know what a directory structure looks like on their computer (windows) they can see it there -->.
 
-When working with R scripts and data you might need to `setwd()`
+## data manipulation with `dplyr`
 
-
-
-
-
-## looking at data
-
-We just used `glimpse()` to look at our data. 
-
-For a more spreadsheet-like experience use `View()`.
-
-
-## data manipulation: selecting columns with `select()`
+## selecting columns with `select()`
 <!-- I need to find a less confusing example of data-->
 <!-- Unclear how much justice we can do here with the time available. Probably could do a full class on these-->
+Use case: You want to present a subset of your columns
+
+```{r}
+select(texas_housing_data, city, date, sales, listings)
+```
+
+## selecting columns with `select()`
+<!-- I need to find a less confusing example of data-->
+<!-- Unclear how much justice we can do here with the time available. Probably could do a full class on these-->
+Use case: You want to present a subset of your columns
+
+The `-` says to exclude the columns listed in the vector.
+```{r}
+select(texas_housing_data, -c(date, sales, listings, inventory))
+```
+
+## selecting columns with `select()`
+Use case: You want to reorder your columns
+
+```{r}
+select(texas_housing_data, city, date, sales, listings, everything())
+```
 
 
-## data manipulation: creating columns with `mutate()`
+## selecting columns with `select()`
+Use case: You have a lot of columns and you want it to be easier to work with your data
+
+```{r}
+dim(fed_data)
+# say you're only interested in question L18.
+slim_fed_data <- select(fed_data, userid, weight, starts_with("L18"))
+dim(slim_fed_data)
+```
+
+## selecting columns with `select()` {.build}
+
+Notice we used a "select_helpers" function `starts_with()`. There are several useful functions like this. 
+
+(For more information see r4ds chapter 5.4)
+```{r}
+# say you're only interested in question L18.
+names(slim_fed_data)
+```
+
+## creating columns with `mutate()`
+Use case: you want to create a new column of data
+
+```{r}
+mutate(texas_housing_data, mean_house_price = volume / sales)
+```
+Oops, we can't see our work!
+
+## We couldn't see the result!
+
+One approach: Use select, storing each step as intermediate data.
+
+```{r}
+texas_housing_data_w_mean <- 
+  mutate(texas_housing_data, mean_house_price = volume / sales)
+
+select(texas_housing_data_w_mean, 
+       city, date, mean_house_price, median)
+```
+## We couldn't see the result!
+
+One approach: Use select, storing each step as intermediate data.
+
+```{r, eval=FALSE}
+texas_housing_data_w_mean <- 
+  mutate(texas_housing_data, mean_house_price = volume / sales)
+
+select(texas_housing_data_w_mean, city, date, mean_house_price, median)
+```
+
+Downsides:
+
+ - extra names to invent and remember
+ - code is cluttered and hard to read
+
+## Ceci est une `%>%`
+
+The pipe `%>%` operator takes the left-hand side and makes it *input* in the right-hand side.
+
+- by default, the LHS is the *first argument* of the RHS function.
+
+```{r, eval=FALSE}
+# a tibble is the first argument
+select(texas_housing_data, city, year, sales, volume) 
+
+texas_housing_data %>% 
+  select(city, year, sales, volume)
+```
+
+## Ceci est une `%>%`
+We can chain together tidyverse functions to avoid make so many intermediate data frames!
+```{r}
+texas_housing_data %>%
+  mutate(mean_house_price = volume / sales) %>%
+  select(city, date, mean_house_price, median)
+```
+
+## creating columns with `mutate()`
+
+Under the hood, each column is a vector.
+
+Underlying mutate is a vectorized computation. 
+
+<div class="notes">
+  We can create as many new columns as we see fit. 
+  Highlight that we can do anything with any column 
+  as long as it conforms to the vector with the correct length.
+</div>
+
+```{r}
+mutant_data <- 
+texas_housing_data %>%
+  mutate(mean_house_price = volume / sales,
+         difference = mean_house_price - median,
+         relative_market_size = percent_rank(volume),
+         state = "Texas")
+```
+## How have Texas housing prices changed over time?
+
+<div class="notes">
+  Sets up summary. Note we want to use ggplot without talking about
+  it too much.
+</div>
+
+```{r, fig.width=5, fig.height=3, warning=FALSE}
+mutant_data %>% 
+  ggplot(aes(x = date, y = mean_house_price)) + geom_point()
+```
 
 
-## data manipulation: summarizing data with `summarize()`
 
-## data manipulation: *** with `group_by()` + `summarize()`
+## summarizing data with `summarize()`
+
+Use case: We want summary statistics of the data.
+
+<!--Notice the code is very similar to `mutate()`, but now the code should return single values, as opposed to vectors-->
+
+```{r}
+summary_data <- 
+texas_housing_data %>%
+  summarize(state = "Texas",
+            years = "2000-2015",
+            total_sales = sum(sales, na.rm = TRUE),
+            total_volume = sum(volume, na.rm = TRUE),
+            mean_house_price = total_volume / total_sales)
+```
+
+## summarizing data with `summarize()`
+```{r}
+summary_data
+```
+
+## grouped summary with `group_by()` + `summarize()`
+Use case: You want summary statistics for certain subsets of the data.
+
+```{r}
+annual_housing_prices <- 
+texas_housing_data %>%
+  group_by(year) %>%
+  summarize(total_sales = sum(sales, na.rm = TRUE),
+            total_volume = sum(volume, na.rm = TRUE),
+            mean_house_price = total_volume / total_sales)
+```
+## How have Texas housing prices changed over time?
+```{r, fig.width=5, fig.height=3}
+annual_housing_prices %>% 
+  ggplot(aes(x = year, y = mean_house_price)) + geom_point()
+```
+
+## grouped summary with `group_by()` + `summarize()`
+Use case: You want summary statistics for certain subsets of the data.
+
+```{r}
+annual_housing_prices_by_city <- 
+texas_housing_data %>%
+  group_by(city, year) %>%
+  summarize(total_sales = sum(sales, na.rm = TRUE),
+            total_volume = sum(volume, na.rm = TRUE),
+            mean_house_price = total_volume / total_sales)
+```
+
+
+## How have Texas housing prices changed over time in certain cities?
+```{r, echo=FALSE}
+annual_housing_prices_by_city %>% 
+  filter(city %in% c("Houston",  "Galveston")) %>%
+  ggplot(aes(x = year, y = mean_house_price)) + 
+  geom_point() + 
+  facet_wrap(facets = "city", nrow = 2)
+```
 
 
 ## dplyr functions overview: 
@@ -187,21 +429,25 @@ function | job | when to learn
 ----| --- | ---
 `select()` | to select columns of interest | today 
 `mutate()` | to create new columns | today
-`summarize()` | to summarize data according to a function | today
+`summarize()` | to summarize data  | today
 `group_by()` + `summarize()` | to summarize grouped data | today
-`arrange()` | to sort data | learn during workshop
-`left_join()` | to combine data with similar names | next week?
-`filter()` | to capture rows that meet a criteria | next week
+`arrange()` | to sort data | learn in wkshp
+`left_join()` | to combine datasets | preview in wkshp
+`filter()` | to capture rows that meet a criteria | preview in wkshp
 
 
 ## Detour 2: base R data manipulation 
 
+<div class="notes">
+Add note on stackoverflow / google with tidy vs base solutions
+</div>
+
 While as data analysts we prefer `tidyverse` style code, you will come across code in baseR in Stats I.
 
-**refer to or extract a column with `$`**
+## refer to or extract a column with `$`
 
 ```{r, eval = FALSE}
-this_data$column_name 
+fed_data$column_name 
 ```
 
 More generally, the `$` is used to refer to sub-objects. For example,
@@ -211,9 +457,7 @@ outcome_of_t_test <- t.test(c(1,2,3,4), c(3,4,4,4))
 outcome_of_t_test$statistic
 ```
 
-****
-
-**subsetting with `[]`**
+## subsetting with `[]`
 ```{r}
 letters <- c("a", "b", "c", "d", "e")
 letters[3]
@@ -222,16 +466,37 @@ letters[c(1,5)]
 
 For tibbles we have two dimensions: rows and columns
 ```{r, eval = FALSE}
-this_data[1, ]   # get row 1
-this_data[ , 4]  # get column 4
-this_data[1, 4]  # get the value of observation 1 with variable in column 4
+fed_data[1, ]   # get row 1
+fed_data[ , 4]  # get column 4
+fed_data[1, 4]  # get the value of observation 1 
+                # with variable in column 4
 ```
+
+## getting help online:
+
+As you can see, there will be several ways to do the same thing.
+
+https://stackoverflow.com/questions/10085806/extracting-specific-columns-from-a-data-frame
+
+- If you get a bunch of `$` and `[]` results include "with R tidyverse" in your google search
+
+
+## Recap
+
+Today we:
+
+- Installed and loaded packages
+- Read data into R with `tidyverse` packages
+- Started to manipulate data to answer questions with `dplyr`
+
+Next week: `if` statements
+
+Find the workshop link on the course web page:
+http://harris-coding-lab.github.io
 
 
 
 ## baseR functions (appendix)
-
-We can do more data manipulation in baseR
 
 |operator | example                                 |job                                     |
 |----|-----                                     | ----                                   |
