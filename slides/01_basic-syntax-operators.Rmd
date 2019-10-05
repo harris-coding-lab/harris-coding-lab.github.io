@@ -172,6 +172,7 @@ type_character <- "abbreviated as chr, also known as a string"
 ## Type issues {.build}
 
 Sometimes you'll run into problems because the data is not of the type you expect. 
+
 - For example, you may import data where something that look likes a number is a string.
 ```{r}
 a <- "1"
@@ -346,7 +347,7 @@ How would you translate this into code?
 We go from math notation $$\sum_{n=0}^{10} \frac{1}{2^n}$$ to R code:
 
 ```{r warning=FALSE}
-numerator <- rep(1, 10)
+numerator <- rep(1, 11)
 denominator <- 2 ^ c(0:10)
 
 sum(numerator/denominator)
@@ -366,11 +367,10 @@ Up next week: data frames (aka, rectangular data)!
 ## How workshops work
 
 - Work in a team of 2-4 on the tutorial, which can be found here:
-  + [https://harris-coding-lab.shinyapps.io/basic-syntax-2/](https://harris-coding-lab.shinyapps.io/basic-syntax-2/]) 
+  + [https://harris-coding-lab.shinyapps.io/basic-syntax](https://harris-coding-lab.shinyapps.io/basic-syntax/]) 
   + (link available on course webpage as well)
   + Note, there are a few oddities in our system. 
     + variables are not "saved" from input box to input box
     + in the background, we have all the variables you need assigned according to our definitions.
 
-- If you get stuck as a team, add your name to the help list:
-  + [bit.ly/coding_lab_qa](https://bit.ly/coding_lab_qa)
+- If you get stuck as a team, add your question to the [help doc](https://docs.google.com/document/d/1yog5fnWzDjv_H9FKZJ75wyPnyjiTfAkPBYwR-m6Dc4M/edit)
