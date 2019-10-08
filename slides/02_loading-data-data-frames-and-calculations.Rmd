@@ -133,7 +133,7 @@ head(texas_housing_data)
 
 ## loading data?
 
-While often you can just load the data directly, somethings require finesse
+While often you can just load the data directly, we often require finesse
 
 ```{r}
 fed_data <-
@@ -322,7 +322,7 @@ Downsides:
 
 The pipe `%>%` operator takes the left-hand side and makes it *input* in the right-hand side.
 
-- by default, the LHS is the *first argument* of the RHS function.
+- by default, the left-hand side is the *first argument* of the right-hand side function.
 
 ```{r, eval=FALSE}
 # a tibble is the first argument

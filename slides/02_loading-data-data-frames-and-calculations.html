@@ -3240,7 +3240,7 @@ our_data &lt;- read_dta(&quot;my_file.dta&quot;)</pre>
 
 </article></slide><slide class=""><hgroup><h2>loading data?</h2></hgroup><article  id="loading-data-1">
 
-<p>While often you can just load the data directly, somethings require finesse</p>
+<p>While often you can just load the data directly, we often require finesse</p>
 
 <pre class = 'prettyprint lang-r'>fed_data &lt;-
   read_xlsx(&quot;../data/SCE-Public-LM-Quarterly-Microdata.xlsx&quot;)
@@ -3783,7 +3783,7 @@ select(texas_housing_data_w_mean, city, date, mean_house_price, median)</pre>
 <p>The pipe <code>%&gt;%</code> operator takes the left-hand side and makes it <em>input</em> in the right-hand side.</p>
 
 <ul>
-<li>by default, the LHS is the <em>first argument</em> of the RHS function.</li>
+<li>by default, the left-hand side is the <em>first argument</em> of the right-hand side function.</li>
 </ul>
 
 <pre class = 'prettyprint lang-r'># a tibble is the first argument
