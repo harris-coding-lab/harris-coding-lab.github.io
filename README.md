@@ -27,7 +27,7 @@ Links to materials for each week's workshop will be posted here as provided.
   - [interactive tutorial](https://harris-coding-lab.shinyapps.io/basic-syntax)
   - [doc for questions](https://docs.google.com/document/d/1yog5fnWzDjv_H9FKZJ75wyPnyjiTfAkPBYwR-m6Dc4M/edit?usp=sharing)
 - **Week 2: Reading Files, Data Frames, and Calculations**
-  - slides
+  - [slides](slides/02_loading-data-data-frames-and-calculations.html) (draft)
   - code 
   - interactive tutorial
 - **Week 3: If Statements**
