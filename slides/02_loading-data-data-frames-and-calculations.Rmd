@@ -37,7 +37,7 @@ Analogy:
 Last week we only used baseR ... this week we will extend the capabilities
 </div>
 
-## installing and loading packages {.build}
+## installing and loading packages
 
 To use a package we need to 
 - install it once from the internet
@@ -64,7 +64,7 @@ Potentially worth pointing out: Names of functions are important. library is a b
 </div>
 
 
-## common package error {.build}
+## common package error
 
 The package 'haven' provides a function to read dta files called `read_dta()`.
 What goes wrong here?
@@ -86,9 +86,6 @@ our_data <- read_dta("my_file.dta")
 
 Think of the `tidyverse` packages providing a new dialect for R.
 
-- the underlying language is the same
-- but our code will look distinctly `tidyverse`
-
 ```{r, eval=FALSE}
 library(tidyverse)
 ```
@@ -106,7 +103,7 @@ library(tidyverse)
 ✖ dplyr::lag()    masks stats::lag()
 ```
 
-## loading data {.build}
+## loading data
 
 We can load data into R with different functions depending on the data format. 
 
@@ -134,7 +131,7 @@ head(texas_housing_data)
 
 
 
-## loading data {.build}
+## loading data?
 
 While often you can just load the data directly, somethings require finesse
 
@@ -205,22 +202,24 @@ If the data you want is in that directory you can refer to it directly.
 fed_data <- read_xlsx("SCE-Public-LM-Quarterly-Microdata.xlsx")
 ```
 
+Hint: `getwd()` shows your current working directory 
+<!--point out that if they don't know what a directory structure looks like on their computer (windows) they can see it there -->.
+
 ## detour: directory structure
 
 if the data were not in your current working directory you could:
 
 - give the full address: `read_csv("~/Documents/stat1/data/file.csv")`
 - give a relative address:
-`read_csv("../data/file.csv")`
+`read_csv("data/file.csv")`
 - move the file to the current working directory: `drag and drop`
 - change the current working directory: `setwd("~/Documents/stat1/data")`
 
-Hint: `getwd()` shows your current working directory <!--point out that if they don't know what a directory structure looks like on their computer (windows) they can see it there -->.
+
 
 ## data manipulation with `dplyr`
 
-## selecting columns with `select()`
-<!-- I need to find a less confusing example of data-->
+## selecting columns with `select()` {.build}
 <!-- Unclear how much justice we can do here with the time available. Probably could do a full class on these-->
 Use case: You want to present a subset of your columns
 
@@ -228,17 +227,25 @@ Use case: You want to present a subset of your columns
 select(texas_housing_data, city, date, sales, listings)
 ```
 
-## selecting columns with `select()`
-<!-- I need to find a less confusing example of data-->
-<!-- Unclear how much justice we can do here with the time available. Probably could do a full class on these-->
+## selecting columns with `select()` {.build}
+
 Use case: You want to present a subset of your columns
 
-The `-` says to exclude the columns listed in the vector.
 ```{r}
 select(texas_housing_data, -c(date, sales, listings, inventory))
 ```
 
 ## selecting columns with `select()`
+
+Use case: You want to present a subset of your columns
+
+```{r, eval = FALSE}
+select(texas_housing_data, -c(date, sales, listings, inventory))
+```
+
+The `-` says to exclude the columns listed in the vector.
+
+## selecting columns with `select()` {.build}
 Use case: You want to reorder your columns
 
 ```{r}
@@ -246,7 +253,7 @@ select(texas_housing_data, city, date, sales, listings, everything())
 ```
 
 
-## selecting columns with `select()`
+## selecting columns with `select()` {.build}
 Use case: You have a lot of columns and you want it to be easier to work with your data
 
 ```{r}
@@ -256,17 +263,19 @@ slim_fed_data <- select(fed_data, userid, weight, starts_with("L18"))
 dim(slim_fed_data)
 ```
 
-## selecting columns with `select()` {.build}
+## selecting columns with `select()` 
 
-Notice we used a "select_helpers" function `starts_with()`. There are several useful functions like this. 
-
-(For more information see r4ds chapter 5.4)
 ```{r}
 # say you're only interested in question L18.
 names(slim_fed_data)
 ```
 
-## creating columns with `mutate()`
+Notice we used a "select_helpers" function `starts_with()`. There are several useful functions like this. 
+
+
+(For more information see r4ds chapter 5.4)
+
+## creating columns with `mutate()` {.build}
 Use case: you want to create a new column of data
 
 ```{r}
@@ -274,9 +283,12 @@ mutate(texas_housing_data, mean_house_price = volume / sales)
 ```
 Oops, we can't see our work!
 
-## We couldn't see the result!
+## We couldn't see the result! {.build}
 
-One approach: Use select, storing each step as intermediate data.
+One approach: 
+
+- Store `mutate()` step as intermediate data. 
+- Then use `select()`
 
 ```{r}
 texas_housing_data_w_mean <- 
@@ -285,9 +297,14 @@ texas_housing_data_w_mean <-
 select(texas_housing_data_w_mean, 
        city, date, mean_house_price, median)
 ```
+
 ## We couldn't see the result!
 
-One approach: Use select, storing each step as intermediate data.
+One approach: 
+
+- Store `mutate()` step as intermediate data. 
+- Then use `select()`
+
 
 ```{r, eval=FALSE}
 texas_housing_data_w_mean <- 
@@ -301,7 +318,7 @@ Downsides:
  - extra names to invent and remember
  - code is cluttered and hard to read
 
-## Ceci est une `%>%`
+## Ceci est une `%>%` {.build}
 
 The pipe `%>%` operator takes the left-hand side and makes it *input* in the right-hand side.
 
@@ -315,15 +332,15 @@ texas_housing_data %>%
   select(city, year, sales, volume)
 ```
 
-## Ceci est une `%>%`
-We can chain together tidyverse functions to avoid make so many intermediate data frames!
+## Ceci est une `%>%` {.build}
+We can chain together tidyverse functions to avoid making so many intermediate data frames!
 ```{r}
 texas_housing_data %>%
   mutate(mean_house_price = volume / sales) %>%
   select(city, date, mean_house_price, median)
 ```
 
-## creating columns with `mutate()`
+## creating columns with `mutate()` {.build}
 
 Under the hood, each column is a vector.
 
@@ -343,6 +360,7 @@ texas_housing_data %>%
          relative_market_size = percent_rank(volume),
          state = "Texas")
 ```
+
 ## How have Texas housing prices changed over time?
 
 <div class="notes">
@@ -357,7 +375,7 @@ mutant_data %>%
 
 
 
-## summarizing data with `summarize()`
+## summarizing data with `summarize()`  {.build}
 
 Use case: We want summary statistics of the data.
 
@@ -378,7 +396,7 @@ texas_housing_data %>%
 summary_data
 ```
 
-## grouped summary with `group_by()` + `summarize()`
+## grouped summary with `group_by()` + `summarize()`  {.build}
 Use case: You want summary statistics for certain subsets of the data.
 
 ```{r}
@@ -432,7 +450,7 @@ function | job | when to learn
 `summarize()` | to summarize data  | today
 `group_by()` + `summarize()` | to summarize grouped data | today
 `arrange()` | to sort data | learn in wkshp
-`left_join()` | to combine datasets | preview in wkshp
+`left_join()` | to combine data by a key column | preview in wkshp
 `filter()` | to capture rows that meet a criteria | preview in wkshp
 
 
@@ -444,7 +462,7 @@ Add note on stackoverflow / google with tidy vs base solutions
 
 While as data analysts we prefer `tidyverse` style code, you will come across code in baseR in Stats I.
 
-## refer to or extract a column with `$`
+## refer to or extract a column with `$` {.build}
 
 ```{r, eval = FALSE}
 fed_data$column_name 
@@ -457,7 +475,7 @@ outcome_of_t_test <- t.test(c(1,2,3,4), c(3,4,4,4))
 outcome_of_t_test$statistic
 ```
 
-## subsetting with `[]`
+## subsetting with `[]` {.build}
 ```{r}
 letters <- c("a", "b", "c", "d", "e")
 letters[3]
