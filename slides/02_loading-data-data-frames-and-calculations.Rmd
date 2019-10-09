@@ -220,6 +220,10 @@ if the data were not in your current working directory you could:
 ## data manipulation with `dplyr`
 
 ## selecting columns with `select()` {.build}
+
+![](images/02_select.png){#id .class width=80% height=80%}
+
+## selecting columns with `select()` {.build}
 <!-- Unclear how much justice we can do here with the time available. Probably could do a full class on these-->
 Use case: You want to present a subset of your columns
 
@@ -274,6 +278,10 @@ Notice we used a "select_helpers" function `starts_with()`. There are several us
 
 
 (For more information see r4ds chapter 5.4)
+
+## creating columns with `mutate()` {.build}
+
+![](images/02_mutate.png){#id .class width=80% height=80%}
 
 ## creating columns with `mutate()` {.build}
 Use case: you want to create a new column of data
@@ -373,7 +381,9 @@ mutant_data %>%
   ggplot(aes(x = date, y = mean_house_price)) + geom_point()
 ```
 
+## summarizing data with `summarize()`  {.build}
 
+![](images/02_summarize.png){#id .class width=80% height=80%}
 
 ## summarizing data with `summarize()`  {.build}
 
@@ -395,6 +405,10 @@ texas_housing_data %>%
 ```{r}
 summary_data
 ```
+
+## grouped summary with `group_by()` + `summarize()`  {.build}
+
+![](images/02_groupby-summarize.png){#id .class width=80% height=80%}
 
 ## grouped summary with `group_by()` + `summarize()`  {.build}
 Use case: You want summary statistics for certain subsets of the data.
@@ -452,7 +466,6 @@ function | job | when to learn
 `arrange()` | to sort data | learn in wkshp
 `left_join()` | to combine data by a key column | preview in wkshp
 `filter()` | to capture rows that meet a criteria | preview in wkshp
-
 
 ## Detour 2: base R data manipulation 
 
@@ -513,6 +526,15 @@ Find the workshop link on the course web page:
 http://harris-coding-lab.github.io
 
 
+## Two dplyr functions you'll see in the workshop (appendix)
+
+## choose rows of interest with `filter()`
+
+![](images/02_filter.png){#id .class width=80% height=80%}
+
+## sort rows with `arrange()`
+
+![](images/02_arrange.png){#id .class width=80% height=80%}
 
 ## baseR functions (appendix)
 
