@@ -45,6 +45,7 @@ Links to materials for each week's workshop will be posted here as provided.
 
 ### Additional Resources
 
+- **R Bar**: Harris-provided support for R-related issues. Mondays from 3:30-5:30pm, Rm #10; Wednesdays from 12:30-2pm, Rm #10
 - [R for Data Science](https://r4ds.had.co.nz/): free online book with clear explanations of many `tidyverse` functions, the book to read on data analysis with R
 - [DataQuest.io](https://www.dataquest.io): online modules about specific programming concepts, access provided by Harris. For students who would like additional guided practice we recommend:
   - **Week 1**
