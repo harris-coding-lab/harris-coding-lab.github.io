@@ -28,7 +28,7 @@ Links to materials for each week's workshop will be posted here as provided.
 - **Week 2: Reading Files, Data Frames, and Calculations**
   - [slides](slides/02_loading-data-data-frames-and-calculations.html)
   - [slide code](code/02_reading-files.R) (clicking will download an R script with the code to your computer)
-  - [data from slide](https://github.com/harris-coding-lab/harris-coding-lab.github.io/blob/master/data/SCE-Public-LM-Quarterly-Microdata.xlsx)
+  - [dataset from slides](data/SCE-Public-LM-Quarterly-Microdata.xlsx) (you can download to follow along)
   - [interactive tutorial](https://harris-coding-lab.shinyapps.io/reading-files/)
   - [doc for questions](https://docs.google.com/document/d/1yog5fnWzDjv_H9FKZJ75wyPnyjiTfAkPBYwR-m6Dc4M/edit?usp=sharing)
 - **Week 3: If Statements**
