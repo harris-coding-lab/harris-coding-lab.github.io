@@ -361,7 +361,8 @@ Underlying mutate is a vectorized computation.
 
 ```{r}
 mutant_data <- texas_housing_data %>%
-  mutate(mean_house_price = volume / sales,)
+  mutate(mean_house_price = volume / sales,
+         difference = mean_house_price - median)
 ```
 
 ## How have Texas housing prices changed over time?
