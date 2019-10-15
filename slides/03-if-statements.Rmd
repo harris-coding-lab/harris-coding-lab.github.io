@@ -1,0 +1,255 @@
+---
+title: "Coding Lab: If Statements and Conditionals"
+author: "Ari Anisfeld, Angela Li"
+date: "10/15/2019"
+output:
+  ioslides_presentation
+---
+```{r, setup=TRUE, message=FALSE, echo=FALSE}
+library(tidyverse)
+library(readxl)
+```
+
+## Lecture Outline
+
+ - Review: Logical operators
+ - Comparing vectors
+ - If statements
+ - Ifelse statements and dataframes
+
+## Review: Logical Operators {.build}
+
+The main logical operators are AND (&), OR (|), and NOT (!). What happens when we use them on booleans?
+
+Let's start with NOT (!).
+
+```{r}
+!TRUE
+```
+
+```{r}
+!FALSE
+```
+
+***
+
+## replace these with conditional statements...{.build}
+
+```{r eval=FALSE}
+!(2 > 1)
+```
+
+```{r}
+!TRUE
+```
+
+## what does this produce? {.build}
+
+```{r eval=FALSE}
+!(0 != 0)
+```
+
+```{r}
+!FALSE
+```
+
+## how about OR?
+
+```{r}
+TRUE | FALSE
+```
+
+Only one has to be `TRUE` for the whole statement to return `TRUE`.
+
+## let's guess again {.build}
+
+Remember that `==` is the logical comparison for if two things are equal.
+
+```{r eval=FALSE}
+(5 > 7) | (10 == 10) 
+```
+
+```{r}
+FALSE | TRUE
+```
+
+## finally, AND (&)
+
+```{r}
+TRUE & FALSE
+```
+
+Both have to be `TRUE` for the whole statement to return `TRUE`.
+
+## this one is harder... {.build}
+
+```{r eval=FALSE}
+!(2 > 6) & (4 > 9 | 3 == 3) 
+```
+```{r}
+!(FALSE) & (FALSE | TRUE) 
+```
+
+
+## Comparing vectors
+
+We've just been comparing numbers, but we can use logical operators to compare vectors. Once again, R *vectorizes* the operation.
+
+```{r}
+c(1, 2, 3) > 0
+```
+
+```{r}
+c(1, 2, 3) > c(0, 2, 4)
+```
+
+## If statements {.build}
+
+The general syntax of an if statement is as follows:
+```{r eval=FALSE}
+if (condition is true) {
+  do this
+}
+```
+
+For example:
+```{r}
+if (2 > 1) {
+  print("Math works in R!")
+}
+```
+
+## If/else statements
+
+Slightly more interesting, the syntax of an ifelse statement is as follows:
+
+```{r eval=FALSE}
+if (condition is true) {
+  do this
+}
+else {                      
+  do this other thing
+}
+```
+
+## If/else statements, continued
+
+```{r}
+today <- "October 15"
+my_birthday <- "October 22"
+```
+
+```{r}
+if (today == my_birthday) {
+  print("Happy birthday!")
+} else {                      
+  print("Not my birthday today.")
+}
+```
+
+## If/else statements, continued
+
+```{r}
+today <- "October 15"
+my_birthday <- "October 22"
+```
+
+```{r}
+if (today == my_birthday) {
+  print("Happy birthday!")
+} else if (today == "October 31") {                      
+  print("It's Halloween!")
+} else {
+  print("Not a notable day.")
+}
+```
+
+
+## Ifelse statements {.build}
+
+If all you need to do is return output based on a condition, `ifelse()` statements are a good choice.
+
+```{r}
+ifelse(today == my_birthday, "Happy birthday!", "Not my birthday today.")
+```
+
+```{}
+ifelse(condition, returns this if TRUE, returns this if FALSE)
+```
+
+## What will the following statements return? {.build}
+
+```{r eval=FALSE}
+ifelse(TRUE, 1, 2)
+ifelse(FALSE, 1, 2)
+ifelse(NA, 1, 2)
+```
+
+```{r echo=FALSE}
+ifelse(TRUE, 1, 2)
+ifelse(FALSE, 1, 2)
+ifelse(NA, 1, 2)
+```
+
+## Ifelse statements in dataframes {.build}
+
+Ifelse statements work well in dataframes with the `mutate()` dplyr function. Let's add a column to the `txhousing` based on a conditional.
+
+```{r}
+library(tidyverse)
+texas_housing_data <- txhousing
+
+texas_housing_data %>% 
+  mutate(in_january = ifelse(month == 1, TRUE, FALSE))
+```
+
+*** 
+Oops, can't see it again - let's use `select()`!
+
+```{r}
+texas_housing_data %>% 
+  mutate(in_january = ifelse(month == 1, TRUE, FALSE)) %>% 
+  select(city, year, month, sales, in_january)
+```
+
+## Ifelse statements, supercharged
+
+If you have a lot of categories, ditch the ifelse statement and use dplyr's `case_when()` function, which is essentially a compressed ifelse statement.
+
+```{r}
+texas_housing_data %>% 
+  mutate(housing_market = 
+           case_when(
+             median < 100000 ~ "first quartile",
+             100000 <= median & median < 123800 ~ "second quartile",
+             123800 <= median & median < 150000 ~ "third quartile",
+             150000 <= median & median < 350000 ~ "fourth quartile"
+           )) 
+```
+
+***
+
+```{r}
+texas_housing_data %>% 
+  mutate(housing_market = 
+           case_when(
+             median < 100000 ~ "first quartile",
+             100000 <= median & median < 123800 ~ "second quartile",
+             123800 <= median & median < 150000 ~ "third quartile",
+             150000 <= median & median < 350000 ~ "fourth quartile"
+           )) %>% 
+  select(city, median, housing_market)
+```
+
+## Recap
+
+Today we:
+
+- Reviewed logical operators and conditional statements
+- Introduced if and if/else statements
+- Used ifelse statements in conjunction with `mutate` to create logical columns
+
+Next week: `for` loops
+
+Find the workshop link on the course web page:
+http://harris-coding-lab.github.io
