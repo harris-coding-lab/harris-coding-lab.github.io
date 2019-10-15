@@ -33,7 +33,7 @@ Let's start with NOT (!).
 
 ***
 
-## replace these with conditional statements...{.build}
+## Replace these with conditional statements...{.build}
 
 ```{r eval=FALSE}
 !(2 > 1)
@@ -43,7 +43,7 @@ Let's start with NOT (!).
 !TRUE
 ```
 
-## what does this produce? {.build}
+## What does this produce? {.build}
 
 ```{r eval=FALSE}
 !(0 != 0)
@@ -53,7 +53,7 @@ Let's start with NOT (!).
 !FALSE
 ```
 
-## how about OR?
+## How about OR?
 
 ```{r}
 TRUE | FALSE
@@ -61,7 +61,7 @@ TRUE | FALSE
 
 Only one has to be `TRUE` for the whole statement to return `TRUE`.
 
-## let's guess again {.build}
+## Let's guess again {.build}
 
 Remember that `==` is the logical comparison for if two things are equal.
 
@@ -73,7 +73,7 @@ Remember that `==` is the logical comparison for if two things are equal.
 FALSE | TRUE
 ```
 
-## finally, AND (&)
+## Finally, AND (&)
 
 ```{r}
 TRUE & FALSE
@@ -81,7 +81,7 @@ TRUE & FALSE
 
 Both have to be `TRUE` for the whole statement to return `TRUE`.
 
-## this one is harder... {.build}
+## This one is harder... {.build}
 
 ```{r eval=FALSE}
 !(2 > 6) & (4 > 9 | 3 == 3) 

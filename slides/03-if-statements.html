@@ -3129,7 +3129,7 @@ slide:not(.current) .plotly.html-widget{
 <li>Ifelse statements and dataframes</li>
 </ul>
 
-</article></slide><slide class=""><hgroup><h2>Review: Logical Operators</h2></hgroup><article  id="review-logical-operators" class="build">
+</article></slide><slide class=""><hgroup><h2>Review: Logical Operators</h2></hgroup><article  class="build" id="review-logical-operators">
 
 <p>The main logical operators are AND (&amp;), OR (|), and NOT (!). What happens when we use them on booleans?</p>
 
@@ -3145,7 +3145,7 @@ slide:not(.current) .plotly.html-widget{
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article >
 
-</article></slide><slide class=""><hgroup><h2>replace these with conditional statements…</h2></hgroup><article  id="replace-these-with-conditional-statements" class="build">
+</article></slide><slide class=""><hgroup><h2>Replace these with conditional statements…</h2></hgroup><article  class="build" id="replace-these-with-conditional-statements">
 
 <pre class = 'prettyprint lang-r'>!(2 &gt; 1)</pre>
 
@@ -3153,7 +3153,7 @@ slide:not(.current) .plotly.html-widget{
 
 <pre >## [1] FALSE</pre>
 
-</article></slide><slide class=""><hgroup><h2>what does this produce?</h2></hgroup><article  id="what-does-this-produce" class="build">
+</article></slide><slide class=""><hgroup><h2>What does this produce?</h2></hgroup><article  class="build" id="what-does-this-produce">
 
 <pre class = 'prettyprint lang-r'>!(0 != 0)</pre>
 
@@ -3161,7 +3161,7 @@ slide:not(.current) .plotly.html-widget{
 
 <pre >## [1] TRUE</pre>
 
-</article></slide><slide class=""><hgroup><h2>how about OR?</h2></hgroup><article  id="how-about-or">
+</article></slide><slide class=""><hgroup><h2>How about OR?</h2></hgroup><article  id="how-about-or">
 
 <pre class = 'prettyprint lang-r'>TRUE | FALSE</pre>
 
@@ -3169,7 +3169,7 @@ slide:not(.current) .plotly.html-widget{
 
 <p>Only one has to be <code>TRUE</code> for the whole statement to return <code>TRUE</code>.</p>
 
-</article></slide><slide class=""><hgroup><h2>let’s guess again</h2></hgroup><article  id="lets-guess-again" class="build">
+</article></slide><slide class=""><hgroup><h2>Let’s guess again</h2></hgroup><article  class="build" id="lets-guess-again">
 
 <p>Remember that <code>==</code> is the logical comparison for if two things are equal.</p>
 
@@ -3179,7 +3179,7 @@ slide:not(.current) .plotly.html-widget{
 
 <pre >## [1] TRUE</pre>
 
-</article></slide><slide class=""><hgroup><h2>finally, AND (&amp;)</h2></hgroup><article  id="finally-and">
+</article></slide><slide class=""><hgroup><h2>Finally, AND (&amp;)</h2></hgroup><article  id="finally-and">
 
 <pre class = 'prettyprint lang-r'>TRUE &amp; FALSE</pre>
 
@@ -3187,7 +3187,7 @@ slide:not(.current) .plotly.html-widget{
 
 <p>Both have to be <code>TRUE</code> for the whole statement to return <code>TRUE</code>.</p>
 
-</article></slide><slide class=""><hgroup><h2>this one is harder…</h2></hgroup><article  id="this-one-is-harder" class="build">
+</article></slide><slide class=""><hgroup><h2>This one is harder…</h2></hgroup><article  class="build" id="this-one-is-harder">
 
 <pre class = 'prettyprint lang-r'>!(2 &gt; 6) &amp; (4 &gt; 9 | 3 == 3) </pre>
 
@@ -3207,7 +3207,7 @@ slide:not(.current) .plotly.html-widget{
 
 <pre >## [1]  TRUE FALSE FALSE</pre>
 
-</article></slide><slide class=""><hgroup><h2>If statements</h2></hgroup><article  id="if-statements" class="build">
+</article></slide><slide class=""><hgroup><h2>If statements</h2></hgroup><article  class="build" id="if-statements">
 
 <p>The general syntax of an if statement is as follows:</p>
 
@@ -3262,7 +3262,7 @@ my_birthday &lt;- &quot;October 22&quot;</pre>
 
 <pre >## [1] &quot;Not a notable day.&quot;</pre>
 
-</article></slide><slide class=""><hgroup><h2>Ifelse statements</h2></hgroup><article  id="ifelse-statements-1" class="build">
+</article></slide><slide class=""><hgroup><h2>Ifelse statements</h2></hgroup><article  class="build" id="ifelse-statements-1">
 
 <p>If all you need to do is return output based on a condition, <code>ifelse()</code> statements are a good choice.</p>
 
@@ -3272,7 +3272,7 @@ my_birthday &lt;- &quot;October 22&quot;</pre>
 
 <pre >ifelse(condition, returns this if TRUE, returns this if FALSE)</pre>
 
-</article></slide><slide class=""><hgroup><h2>What will the following statements return?</h2></hgroup><article  id="what-will-the-following-statements-return" class="build">
+</article></slide><slide class=""><hgroup><h2>What will the following statements return?</h2></hgroup><article  class="build" id="what-will-the-following-statements-return">
 
 <pre class = 'prettyprint lang-r'>ifelse(TRUE, 1, 2)
 ifelse(FALSE, 1, 2)
@@ -3284,7 +3284,7 @@ ifelse(NA, 1, 2)</pre>
 
 <pre >## [1] NA</pre>
 
-</article></slide><slide class=""><hgroup><h2>Ifelse statements in dataframes</h2></hgroup><article  id="ifelse-statements-in-dataframes" class="build">
+</article></slide><slide class=""><hgroup><h2>Ifelse statements in dataframes</h2></hgroup><article  class="build" id="ifelse-statements-in-dataframes">
 
 <p>Ifelse statements work well in dataframes with the <code>mutate()</code> dplyr function. Let’s add a column to the <code>txhousing</code> based on a conditional.</p>
 
