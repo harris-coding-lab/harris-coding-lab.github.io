@@ -30,11 +30,11 @@ Links to materials for each week's workshop will be posted here as provided.
   - [slide code](code/02_reading-files.R) (clicking will download an R script with the code to your computer)
   - [dataset from slides](data/SCE-Public-LM-Quarterly-Microdata.xlsx) (you can download to follow along)
   - [interactive tutorial](https://harris-coding-lab.shinyapps.io/reading-files/)
-  - [doc for questions](https://docs.google.com/document/d/1yog5fnWzDjv_H9FKZJ75wyPnyjiTfAkPBYwR-m6Dc4M/edit?usp=sharing)
 - **Week 3: If Statements**
-  - slides
-  - code 
-  - interactive tutorial
+  - [slides](slides/03_if-statements.html)
+  - [slide code](code/03_if-statements.R) 
+  - [interactive tutorial](https://harris-coding-lab.shinyapps.io/if-statements/)
+  - [doc for questions](https://docs.google.com/document/d/1yog5fnWzDjv_H9FKZJ75wyPnyjiTfAkPBYwR-m6Dc4M/edit?usp=sharing)
 - **Week 4: Loops**
   - slides
   - code 
