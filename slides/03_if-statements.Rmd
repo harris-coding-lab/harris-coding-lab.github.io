@@ -15,7 +15,9 @@ library(readxl)
  - Review: Logical operators
  - Comparing vectors
  - If statements
- - Ifelse statements and dataframes
+ - Ifelse statements 
+  - Detour: NAs and missing data
+ - Conditional statements in dataframes
 
 ## Review: Logical Operators {.build}
 
@@ -89,7 +91,6 @@ Both have to be `TRUE` for the whole statement to return `TRUE`.
 ```{r}
 !(FALSE) & (FALSE | TRUE) 
 ```
-
 
 ## Comparing vectors
 
@@ -189,6 +190,40 @@ ifelse(NA, 1, 2)
 ifelse(TRUE, 1, 2)
 ifelse(FALSE, 1, 2)
 ifelse(NA, 1, 2)
+```
+
+## Detour: NAs and missing data
+
+What's going on in that last `ifelse()` statement?
+
+We have missing data! It's denoted by `NA`.
+
+In this case, the condition needed for the `ifelse()` statement is missing, so our output is also `NA`.
+
+```{r echo=FALSE}
+ifelse(NA, 1, 2)
+```
+
+## Check for missing data with `is.na()` {.build}
+
+```{r}
+is.na(NA)
+
+x <- c(1, 2, NA)
+is.na(x)
+```
+
+## Remember from last time...`na.rm()`? {.build}
+
+Remove missing values in a vector with `na.rm()`.
+
+```{r}
+x <- c(1, 2, NA)
+mean(x)
+```
+
+```{r}
+mean(x, na.rm = TRUE)
 ```
 
 ## Ifelse statements in dataframes {.build}
