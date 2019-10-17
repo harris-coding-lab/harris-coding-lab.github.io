@@ -4,6 +4,7 @@
   <title>Coding Lab: If Statements and Conditionals</title>
 
   <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
   <meta name="generator" content="pandoc" />
 
@@ -258,6 +259,7 @@ background: black;
 }
 
 slides > slide {
+display: none;
 font-family: 'Open Sans', Arial, sans-serif;
 font-size: 26px;
 color: #797979;
@@ -278,19 +280,17 @@ transition: all 0.6s ease-in-out;
 }
 
 slides > slide.far-past {
+display: none;
 }
 
 slides > slide.past {
+display: block;
 opacity: 0;
 }
 
 slides > slide.current {
 display: block;
 opacity: 1;
-z-index: 1;
-}
-slides > slide:not(.current) {
-z-index: 0;
 }
 
 slides > slide.current .auto-fadein {
@@ -305,11 +305,13 @@ background-size: 100% 100%;
 }
 
 slides > slide.next {
+display: block;
 opacity: 0;
 pointer-events: none;
 }
 
 slides > slide.far-next {
+display: none;
 }
 
 slides > slide.dark {
@@ -381,6 +383,8 @@ width: 1100px;
 
 slides.layout-widescreen > slide.far-past,
 slides.layout-faux-widescreen > slide.far-past {
+display: block;
+display: none;
 -webkit-transform: translate(-2260px);
 -moz-transform: translate(-2260px);
 -ms-transform: translate(-2260px);
@@ -414,6 +418,8 @@ pointer-events: none;
 
 slides.layout-widescreen > slide.far-next,
 slides.layout-faux-widescreen > slide.far-next {
+display: block;
+display: none;
 -webkit-transform: translate(2260px);
 -moz-transform: translate(2260px);
 -ms-transform: translate(2260px);
@@ -1344,13 +1350,6 @@ opacity: 1;
 
 .overview .slide-area {
 display: none;
-}
-slides > slide {
-background: linear-gradient(#ffffff, #ffffff 85%, #e6e6e6);
-background-color: white;
-}
-slides > slide {
-opacity: 0;
 }
 @media print {
 
@@ -3096,10 +3095,6 @@ if (document.readyState !== "loading" &&
       transition: opacity 0.6s ease-in 0.4s;
       opacity: 0;
     }
-/* https://github.com/ropensci/plotly/pull/524#issuecomment-468142578 */
-slide:not(.current) .plotly.html-widget{
-  display: block;
-}
 
   </style>
 
@@ -3131,7 +3126,7 @@ slide:not(.current) .plotly.html-widget{
 <li>Conditional statements in dataframes</li>
 </ul>
 
-</article></slide><slide class=""><hgroup><h2>Review: Logical Operators</h2></hgroup><article  id="review-logical-operators" class="build">
+</article></slide><slide class=""><hgroup><h2>Review: Logical Operators</h2></hgroup><article  class="build" id="review-logical-operators">
 
 <p>The main logical operators are AND (&amp;), OR (|), and NOT (!). What happens when we use them on booleans?</p>
 
@@ -3147,7 +3142,7 @@ slide:not(.current) .plotly.html-widget{
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article >
 
-</article></slide><slide class=""><hgroup><h2>Replace these with conditional statements…</h2></hgroup><article  id="replace-these-with-conditional-statements" class="build">
+</article></slide><slide class=""><hgroup><h2>Replace these with conditional statements…</h2></hgroup><article  class="build" id="replace-these-with-conditional-statements">
 
 <pre class = 'prettyprint lang-r'>!(2 &gt; 1)</pre>
 
@@ -3155,7 +3150,7 @@ slide:not(.current) .plotly.html-widget{
 
 <pre >## [1] FALSE</pre>
 
-</article></slide><slide class=""><hgroup><h2>What does this produce?</h2></hgroup><article  id="what-does-this-produce" class="build">
+</article></slide><slide class=""><hgroup><h2>What does this produce?</h2></hgroup><article  class="build" id="what-does-this-produce">
 
 <pre class = 'prettyprint lang-r'>!(0 != 0)</pre>
 
@@ -3171,7 +3166,7 @@ slide:not(.current) .plotly.html-widget{
 
 <p>Only one has to be <code>TRUE</code> for the whole statement to return <code>TRUE</code>.</p>
 
-</article></slide><slide class=""><hgroup><h2>Let’s guess again</h2></hgroup><article  id="lets-guess-again" class="build">
+</article></slide><slide class=""><hgroup><h2>Let’s guess again</h2></hgroup><article  class="build" id="lets-guess-again">
 
 <p>Remember that <code>==</code> is the logical comparison for if two things are equal.</p>
 
@@ -3189,7 +3184,7 @@ slide:not(.current) .plotly.html-widget{
 
 <p>Both have to be <code>TRUE</code> for the whole statement to return <code>TRUE</code>.</p>
 
-</article></slide><slide class=""><hgroup><h2>This one is harder…</h2></hgroup><article  id="this-one-is-harder" class="build">
+</article></slide><slide class=""><hgroup><h2>This one is harder…</h2></hgroup><article  class="build" id="this-one-is-harder">
 
 <pre class = 'prettyprint lang-r'>!(2 &gt; 6) &amp; (4 &gt; 9 | 3 == 3) </pre>
 
@@ -3209,7 +3204,91 @@ slide:not(.current) .plotly.html-widget{
 
 <pre >## [1]  TRUE FALSE FALSE</pre>
 
-</article></slide><slide class=""><hgroup><h2>If statements</h2></hgroup><article  id="if-statements" class="build">
+</article></slide><slide class=""><hgroup><h2>choose rows of interest with <code>filter()</code></h2></hgroup><article  id="choose-rows-of-interest-with-filter">
+
+<pre class = 'prettyprint lang-r'>library(tidyverse)
+texas_housing_data &lt;- txhousing
+
+texas_housing_data %&gt;%
+  filter(year == 2013)</pre>
+
+<pre >## # A tibble: 552 x 9
+##    city     year month sales   volume median listings inventory  date
+##    &lt;chr&gt;   &lt;int&gt; &lt;int&gt; &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;
+##  1 Abilene  2013     1   114 15794494 125300      966       5.7 2013 
+##  2 Abilene  2013     2   140 16552641  94400      943       5.6 2013.
+##  3 Abilene  2013     3   164 19609711 102500      958       5.7 2013.
+##  4 Abilene  2013     4   213 27261796 113700      948       5.5 2013.
+##  5 Abilene  2013     5   225 31901380 130000      923       5.3 2013.
+##  6 Abilene  2013     6   209 29454125 127300      960       5.5 2013.
+##  7 Abilene  2013     7   218 32547446 140000      969       5.4 2014.
+##  8 Abilene  2013     8   236 30777727 120000      976       5.4 2014.
+##  9 Abilene  2013     9   195 26237106 127500      985       5.4 2014.
+## 10 Abilene  2013    10   167 21781187 119000      993       5.5 2014.
+## # … with 542 more rows</pre>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article >
+
+<pre class = 'prettyprint lang-r'>texas_housing_data %&gt;%
+  filter(year == 2013, city == &quot;Houston&quot;)</pre>
+
+<pre >## # A tibble: 12 x 9
+##    city     year month sales     volume median listings inventory  date
+##    &lt;chr&gt;   &lt;int&gt; &lt;int&gt; &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;
+##  1 Houston  2013     1  4273  852045057 149500    21364       3.7 2013 
+##  2 Houston  2013     2  4886 1060985674 161900    21293       3.6 2013.
+##  3 Houston  2013     3  6382 1479273481 172300    20909       3.5 2013.
+##  4 Houston  2013     4  7116 1770746764 182400    20607       3.4 2013.
+##  5 Houston  2013     5  8439 2121508529 186100    20526       3.3 2013.
+##  6 Houston  2013     6  7935 2073909387 191600    21008       3.3 2013.
+##  7 Houston  2013     7  8468 2168720825 187800    21497       3.3 2014.
+##  8 Houston  2013     8  8155 2083377894 186700    21366       3.3 2014.
+##  9 Houston  2013     9  6706 1638923780 180200    21207       3.2 2014.
+## 10 Houston  2013    10  6551 1544551772 176000    20508       3.1 2014.
+## 11 Houston  2013    11  5557 1356418081 181400    19331       2.9 2014.
+## 12 Houston  2013    12  6380 1658872245 187500    17857       2.7 2014.</pre>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article >
+
+<pre class = 'prettyprint lang-r'>texas_housing_data %&gt;%
+  filter(year == 2013, city == &quot;Houston&quot; | city == &quot;Galveston&quot;)</pre>
+
+<pre >## # A tibble: 24 x 9
+##    city       year month sales   volume median listings inventory  date
+##    &lt;chr&gt;     &lt;int&gt; &lt;int&gt; &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;
+##  1 Galveston  2013     1    45 10185965 165000      792       9.7 2013 
+##  2 Galveston  2013     2    77 18034000 183300      842      10.2 2013.
+##  3 Galveston  2013     3    75 17563142 192500      887      10.7 2013.
+##  4 Galveston  2013     4    88 22056185 216700      877      10.5 2013.
+##  5 Galveston  2013     5   115 28751616 202100      858      10.4 2013.
+##  6 Galveston  2013     6    95 24816255 202800      847      10.4 2013.
+##  7 Galveston  2013     7   118 27186364 165000      830      10   2014.
+##  8 Galveston  2013     8   123 31677799 211200      820       9.6 2014.
+##  9 Galveston  2013     9    91 20747723 187800      822       9.4 2014.
+## 10 Galveston  2013    10    74 17181440 156000      848       9.6 2014.
+## # … with 14 more rows</pre>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article >
+
+<pre class = 'prettyprint lang-r'>texas_housing_data %&gt;%
+  filter(year == 2013, city %in% c(&quot;Houston&quot;, &quot;Galveston&quot;))</pre>
+
+<pre >## # A tibble: 24 x 9
+##    city       year month sales   volume median listings inventory  date
+##    &lt;chr&gt;     &lt;int&gt; &lt;int&gt; &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;
+##  1 Galveston  2013     1    45 10185965 165000      792       9.7 2013 
+##  2 Galveston  2013     2    77 18034000 183300      842      10.2 2013.
+##  3 Galveston  2013     3    75 17563142 192500      887      10.7 2013.
+##  4 Galveston  2013     4    88 22056185 216700      877      10.5 2013.
+##  5 Galveston  2013     5   115 28751616 202100      858      10.4 2013.
+##  6 Galveston  2013     6    95 24816255 202800      847      10.4 2013.
+##  7 Galveston  2013     7   118 27186364 165000      830      10   2014.
+##  8 Galveston  2013     8   123 31677799 211200      820       9.6 2014.
+##  9 Galveston  2013     9    91 20747723 187800      822       9.4 2014.
+## 10 Galveston  2013    10    74 17181440 156000      848       9.6 2014.
+## # … with 14 more rows</pre>
+
+</article></slide><slide class=""><hgroup><h2>If statements</h2></hgroup><article  class="build" id="if-statements">
 
 <p>The general syntax of an if statement is as follows:</p>
 
@@ -3231,8 +3310,7 @@ slide:not(.current) .plotly.html-widget{
 
 <pre class = 'prettyprint lang-r'>if (condition is true) {
   do this
-}
-else {                      
+} else {                      
   do this other thing
 }</pre>
 
@@ -3264,7 +3342,7 @@ my_birthday &lt;- &quot;October 22&quot;</pre>
 
 <pre >## [1] &quot;Not a notable day.&quot;</pre>
 
-</article></slide><slide class=""><hgroup><h2>Ifelse statements</h2></hgroup><article  id="ifelse-statements-1" class="build">
+</article></slide><slide class=""><hgroup><h2>Ifelse statements</h2></hgroup><article  class="build" id="ifelse-statements-1">
 
 <p>If all you need to do is return output based on a condition, <code>ifelse()</code> statements are a good choice.</p>
 
@@ -3274,7 +3352,7 @@ my_birthday &lt;- &quot;October 22&quot;</pre>
 
 <pre >ifelse(condition, returns this if TRUE, returns this if FALSE)</pre>
 
-</article></slide><slide class=""><hgroup><h2>What will the following statements return?</h2></hgroup><article  id="what-will-the-following-statements-return" class="build">
+</article></slide><slide class=""><hgroup><h2>What will the following statements return?</h2></hgroup><article  class="build" id="what-will-the-following-statements-return">
 
 <pre class = 'prettyprint lang-r'>ifelse(TRUE, 1, 2)
 ifelse(FALSE, 1, 2)
@@ -3296,7 +3374,7 @@ ifelse(NA, 1, 2)</pre>
 
 <pre >## [1] NA</pre>
 
-</article></slide><slide class=""><hgroup><h2>Check for missing data with <code>is.na()</code></h2></hgroup><article  id="check-for-missing-data-with-is.na" class="build">
+</article></slide><slide class=""><hgroup><h2>Check for missing data with <code>is.na()</code></h2></hgroup><article  class="build" id="check-for-missing-data-with-is.na">
 
 <pre class = 'prettyprint lang-r'>is.na(NA)</pre>
 
@@ -3307,7 +3385,7 @@ is.na(x)</pre>
 
 <pre >## [1] FALSE FALSE  TRUE</pre>
 
-</article></slide><slide class=""><hgroup><h2>Remember from last time…<code>na.rm()</code>?</h2></hgroup><article  id="remember-from-last-timena.rm" class="build">
+</article></slide><slide class=""><hgroup><h2>Remember from last time…<code>na.rm()</code>?</h2></hgroup><article  class="build" id="remember-from-last-timena.rm">
 
 <p>Remove missing values in a vector with <code>na.rm()</code>.</p>
 
@@ -3320,14 +3398,11 @@ mean(x)</pre>
 
 <pre >## [1] 1.5</pre>
 
-</article></slide><slide class=""><hgroup><h2>Ifelse statements in dataframes</h2></hgroup><article  id="ifelse-statements-in-dataframes" class="build">
+</article></slide><slide class=""><hgroup><h2>Ifelse statements in dataframes</h2></hgroup><article  class="build" id="ifelse-statements-in-dataframes">
 
 <p>Ifelse statements work well in dataframes with the <code>mutate()</code> dplyr function. Let’s add a column to the <code>txhousing</code> based on a conditional.</p>
 
-<pre class = 'prettyprint lang-r'>library(tidyverse)
-texas_housing_data &lt;- txhousing
-
-texas_housing_data %&gt;% 
+<pre class = 'prettyprint lang-r'>texas_housing_data %&gt;% 
   mutate(in_january = ifelse(month == 1, TRUE, FALSE))</pre>
 
 <pre >## # A tibble: 8,602 x 10

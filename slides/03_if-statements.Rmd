@@ -104,6 +104,39 @@ c(1, 2, 3) > 0
 c(1, 2, 3) > c(0, 2, 4)
 ```
 
+## choose rows of interest with `filter()`
+
+```{r}
+library(tidyverse)
+texas_housing_data <- txhousing
+
+texas_housing_data %>%
+  filter(year == 2013)
+```
+
+***
+
+```{r}
+texas_housing_data %>%
+  filter(year == 2013, city == "Houston")
+```
+
+***
+
+```{r}
+texas_housing_data %>%
+  filter(year == 2013, city == "Houston" | city == "Galveston")
+```
+
+***
+
+```{r}
+texas_housing_data %>%
+  filter(year == 2013, city %in% c("Houston", "Galveston"))
+```
+
+
+
 ## If statements {.build}
 
 The general syntax of an if statement is as follows:
@@ -127,8 +160,7 @@ Slightly more interesting, the syntax of an ifelse statement is as follows:
 ```{r eval=FALSE}
 if (condition is true) {
   do this
-}
-else {                      
+} else {                      
   do this other thing
 }
 ```
@@ -231,9 +263,6 @@ mean(x, na.rm = TRUE)
 Ifelse statements work well in dataframes with the `mutate()` dplyr function. Let's add a column to the `txhousing` based on a conditional.
 
 ```{r}
-library(tidyverse)
-texas_housing_data <- txhousing
-
 texas_housing_data %>% 
   mutate(in_january = ifelse(month == 1, TRUE, FALSE))
 ```
