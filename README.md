@@ -36,9 +36,8 @@ Links to materials for each week's workshop will be posted here as provided.
   - [interactive tutorial](https://harris-coding-lab.shinyapps.io/if-statements/)
   - [doc for questions](https://docs.google.com/document/d/1yog5fnWzDjv_H9FKZJ75wyPnyjiTfAkPBYwR-m6Dc4M/edit?usp=sharing)
 - **Week 4: Loops**
-  - slides
-  - code 
-  - interactive tutorial
+  - [slides](slides/04_for-loops.html)
+  - [interactive tutorial](https://harris-coding-lab.shinyapps.io/for-loops/)
 - **Week 5: Functions**
   - slides
   - code 
