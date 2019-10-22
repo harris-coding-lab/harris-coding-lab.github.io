@@ -1,0 +1,228 @@
+---
+title: "Coding Lab: For Loops"
+author: "Ari Anisfeld, Angela Li"
+date: "10/22/2019"
+output:
+  ioslides_presentation
+---
+```{r, setup=TRUE, message=FALSE, echo=FALSE}
+library(tidyverse)
+library(readxl)
+```
+
+## Lecture Outline
+
+ - Review: Vectorized operations
+ - For loops
+ - Best practices for loops
+ - ggplot2 intro
+
+## Review: Vectorized operations
+
+When possible, take advantage of the fact that R is vectorized.
+
+```{r}
+a <- 1:5
+b <- 1:5
+c <- c()
+
+for (i in seq_along(a)) {
+  c[i] <- a[i] + b[i]
+}
+
+c
+```
+
+This is a bad example of a for loop!
+
+## The better alternative: (vectorized) addition
+
+```{r}
+a <- 1:5
+b <- 1:5
+c <- a + b
+
+c
+```
+
+## For loops
+
+The general structure of a for loop is as follows:
+
+```{r eval=FALSE}
+for (item in list_of_items) {
+  do something(item)
+}
+```
+
+## Simple example: printing output
+
+```{r}
+for (i in 1:10) {
+  print(i)
+}
+```
+
+## Another example: find sample means
+
+Suppose we want to find the means of increasingly large samples.
+
+```{r}
+sample_sizes <- 1:30
+means <- numeric(length(sample_sizes))
+
+for (i in seq_along(sample_sizes)) {
+  means[i] = mean(rnorm(i))
+}
+
+means
+```
+
+## Finding sample means, broken down {.build}
+
+Suppose we want to find the means of increasingly large samples.
+
+```{r eval=FALSE}
+sample_sizes <- 1:30
+means <- numeric(length(sample_sizes))
+```
+
+We start by: 
+
+1. creating a vector of `sample_sizes` we want to try out
+2. creating a numeric vector (`means`) to store the output from the for loop. 
+
+What does `means` currently look like?
+
+## Adding data to a vector, broken down {.build}
+
+```{r eval=FALSE}
+sample_sizes <- 1:30
+means <- numeric(length(sample_sizes))
+
+for (i in 1:30) {
+
+}
+```
+
+We add the structure of the for loop.
+
+## Adding data to a vector, broken down {.build}
+
+```{r eval=FALSE}
+sample_sizes <- 1:30
+means <- numeric(length(sample_sizes))
+
+for (i in seq_along(sample_sizes)) {
+
+}
+```
+
+Use `seq_along()` to be safe!
+
+## Adding data to a vector, broken down {.build}
+
+```{r}
+sample_sizes <- 1:30
+means <- numeric(length(sample_sizes))
+
+for (i in seq_along(sample_sizes)) {
+  mean(rnorm(i))
+}
+
+means
+```
+
+Right now, we're calculating the mean, but it's not being saved anywhere.
+
+## Adding data to a vector, broken down {.build}
+
+```{r}
+sample_sizes <- 1:30
+means <- numeric(length(sample_sizes))
+
+for (i in seq_along(sample_sizes)) {
+  means[i] <- mean(rnorm(i))
+}
+
+means
+```
+
+Save the mean of the sample to the ith place of the `means` vector.
+
+## Moving beyond 1 dimension
+
+What if we wanted to store the sample size *and* the mean of the sample?
+
+We might need a dataframe (or in our case, we'll use a tibble)!
+
+```{r}
+sample_sizes <- 1:30
+means_df <- tibble(sample_size = integer(),
+                   mean = double())
+
+for (i in seq_along(sample_sizes)) {
+  sample_mean <- mean(rnorm(i))
+  means_df <- bind_rows(means_df, c(sample_size = i, mean = sample_mean))
+}
+
+means_df
+```
+
+## Best practices for loops
+
+1. Use vectorized operations when possible
+2. Pre-allocate your data storage
+3. Use functions instead (next week!)
+
+## ggplot2 intro
+
+3 parts to a ggplot2 call:
+
+1. data
+2. aesthetics
+3. geometry
+
+![](images/04_ggplot2.png){#id .class width=60% height=60%}
+
+## Texas Housing Example
+
+```{r warning=FALSE}
+ggplot(data = txhousing, aes(x = listings, y = sales)) +
+  geom_point()
+```
+
+## Break it down
+
+```{r eval=FALSE}
+ggplot(data = txhousing, _____) +
+  _____
+```
+
+## Break it down
+
+```{r eval=FALSE}
+ggplot(data = txhousing, aes(x = listings, y = sales)) +
+  _____
+```
+
+## Break it down
+
+```{r eval=FALSE}
+ggplot(data = txhousing, aes(x = listings, y = sales)) +
+  geom_point()
+```
+
+## Recap
+
+Today we:
+
+- Reviewed vectorization
+- Introduced for loops
+- Discussed best practices for loops
+- Went over the basics of ggplot2
+
+Next week: writing functions
+
+Find the workshop link on the course web page:
+http://harris-coding-lab.github.io
