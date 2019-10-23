@@ -3167,6 +3167,27 @@ c</pre>
 
 </article></slide><slide class=""><hgroup><h2>Simple example: printing output</h2></hgroup><article  id="simple-example-printing-output">
 
+<pre class = 'prettyprint lang-r'>print(1)</pre>
+
+<pre >## [1] 1</pre>
+
+<pre class = 'prettyprint lang-r'>print(2)</pre>
+
+<pre >## [1] 2</pre>
+
+<pre class = 'prettyprint lang-r'>print(3)</pre>
+
+<pre >## [1] 3</pre>
+
+<pre class = 'prettyprint lang-r'># and so on...
+print(10)</pre>
+
+<pre >## [1] 10</pre>
+
+</article></slide><slide class=""><hgroup><h2>Simple example: printing output</h2></hgroup><article  id="simple-example-printing-output-1">
+
+<p>Replace something you want to repeat multiple times with a for loop!</p>
+
 <pre class = 'prettyprint lang-r'>for (i in 1:10) {
   print(i)
 }</pre>
@@ -3186,6 +3207,22 @@ c</pre>
 
 <p>Suppose we want to find the means of increasingly large samples.</p>
 
+<pre class = 'prettyprint lang-r'>mean1 &lt;- mean(rnorm(1))
+mean2 &lt;- mean(rnorm(2))
+mean3 &lt;- mean(rnorm(3))
+mean4 &lt;- mean(rnorm(4))
+# and so on...
+
+means &lt;- c(mean1, mean2, mean3, mean4)
+
+means</pre>
+
+<pre >## [1] -0.3653982  0.8828843  0.3063861 -0.3662657</pre>
+
+</article></slide><slide class=""><hgroup><h2>Another example: find sample means</h2></hgroup><article  id="another-example-find-sample-means-1">
+
+<p>Let’s change it into a for loop, and save the output.</p>
+
 <pre class = 'prettyprint lang-r'>sample_sizes &lt;- 1:30
 means &lt;- numeric(length(sample_sizes))
 
@@ -3195,16 +3232,16 @@ for (i in seq_along(sample_sizes)) {
 
 means</pre>
 
-<pre >##  [1]  0.28129615  1.21304318  0.13293678  0.63392238 -0.46256398
-##  [6]  1.01299904  0.25474940  0.20561959 -0.04705537  0.08018998
-## [11]  0.10938268  0.04562322 -0.14721231  0.12625210 -0.40058674
-## [16]  0.01920522  0.04154599  0.19624837 -0.05947968  0.23383356
-## [21]  0.21003122 -0.08594290  0.19692908  0.01647402 -0.19333138
-## [26] -0.28807587  0.25058719  0.11032207  0.05053141  0.06006902</pre>
+<pre >##  [1]  0.74132140  0.71429567  0.25685223 -0.11218267 -0.42049216
+##  [6] -0.11164332 -0.30823128  0.09594209  0.12934487  0.38404695
+## [11]  0.26615860  0.15602802  0.13474610  0.05610657  0.43538933
+## [16] -0.09157952  0.52805625  0.10174154  0.23974375  0.36329071
+## [21] -0.18311183  0.06526344 -0.32152778 -0.24900676  0.15903864
+## [26]  0.13186659 -0.24572733  0.16955045 -0.03543670 -0.25866657</pre>
 
-</article></slide><slide class=""><hgroup><h2>Finding sample means, broken down</h2></hgroup><article  class="build" id="finding-sample-means-broken-down">
+</article></slide><slide class=""><hgroup><h2>Finding sample means, broken down</h2></hgroup><article  id="finding-sample-means-broken-down" class="build">
 
-<p>Suppose we want to find the means of increasingly large samples.</p>
+<p>Assign initial variables outside of the body of the for loop.</p>
 
 <pre class = 'prettyprint lang-r'>sample_sizes &lt;- 1:30
 means &lt;- numeric(length(sample_sizes))</pre>
@@ -3218,7 +3255,9 @@ means &lt;- numeric(length(sample_sizes))</pre>
 
 <p>What does <code>means</code> currently look like?</p>
 
-</article></slide><slide class=""><hgroup><h2>Adding data to a vector, broken down</h2></hgroup><article  class="build" id="adding-data-to-a-vector-broken-down">
+<pre >##  [1] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0</pre>
+
+</article></slide><slide class=""><hgroup><h2>Adding data to a vector, broken down</h2></hgroup><article  id="adding-data-to-a-vector-broken-down" class="build">
 
 <pre class = 'prettyprint lang-r'>sample_sizes &lt;- 1:30
 means &lt;- numeric(length(sample_sizes))
@@ -3229,7 +3268,7 @@ for (i in 1:30) {
 
 <p>We add the structure of the for loop.</p>
 
-</article></slide><slide class=""><hgroup><h2>Adding data to a vector, broken down</h2></hgroup><article  class="build" id="adding-data-to-a-vector-broken-down-1">
+</article></slide><slide class=""><hgroup><h2>Adding data to a vector, broken down</h2></hgroup><article  id="adding-data-to-a-vector-broken-down-1" class="build">
 
 <pre class = 'prettyprint lang-r'>sample_sizes &lt;- 1:30
 means &lt;- numeric(length(sample_sizes))
@@ -3240,7 +3279,9 @@ for (i in seq_along(sample_sizes)) {
 
 <p>Use <code>seq_along()</code> to be safe!</p>
 
-</article></slide><slide class=""><hgroup><h2>Adding data to a vector, broken down</h2></hgroup><article  class="build" id="adding-data-to-a-vector-broken-down-2">
+<p>(What if <code>sample_sizes</code> is accidentally a 0-length vector? See <a href='https://r4ds.had.co.nz/iteration.html#for-loops' title=''>what happens</a> in R for Data Science.)</p>
+
+</article></slide><slide class=""><hgroup><h2>Adding data to a vector, broken down</h2></hgroup><article  id="adding-data-to-a-vector-broken-down-2" class="build">
 
 <pre class = 'prettyprint lang-r'>sample_sizes &lt;- 1:30
 means &lt;- numeric(length(sample_sizes))
@@ -3255,7 +3296,7 @@ means</pre>
 
 <p>Right now, we’re calculating the mean, but it’s not being saved anywhere.</p>
 
-</article></slide><slide class=""><hgroup><h2>Adding data to a vector, broken down</h2></hgroup><article  class="build" id="adding-data-to-a-vector-broken-down-3">
+</article></slide><slide class=""><hgroup><h2>Adding data to a vector, broken down</h2></hgroup><article  id="adding-data-to-a-vector-broken-down-3" class="build">
 
 <pre class = 'prettyprint lang-r'>sample_sizes &lt;- 1:30
 means &lt;- numeric(length(sample_sizes))
@@ -3266,12 +3307,12 @@ for (i in seq_along(sample_sizes)) {
 
 means</pre>
 
-<pre >##  [1] -0.06028184  0.51355096  0.12231571 -0.46740621 -0.32637470
-##  [6]  0.31889794 -0.16290218  0.43426229 -0.16060793  0.41382816
-## [11] -0.03001380 -0.36227756  0.20965891 -0.47089401 -0.30680036
-## [16] -0.18439155 -0.11084927  0.30000663  0.39181873 -0.25373863
-## [21]  0.07983361 -0.05373427 -0.07000856  0.24286779 -0.13408095
-## [26]  0.08177371  0.07758522  0.17360695 -0.21650512  0.17270993</pre>
+<pre >##  [1]  0.027019639 -0.531060790 -0.056755477 -0.961971583 -0.501343296
+##  [6]  0.439607410 -0.448017662  0.085093057 -0.172184746  0.309537897
+## [11]  0.673425662  0.531345552  0.533034279  0.070143496  0.120607170
+## [16] -0.027921282 -0.182796251  0.045915731 -0.585579720  0.230188851
+## [21] -0.261697074  0.266606528  0.210337841 -0.149071860  0.269881566
+## [26] -0.236512412 -0.293088692  0.420268063  0.007397863 -0.340243621</pre>
 
 <p>Save the mean of the sample to the ith place of the <code>means</code> vector.</p>
 
@@ -3293,19 +3334,37 @@ for (i in seq_along(sample_sizes)) {
 means_df</pre>
 
 <pre >## # A tibble: 30 x 2
-##    sample_size      mean
-##          &lt;dbl&gt;     &lt;dbl&gt;
-##  1           1 -1.08    
-##  2           2  0.0723  
-##  3           3  0.649   
-##  4           4  0.283   
-##  5           5  0.204   
-##  6           6  0.209   
-##  7           7 -0.167   
-##  8           8  0.348   
-##  9           9 -0.114   
-## 10          10 -0.000933
+##    sample_size    mean
+##          &lt;dbl&gt;   &lt;dbl&gt;
+##  1           1 -0.605 
+##  2           2 -0.608 
+##  3           3 -0.0425
+##  4           4 -0.0662
+##  5           5  0.0259
+##  6           6 -0.176 
+##  7           7 -0.440 
+##  8           8 -0.382 
+##  9           9  0.0384
+## 10          10 -0.403 
 ## # … with 20 more rows</pre>
+
+</article></slide><slide class=""><hgroup><h2>bind_rows()?</h2></hgroup><article  id="bind_rows" class="build">
+
+<p><code>bind_rows()</code> adds a new row to a dataframe, or combines two vectors into a dataframe:</p>
+
+<pre class = 'prettyprint lang-r'>library(tidyverse)
+
+bind_rows(c(col1 = 1, col2 = &quot;A&quot;), c(col1 = 2, col2 = &quot;B&quot;))</pre>
+
+<pre >## # A tibble: 2 x 2
+##   col1  col2 
+##   &lt;chr&gt; &lt;chr&gt;
+## 1 1     A    
+## 2 2     B</pre>
+
+<p>In our case, add a row with the sample size and the sample mean every time we go through the loop:</p>
+
+<pre class = 'prettyprint lang-r'>bind_rows(means_df, c(sample_size = i, mean = sample_mean)</pre>
 
 </article></slide><slide class=""><hgroup><h2>Best practices for loops</h2></hgroup><article  id="best-practices-for-loops">
 
@@ -3325,7 +3384,7 @@ means_df</pre>
 <li>geometry</li>
 </ol>
 
-<img class="class" id="id" height="60%" width="60%" src='images/04_ggplot2.png' title=''/>
+<img width="60%" class="class" height="60%" id="id" src='images/04_ggplot2.png' title=''/>
 
 </article></slide><slide class=""><hgroup><h2>Texas Housing Example</h2></hgroup><article  id="texas-housing-example">
 
