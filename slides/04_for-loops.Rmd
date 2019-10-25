@@ -22,45 +22,37 @@ library(readxl)
 When possible, take advantage of the fact that R is vectorized.
 
 ```{r}
-a <- 1:5
-b <- 1:5
-c <- c()
+a <- 7:11
+b <- 8:12
+out <- c()
 
 for (i in seq_along(a)) {
-  c[i] <- a[i] + b[i]
+  out[i] <- a[i] + b[i]
 }
 
-c
+out
 ```
 
 This is a bad example of a for loop!
 
-## The better alternative: (vectorized) addition
+## The better alternative: vectorized addition
 
 ```{r}
-a <- 1:5
-b <- 1:5
-c <- a + b
+a <- 7:11
+b <- 8:12
+out <- a + b
 
-c
+out
 ```
 
-## For loops
+Use vectorized operations and tidyverse functions like `mutate()` when you can.
 
-The general structure of a for loop is as follows:
-
-```{r eval=FALSE}
-for (item in list_of_items) {
-  do something(item)
-}
-```
 
 ## Simple example: printing output
 
 ```{r}
 print(1)
 print(2)
-print(3)
 # and so on...
 print(10)
 ```
@@ -75,35 +67,63 @@ for (i in 1:10) {
 }
 ```
 
+## For loops
+
+The general structure of a for loop is as follows:
+
+```{r eval=FALSE}
+for (item in list_of_items) {
+  do something to each item
+}
+
+for (index in list_of_indices) {
+  do something based on index
+}
+```
+
 ## Another example: find sample means
 
 Suppose we want to find the means of increasingly large samples.
 
 ```{r}
-mean1 <- mean(rnorm(1))
-mean2 <- mean(rnorm(2))
-mean3 <- mean(rnorm(3))
-mean4 <- mean(rnorm(4))
-# and so on...
+mean1 <- mean(rnorm(5))
+mean2 <- mean(rnorm(10))
+mean3 <- mean(rnorm(15))
+mean4 <- mean(rnorm(20))
+mean5 <- mean(rnorm(25))
 
-means <- c(mean1, mean2, mean3, mean4)
+means <- c(mean1, mean2, mean3, mean4, mean5)
 
 means
 ```
 
+## Recall `rnorm()`
+
+Take `n` random draws from a normal distribution.
+
+**Usage**
+`rnorm(n, mean = 0, sd = 1)`
+
+**Example**
+```{r}
+rnorm(5)
+rnorm(10)
+```
+
+
 ## Another example: find sample means
 
-Let's change it into a for loop, and save the output.
+Let's avoid repeating code with a `for` loop.
 
 ```{r}
-sample_sizes <- 1:30
-means <- numeric(length(sample_sizes))
+sample_sizes <- c(5, 10, 15, 20, 25)
+sample_means <- rep(0, length(sample_sizes))
 
 for (i in seq_along(sample_sizes)) {
-  means[i] = mean(rnorm(i))
+  sample_means[i] <- mean(rnorm(sample_sizes[i]))
 }
 
-means
+sample_means
 ```
 
 ## Finding sample means, broken down {.build}
@@ -111,41 +131,61 @@ means
 Assign initial variables outside of the body of the for loop.
 
 ```{r eval=FALSE}
-sample_sizes <- 1:30
-means <- numeric(length(sample_sizes))
+sample_sizes <- c(5, 10, 15, 20, 25)
+sample_means <- rep(0, length(sample_sizes))
 ```
 
-We start by: 
+To start: 
 
-1. creating a vector of `sample_sizes` we want to try out
-2. creating a numeric vector (`means`) to store the output from the for loop. 
+1. create a vector of the `sample_sizes` we want to use
+2. create a vector to store the output 
 
-What does `means` currently look like?
+## What does `sample_means` currently look like?
 
-```{r echo=FALSE}
-means <- numeric(length(sample_sizes))
-means
+```{r}
+sample_means <- rep(0, length(sample_sizes))
+sample_means
 ```
 
 
 ## Adding data to a vector, broken down {.build}
 
-```{r eval=FALSE}
-sample_sizes <- 1:30
-means <- numeric(length(sample_sizes))
+Determine what sequence to loop over. 
 
-for (i in 1:30) {
+```{r eval=FALSE}
+for (i in 1:length(sample_sizes)) {
 
 }
 ```
 
-We add the structure of the for loop.
 
-## Adding data to a vector, broken down {.build}
+## A helper function `seq_along()`
+
+`seq_along(.)` is synonymous to `1:length(.)` 
+
+where `.` is a vector.
+
+**Example**
+```{r}
+vec <- c("x", "y", "z")
+1:length(vec)
+seq_along(vec)
+```
+
+***
+```{r}
+sample_sizes <- c(5, 10, 15, 20, 25)
+seq_along(sample_sizes)
+```
+
+(What if `sample_sizes` is accidentally a 0-length vector? See [what happens](https://r4ds.had.co.nz/iteration.html#for-loops) in R for Data Science.)
+
+
+## Adding data to a vector, broken down 
 
 ```{r eval=FALSE}
-sample_sizes <- 1:30
-means <- numeric(length(sample_sizes))
+sample_sizes <- c(5, 10, 15, 20, 25)
+sample_means <- rep(0, length(sample_sizes))
 
 for (i in seq_along(sample_sizes)) {
 
@@ -154,19 +194,18 @@ for (i in seq_along(sample_sizes)) {
 
 Use `seq_along()` to be safe! 
 
-(What if `sample_sizes` is accidentally a 0-length vector? See [what happens](https://r4ds.had.co.nz/iteration.html#for-loops) in R for Data Science.)
 
 ## Adding data to a vector, broken down {.build}
 
 ```{r}
-sample_sizes <- 1:30
-means <- numeric(length(sample_sizes))
+sample_sizes <- c(5, 10, 15, 20, 25)
+sample_means <- rep(0, length(sample_sizes))
 
 for (i in seq_along(sample_sizes)) {
   mean(rnorm(i))
 }
 
-means
+sample_means
 ```
 
 Right now, we're calculating the mean, but it's not being saved anywhere.
@@ -174,34 +213,39 @@ Right now, we're calculating the mean, but it's not being saved anywhere.
 ## Adding data to a vector, broken down {.build}
 
 ```{r}
-sample_sizes <- 1:30
+sample_sizes <- c(5, 10, 15, 20, 25)
 means <- numeric(length(sample_sizes))
 
 for (i in seq_along(sample_sizes)) {
-  means[i] <- mean(rnorm(i))
+  
+  this_sample_mean <- mean(rnorm(i))
+  
+  sample_means[i] <- this_sample_mean
 }
 
-means
+sample_means
 ```
 
-Save the mean of the sample to the ith place of the `means` vector.
+Save the mean of the sample to the ith place of the `sample_means` vector.
 
 ## Moving beyond 1 dimension
 
 What if we wanted to store the sample size *and* the mean of the sample?
 
-We might need a dataframe (or in our case, we'll use a tibble)!
-
+We can store the output as a tibble.
 ```{r}
-sample_sizes <- 1:30
-means_df <- tibble(sample_size = integer(),
-                   mean = double())
+sample_sizes <- c(5, 10, 15, 20, 25)
+means_df <- tibble()
 
-for (i in seq_along(sample_sizes)) {
-  sample_mean <- mean(rnorm(i))
-  means_df <- bind_rows(means_df, c(sample_size = i, mean = sample_mean))
+for (n in sample_sizes) {
+  sample_mean <- mean(rnorm(n))
+  new_row <- c(sample_size = n, sample_mean = sample_mean)
+  means_df <- bind_rows(means_df, new_row)
 }
+```
 
+***
+```{r}
 means_df
 ```
 
@@ -212,13 +256,32 @@ means_df
 ```{r}
 library(tidyverse)
 
-bind_rows(c(col1 = 1, col2 = "A"), c(col1 = 2, col2 = "B"))
+bind_rows(c(col1 = 1, col2 = "A"), 
+          c(col1 = 2, col2 = "B"))
 ```
-
+***
 In our case, add a row with the sample size and the sample mean every time we go through the loop:
 
 ```{r eval=FALSE}
-bind_rows(means_df, c(sample_size = i, mean = sample_mean)
+new_row <- c(sample_size = n, sample_mean = sample_mean)
+bind_rows(means_df, new_row)
+```
+
+## bind_rows() common error
+
+```{r eval= FALSE}
+new_row <- c(40, mean(rnorm(40)))
+bind_rows(means_df, new_row)
+```
+Error: Argument 2 must have names
+
+***
+
+A row is a named vector! 
+
+```{r eval=TRUE}
+new_row <- c(n = 40, sample_mean = mean(rnorm(40)))
+bind_rows(means_df, new_row)
 ```
 
 ## Best practices for loops
@@ -235,7 +298,8 @@ bind_rows(means_df, c(sample_size = i, mean = sample_mean)
 2. aesthetics
 3. geometry
 
-![](images/04_ggplot2.png){#id .class width=60% height=60%}
+<img src="images/04_ggplot2.png" width="400px" />
+
 
 ## Texas Housing Example
 
@@ -245,25 +309,36 @@ ggplot(data = txhousing, aes(x = listings, y = sales)) +
 ```
 
 ## Break it down
-
+We start with data.
 ```{r eval=FALSE}
 ggplot(data = txhousing, _____) +
   _____
 ```
 
 ## Break it down
-
+We map columns from the data to `x` and `y` in `aes()`
 ```{r eval=FALSE}
 ggplot(data = txhousing, aes(x = listings, y = sales)) +
   _____
 ```
 
 ## Break it down
-
+We tell R how to display the data (i.e. as points.)
 ```{r eval=FALSE}
 ggplot(data = txhousing, aes(x = listings, y = sales)) +
   geom_point()
 ```
+
+## Adding an aesthetic
+
+```{r eval=FALSE}
+txhousing %>%
+  ggplot(aes(x = listings, y = sales, color = year)) +
+  geom_point()
+```
+
+For more resources, checkout [chapter 3 of R for Data Science](https://r4ds.had.co.nz/data-visualisation.html)
+
 
 ## Recap
 
