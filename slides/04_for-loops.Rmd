@@ -331,7 +331,7 @@ ggplot(data = txhousing, aes(x = listings, y = sales)) +
 
 ## Adding an aesthetic
 
-```{r eval=FALSE}
+```{r eval=TRUE}
 txhousing %>%
   ggplot(aes(x = listings, y = sales, color = year)) +
   geom_point()
