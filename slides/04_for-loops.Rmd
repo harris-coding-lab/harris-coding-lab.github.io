@@ -202,7 +202,7 @@ sample_sizes <- c(5, 10, 15, 20, 25)
 sample_means <- rep(0, length(sample_sizes))
 
 for (i in seq_along(sample_sizes)) {
-  mean(rnorm(i))
+  mean(rnorm(sample_sizes[i]))
 }
 
 sample_means
@@ -218,7 +218,7 @@ means <- numeric(length(sample_sizes))
 
 for (i in seq_along(sample_sizes)) {
   
-  this_sample_mean <- mean(rnorm(i))
+  this_sample_mean <- mean(rnorm(sample_sizes[i]))
   
   sample_means[i] <- this_sample_mean
 }
@@ -284,6 +284,14 @@ new_row <- c(n = 40, sample_mean = mean(rnorm(40)))
 bind_rows(means_df, new_row)
 ```
 
+***
+
+A row is a named vector! With the right names! 
+
+```{r eval=TRUE}
+new_row <- c(sample_size = 40, sample_mean = mean(rnorm(40)))
+bind_rows(means_df, new_row)
+```
 ## Best practices for loops
 
 1. Use vectorized operations when possible
@@ -331,7 +339,7 @@ ggplot(data = txhousing, aes(x = listings, y = sales)) +
 
 ## Adding an aesthetic
 
-```{r eval=TRUE}
+```{r graph, warning=FALSE}
 txhousing %>%
   ggplot(aes(x = listings, y = sales, color = year)) +
   geom_point()
