@@ -42,7 +42,7 @@ Links to materials for each week's workshop will be posted here as provided.
 - **Week 5: Functions**
   - slides
   - code 
-  - interactive tutorial
+  - [interactive tutorial](https://harris-coding-lab.shinyapps.io/functions-a/)
 
 ### Additional Resources
 
