@@ -13,6 +13,15 @@ The Coding Lab will be offered at the following times during the first five week
  5 - 6:20pm| 5 - 6:20pm| 5 - 6:20pm| 5 - 6:20pm| 9:30 - 10:50am & 11:00 - 12:20 pm
  KC0001 | KC1002	| KC1002|	KC1022	|KC0001	
  
+ 
+ ***NEW: TA Session locations***
+ For weeks 6 to 10, we'll host TA office hours for coding questions.
+ 
+  Monday | Tuesday | Wednesday | Thursday | Friday 
+--|--|--|--|--
+ 5 - 6:20pm| 5 - 6:20pm| 5 - 6:20pm| 5 - 6:20pm| 9:30 - 10:50am & 11:00 - 12:20 pm
+ KC3008 | KC2004	| KC1010|	KC1010	|KC2004	
+ 
 ### Prerequisites
 
 We ask that Coding Lab attendees have R and RStudio pre-installed on their local machine. If you need help getting set up, please visit the R Bar at Harris for assistance with installation.
