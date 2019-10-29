@@ -274,28 +274,120 @@ Error in rnorm(sample_size, mean = sample_mean, sd = sample_sd) :
 
 ## Functions in functions
 
-We can pass functions as arguments to other functions:
+We can pass functions as arguments to other functions. Before:
 
 ```{r}
-calculate_sample_mean <- function(sample_size, dist_type = rnorm) {
-  sample_mean <- mean(dist_type(sample_size))
+calculate_sample_mean <- function(sample_size, 
+                                  sample_mean = 0, 
+                                  sample_sd = 1) {
+  sample_mean <- mean(rnorm(sample_size, 
+                            mean = sample_mean, 
+                            sd = sample_sd))
   
   sample_mean
 }
+```
 
-calculate_sample_mean(10)
-calculate_sample_mean(10, dist_type = pnorm)
+
+## Functions in functions
+
+We can pass functions as arguments to other functions. After:
+
+```{r}
+calculate_sample_mean <- function(sample_size, 
+                                  sample_mean = 0, 
+                                  sample_sd = 1,
+                                  dist_type = rnorm) {
+  sample_mean <- mean(dist_type(sample_size, 
+                            mean = sample_mean, 
+                            sd = sample_sd))
+  
+  sample_mean
+}
+```
+
+## Functions in functions
+
+```{r}
+calculate_sample_mean(sample_size = 10, 
+                      sample_mean = 0, 
+                      sample_sd = 1)
+calculate_sample_mean(sample_size = 10, 
+                      sample_mean = 0, 
+                      sample_sd = 1, 
+                      dist_type = pnorm)
+```
+
+`calculate_sample_mean()` is now probably the wrong name for this function - we should call it `calculate_distribution_mean()` or something like that.
+
+## Detour: probability distributions
+
+Many distributions in R have multiple variants (i.e. the normal distribution has 4 families of functions):
+
+- `dnorm()`
+- `pnorm()`
+- `qnorm()`
+- `rnorm()`
+
+These correspond to the density function of the distribution, the cumulative distribution function, the quantile function, and a random sampling function.
+
+There's also `dbinom()`, `pbinom()`, `qbinom()`, `rbinom()`, etc.
+
+Read [this tutorial](https://thomasleeper.com/Rcourse/Tutorials/distributions.html) for more information.
+
+## Detour: probability distributions
+
+- `dnorm()`: density function
+
+```{r}
+dnorm(0)
+dnorm(1)
+dnorm(-1)
 ```
 
 ## Detour: probability distributions
 
+<img src="images/05_pdf.png" width="600px" />
 
+## Detour: probability distributions
+
+- `pnorm()`: cumulative distribution function
+
+```{r}
+pnorm(0)
+pnorm(1)
+pnorm(-1)
+```
+
+## Detour: probability distributions
+
+<img src="images/05_cdf.png" width="600px" />
+
+## Detour: probability distributions
+
+- `qnorm()`: quantile function
+
+```{r}
+qnorm(c(0.05, 0.95))
+qnorm(c(0.025, 0.975))
+pnorm(qnorm(c(0.025, 0.975)))
+```
+
+## Detour: probability distributions
+
+- `rnorm()`: random sampling
+
+```{r}
+rnorm(1)
+rnorm(5)
+rnorm(30)
+```
 
 ## Best practices for functions
 
 1. Keep your functions simple and short
 2. Name functions well (verb_thing() is generally good), and document what they take as input and output
-3. Check and debug your functions as you write them, not at the end
+3. Check and debug your functions as you write them, not at the very end
 
 ## Want to learn more?
 
@@ -317,3 +409,6 @@ And that's it for us this fall. Thanks for sticking with us these 5 weeks!
 
 Find the workshop link on the course web page:
 http://harris-coding-lab.github.io
+
+## Detour: Monte Carlo Simulations
+

@@ -40,9 +40,9 @@ Links to materials for each week's workshop will be posted here as provided.
   - [slide code](code/04_for-loops.R) 
   - [interactive tutorial](https://harris-coding-lab.shinyapps.io/for-loops/)
 - **Week 5: Functions**
-  - slides
-  - code 
-  - interactive tutorial
+  - [slides](slides/05_functions.html)
+  - [slide code](code/05_functions.R) 
+  - [interactive tutorial](https://harris-coding-lab.shinyapps.io/functions-a/)
 
 ### Additional Resources
 
