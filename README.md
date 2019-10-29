@@ -23,24 +23,26 @@ Links to materials for each week's workshop will be posted here as provided.
 
 - **Week 1: Basic Syntax and Operators**
   - [slides](slides/01_basic-syntax-operators.html)
-  - [slide code](code/01_basic-syntax-operators.R) (clicking will download an R script with the code to your computer)
+    - [slide code](code/01_basic-syntax-operators.R) (clicking will download an R script with the code to your computer)
   - [interactive tutorial](https://harris-coding-lab.shinyapps.io/basic-syntax)
-  - [tutorial solutions](code/01_solutions.R)
+    - [tutorial solutions](code/01_solutions.R)
   - [doc for questions](https://docs.google.com/document/d/1yog5fnWzDjv_H9FKZJ75wyPnyjiTfAkPBYwR-m6Dc4M/edit?usp=sharing)
 - **Week 2: Reading Files, Data Frames, and Calculations**
   - [slides](slides/02_loading-data-data-frames-and-calculations.html)
-  - [slide code](code/02_reading-files.R)
-  - [dataset from slides](data/SCE-Public-LM-Quarterly-Microdata.xlsx) (you can download to follow along)
+    - [slide code](code/02_reading-files.R)
+    - [dataset from slides](data/SCE-Public-LM-Quarterly-Microdata.xlsx) (you can download to follow along)
   - [interactive tutorial](https://harris-coding-lab.shinyapps.io/reading-files/)
-  - [tutorial solutions](code/02_solutions.R)
+    - [tutorial solutions](code/02_solutions.R)
 - **Week 3: If Statements**
   - [slides](slides/03_if-statements.html)
-  - [slide code](code/03_if-statements.R) 
+    - [slide code](code/03_if-statements.R) 
   - [interactive tutorial](https://harris-coding-lab.shinyapps.io/if-statements/)
+    - [tutorial solutions](code/03_solutions.R)
 - **Week 4: Loops**
   - [slides](slides/04_for-loops.html)
-  - [slide code](code/04_for-loops.R) 
+    - [slide code](code/04_for-loops.R) 
   - [interactive tutorial](https://harris-coding-lab.shinyapps.io/for-loops/)
+    - [tutorial solutions](code/04_solutions.R)
 - **Week 5: Functions**
   - [slides](slides/05_functions.html)
   - [slide code](code/05_functions.R) 
