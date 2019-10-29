@@ -68,14 +68,6 @@ calculate_sample_mean <- function(sample_size) {
 calculate_sample_mean(1)
 ```
 
-## Another way to repeat ourselves: functions!
-
-Then, we can **apply** that function to a list of numbers and get the same result:
-
-```{r}
-sapply(1:30, calculate_sample_mean)
-```
-
 Let's break it down...
 
 ## Functions
@@ -171,32 +163,6 @@ shout_number(1)
 ```
 
 Question: does `number` exist in my R environment after I run this function? Why or why not?
-
-## apply() family of functions
-
-Functions are powerful when `apply()`ed to lists:
-
-```{r}
-shout_number <- function(number) {
-  paste0("Number ", number, "!")
-}
-```
-
-```{r}
-numbers <- 1:10
-
-sapply(numbers, shout_number)
-```
-
-## apply() family of functions
-
-The prefixes influence the type of thing that is output:
-
-```{r}
-numbers <- 1:10
-
-lapply(numbers, shout_number)
-```
 
 ## Second example: calculating the mean of a sample
 
@@ -294,15 +260,15 @@ calculate_sample_mean <- function(sample_size,
 We can pass functions as arguments to other functions. After:
 
 ```{r}
-calculate_sample_mean <- function(sample_size, 
+summarize_sample <- function(sample_size, 
                                   sample_mean = 0, 
                                   sample_sd = 1,
-                                  dist_type = rnorm) {
-  sample_mean <- mean(dist_type(sample_size, 
+                                  summary_fxn = mean) {
+  summary_stat <- summary_fxn(rnorm(sample_size, 
                             mean = sample_mean, 
                             sd = sample_sd))
   
-  sample_mean
+  summary_stat
 }
 ```
 
@@ -312,13 +278,13 @@ calculate_sample_mean <- function(sample_size,
 calculate_sample_mean(sample_size = 10, 
                       sample_mean = 0, 
                       sample_sd = 1)
-calculate_sample_mean(sample_size = 10, 
-                      sample_mean = 0, 
-                      sample_sd = 1, 
-                      dist_type = pnorm)
+summarize_sample(sample_size = 10, 
+                sample_mean = 0, 
+                sample_sd = 1, 
+                summary_fxn = max)
 ```
 
-`calculate_sample_mean()` is now probably the wrong name for this function - we should call it `calculate_distribution_mean()` or something like that.
+`calculate_sample_mean()` is now probably the wrong name for this function - we should call it `summarize_sample()` or something like that.
 
 ## Detour: probability distributions
 
@@ -337,7 +303,7 @@ Read [this tutorial](https://thomasleeper.com/Rcourse/Tutorials/distributions.ht
 
 ## Detour: probability distributions
 
-- `dnorm()`: density function
+- `dnorm()`: density function, the PDF evaluated at X. 
 
 ```{r}
 dnorm(0)
@@ -351,7 +317,7 @@ dnorm(-1)
 
 ## Detour: probability distributions
 
-- `pnorm()`: cumulative distribution function
+- `pnorm()`: cumulative distribution function, the CDF evaluated at X.
 
 ```{r}
 pnorm(0)
@@ -365,7 +331,7 @@ pnorm(-1)
 
 ## Detour: probability distributions
 
-- `qnorm()`: quantile function
+- `qnorm()`: quantile function, the inverse CDF evaluated at a quantile.
 
 ```{r}
 qnorm(c(0.05, 0.95))
@@ -412,3 +378,36 @@ http://harris-coding-lab.github.io
 
 ## Detour: Monte Carlo Simulations
 
+## Appendix: apply() family of functions
+
+Functions are powerful when `apply()`ed to lists:
+
+```{r}
+shout_number <- function(number) {
+  paste0("Number ", number, "!")
+}
+```
+
+```{r}
+numbers <- 1:10
+
+sapply(numbers, shout_number)
+```
+
+## apply() family of functions
+
+The prefixes influence the type of thing that is output:
+
+```{r}
+numbers <- 1:10
+
+lapply(numbers, shout_number)
+```
+
+## map() is nicer than apply()
+
+```{r}
+library(purrr)
+numbers <- 1:10
+map(numbers, shout_number)
+```
