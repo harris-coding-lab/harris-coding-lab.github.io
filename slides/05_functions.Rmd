@@ -1,0 +1,319 @@
+---
+title: "Coding Lab: Functions"
+author: "Ari Anisfeld, Angela Li"
+date: "10/29/2019"
+output:
+  ioslides_presentation:
+    css: styles.css
+---
+```{r, setup=TRUE, message=FALSE, echo=FALSE}
+library(tidyverse)
+library(readxl)
+```
+
+## Lecture Outline
+
+ - Review: Iteration with for loops
+ - Writing functions
+ - Function arguments
+ - Functions in functions
+ - Detour: probability distributions
+ - Best practices 
+
+## Motivation
+
+> "You should consider writing a function whenever you’ve copied and 
+> pasted a block of code more than twice (i.e. you now have three 
+> copies of the same code)" 
+> 
+> - Hadley Wickham, R for Data Science
+
+## Review: Iteration with for loops
+
+Last time, we showed how to use for loops to repeat ourselves.
+
+```{r}
+mean(rnorm(1))
+mean(rnorm(2))
+mean(rnorm(3))
+```
+
+
+## Review: Iteration with for loops
+
+Becomes:
+
+```{r}
+sample_sizes <- 1:30
+means <- numeric(length(sample_sizes))
+
+for (i in seq_along(sample_sizes)) {
+  means[i] = mean(rnorm(i))
+}
+
+means
+```
+
+## Another way to repeat ourselves: functions!
+
+R is a **functional programming language**, so we largely prefer functions as the way to do things.
+
+```{r}
+calculate_sample_mean <- function(sample_size) {
+  sample_mean <- mean(rnorm(sample_size))
+  
+  sample_mean
+}
+
+calculate_sample_mean(1)
+```
+
+## Another way to repeat ourselves: functions!
+
+Then, we can **apply** that function to a list of numbers and get the same result:
+
+```{r}
+sapply(1:30, calculate_sample_mean)
+```
+
+Let's break it down...
+
+## Functions
+
+The general structure of a function is as follows:
+
+```{r eval=FALSE}
+function_name <- function(arguments) {
+  do_this(arguments)
+}
+```
+
+## Functions
+
+There are three main parts to a function:
+
+1. Function name
+2. Function arguments
+3. Function body
+
+```{r eval=FALSE}
+function_name <- function(arguments) {
+  do_this(arguments)
+}
+```
+
+## Simple example: printing output
+
+```{r}
+print("Number 1!")
+print("Number 2!")
+print("Number 3!")
+# and so on...
+print("Number 10!")
+```
+
+## Simple example: printing output
+
+Set up the body of the function:
+
+```{r eval=FALSE}
+name <- function() {
+  
+}
+```
+
+You can do this with a code snippet in RStudio (start typing "fun", then press Tab!)
+
+## Simple example: printing output
+
+Come up with a short, descriptive name:
+
+```{r eval=FALSE}
+shout_number <- function() {
+  
+}
+```
+
+We recommend verb_thing(), so `calculate_size()` or `compare_prices()` as vs. `fun1()`, `calc()`.
+
+## Simple example: printing output
+
+Decide what the input to the function will be:
+
+```{r eval=FALSE}
+shout_number <- function(number) {
+  
+}
+```
+
+## Simple example: printing output
+
+Do something to that input:
+
+```{r}
+shout_number <- function(number) {
+  paste0("Number ", number, "!")
+}
+```
+
+Note that we don't need to explicitly call `return()` - the last line of the code will be the value returned by the function.
+
+## Simple example: printing output
+
+Test it out:
+
+```{r}
+shout_number <- function(number) {
+  paste0("Number ", number, "!")
+}
+
+shout_number(1)
+```
+
+Question: does `number` exist in my R environment after I run this function? Why or why not?
+
+## apply() family of functions
+
+Functions are powerful when `apply()`ed to lists:
+
+```{r}
+shout_number <- function(number) {
+  paste0("Number ", number, "!")
+}
+```
+
+```{r}
+numbers <- 1:10
+
+sapply(numbers, shout_number)
+```
+
+## apply() family of functions
+
+The prefixes influence the type of thing that is output:
+
+```{r}
+numbers <- 1:10
+
+lapply(numbers, shout_number)
+```
+
+## Second example: calculating the mean of a sample
+
+```{r}
+calculate_sample_mean <- function(sample_size) {
+  sample_mean <- mean(rnorm(sample_size))
+  
+  sample_mean
+}
+
+calculate_sample_mean(1)
+```
+
+## Again, better in context of apply() 
+
+```{r}
+calculate_sample_mean <- function(sample_size) {
+  sample_mean <- mean(rnorm(sample_size))
+  
+  sample_mean
+}
+
+sapply(1:30, calculate_sample_mean)
+```
+
+## Function defaults
+
+We can set values to be defaults, but the user can change them. 
+
+Our function from before:
+
+```{r}
+calculate_sample_mean <- function(sample_size) {
+  sample_mean <- mean(rnorm(sample_size))
+  
+  sample_mean
+}
+```
+
+## Function defaults
+
+We can set values to be defaults, but the user can change them. 
+
+We add more arguments, and set default values for them:
+
+```{r}
+calculate_sample_mean <- function(sample_size, 
+                                  sample_mean = 0, 
+                                  sample_sd = 1) {
+  sample_mean <- mean(rnorm(sample_size, 
+                            mean = sample_mean, 
+                            sd = sample_sd))
+  
+  sample_mean
+}
+```
+
+## Function defaults
+
+```{r}
+calculate_sample_mean(10, sample_mean = 6, sample_sd = 2)
+calculate_sample_mean(sample_sd = 2, sample_size = 9)
+```
+
+This won't work:
+
+```{r eval=FALSE}
+calculate_sample_mean(sample_mean = 5)
+```
+
+```
+Error in rnorm(sample_size, mean = sample_mean, sd = sample_sd) : 
+  argument "sample_size" is missing, with no default
+```
+
+## Functions in functions
+
+We can pass functions as arguments to other functions:
+
+```{r}
+calculate_sample_mean <- function(sample_size, dist_type = rnorm) {
+  sample_mean <- mean(dist_type(sample_size))
+  
+  sample_mean
+}
+
+calculate_sample_mean(10)
+calculate_sample_mean(10, dist_type = pnorm)
+```
+
+## Detour: probability distributions
+
+
+
+## Best practices for functions
+
+1. Keep your functions simple and short
+2. Name functions well (verb_thing() is generally good), and document what they take as input and output
+3. Check and debug your functions as you write them, not at the end
+
+## Want to learn more?
+
+- [Functions Chapter](https://r4ds.had.co.nz/functions.html) in R for Data Science
+
+![](images/02_r4ds.png){#id .class width=30% height=30%}
+
+## Recap
+
+Today we:
+
+- Introduced functions
+- Discussed function arguments 
+- Showed how to use functions with apply()
+- Reviewed probability distributions
+- Gave a few pointers for writing your own functions
+
+And that's it for us this fall. Thanks for sticking with us these 5 weeks! 
+
+Find the workshop link on the course web page:
+http://harris-coding-lab.github.io
