@@ -175,20 +175,6 @@ calculate_sample_mean <- function(sample_size) {
 calculate_sample_mean(1)
 ```
 
-## Again, better in context of map() 
-
-
-```{r}
-calculate_sample_mean <- function(sample_size) {
-  sample_mean <- mean(rnorm(sample_size))
-  
-  sample_mean
-}
-
-map_dbl(1:30, calculate_sample_mean)
-```
-This is doing the same work as our for-loop from last week. For more information on the `map()` family of functions,  see appendix. 
-
 ## Function defaults
 
 We can set values to be defaults, but the user can change them. 
@@ -385,7 +371,6 @@ http://harris-coding-lab.github.io
 
 ## Detour: Monte Carlo Simulations
 
-
 ## Appendix: map() family of functions
 
 Functions are powerful when `map()`ed to lists:
@@ -427,3 +412,16 @@ library(purrr)
 numbers <- 1:10
 map(numbers, shout_number)
 ```
+
+## Another map() example
+
+```{r}
+calculate_sample_mean <- function(sample_size) {
+  sample_mean <- mean(rnorm(sample_size))
+  
+  sample_mean
+}
+
+map_dbl(1:30, calculate_sample_mean)
+```
+This is doing the same work as our for-loop from last week.
