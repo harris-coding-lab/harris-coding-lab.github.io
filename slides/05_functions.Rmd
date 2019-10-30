@@ -360,7 +360,6 @@ Today we:
 
 - Introduced functions
 - Discussed function arguments 
-- Showed how to use functions with apply()
 - Reviewed probability distributions
 - Gave a few pointers for writing your own functions
 

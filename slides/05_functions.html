@@ -3153,15 +3153,15 @@ padding: 0.5em 1.5em;
 
 <pre class = 'prettyprint lang-r'>mean(rnorm(1))</pre>
 
-<pre >## [1] -1.00747</pre>
+<pre >## [1] -0.8569026</pre>
 
 <pre class = 'prettyprint lang-r'>mean(rnorm(2))</pre>
 
-<pre >## [1] 0.9752125</pre>
+<pre >## [1] -0.8634373</pre>
 
 <pre class = 'prettyprint lang-r'>mean(rnorm(3))</pre>
 
-<pre >## [1] 0.05401295</pre>
+<pre >## [1] -0.08747819</pre>
 
 </article></slide><slide class=""><hgroup><h2>Review: Iteration with for loops</h2></hgroup><article  id="review-iteration-with-for-loops-1">
 
@@ -3176,12 +3176,12 @@ for (i in seq_along(sample_sizes)) {
 
 means</pre>
 
-<pre >##  [1]  0.065229054  0.353845522  0.046576371  0.004184214  0.167510141
-##  [6]  0.103037115 -0.029293108 -0.261454764  0.008314857  0.607714573
-## [11] -0.848654502 -0.298192132 -0.467334906 -0.241275416  0.086344504
-## [16]  0.218578628  0.397403012  0.456212093 -0.392726568 -0.326655204
-## [21]  0.253356825  0.165749514 -0.272860555  0.317173645 -0.301741458
-## [26] -0.240689241 -0.209151073 -0.026429373 -0.024680696 -0.221337151</pre>
+<pre >##  [1] -1.374639999  0.195946806 -0.120729207  0.369265778  0.964317042
+##  [6]  0.461303588 -0.244343913  0.227667126 -0.270413031 -0.962284564
+## [11]  0.460428284  0.375111982  0.034429259  0.277888867 -0.079018851
+## [16]  0.140344301  0.094467266 -0.165355197 -0.131796696  0.110572781
+## [21] -0.054875264 -0.562736780  0.094017347 -0.013053766 -0.461084812
+## [26] -0.319686812  0.154897225  0.119841851  0.301692637  0.004954422</pre>
 
 </article></slide><slide class=""><hgroup><h2>Another way to repeat ourselves: functions!</h2></hgroup><article  id="another-way-to-repeat-ourselves-functions">
 
@@ -3195,7 +3195,7 @@ means</pre>
 
 calculate_sample_mean(1)</pre>
 
-<pre >## [1] -2.11974</pre>
+<pre >## [1] -1.079832</pre>
 
 <p>Let’s break it down…</p>
 
@@ -3302,7 +3302,7 @@ shout_number(1)</pre>
 
 calculate_sample_mean(1)</pre>
 
-<pre >## [1] 0.6266243</pre>
+<pre >## [1] -0.323238</pre>
 
 </article></slide><slide class=""><hgroup><h2>Function defaults</h2></hgroup><article  id="function-defaults">
 
@@ -3336,11 +3336,11 @@ calculate_sample_mean(1)</pre>
 
 <pre class = 'prettyprint lang-r'>calculate_sample_mean(10, our_mean = 6, our_sd = 2)</pre>
 
-<pre >## [1] 5.61366</pre>
+<pre >## [1] 7.193346</pre>
 
 <pre class = 'prettyprint lang-r'>calculate_sample_mean(our_sd = 2, sample_size = 9)</pre>
 
-<pre >## [1] 0.7786749</pre>
+<pre >## [1] 1.10882</pre>
 
 <p>This won’t work:</p>
 
@@ -3384,14 +3384,14 @@ calculate_sample_mean(1)</pre>
                       our_mean = 0, 
                       our_sd = 1)</pre>
 
-<pre >## [1] 0.4277807</pre>
+<pre >## [1] 0.3835129</pre>
 
 <pre class = 'prettyprint lang-r'>summarize_sample(sample_size = 10, 
                 our_mean = 0, 
                 our_sd = 1, 
                 summary_fxn = max)</pre>
 
-<pre >## [1] 1.301701</pre>
+<pre >## [1] 1.273396</pre>
 
 <p><code>calculate_sample_mean()</code> is now probably the wrong name for this function - we should call it <code>summarize_sample()</code> or something like that.</p>
 
@@ -3503,20 +3503,20 @@ calculate_sample_mean(1)</pre>
 
 <pre class = 'prettyprint lang-r'>rnorm(1)</pre>
 
-<pre >## [1] 0.5029209</pre>
+<pre >## [1] -0.1844624</pre>
 
 <pre class = 'prettyprint lang-r'>rnorm(5)</pre>
 
-<pre >## [1]  0.2657061 -1.5412713 -0.4299093  0.5832966  0.5055931</pre>
+<pre >## [1]  1.4394100 -0.5352627  0.6386154 -0.8068548 -0.8599873</pre>
 
 <pre class = 'prettyprint lang-r'>rnorm(30)</pre>
 
-<pre >##  [1] -0.171839929  0.418109711  1.001305993  1.283173821  0.196391890
-##  [6]  0.387178315 -0.771743868  0.711147815 -1.453358553  0.512288558
-## [11]  0.669160139  2.713717046 -0.007818783  1.334472315  0.355810827
-## [16]  0.517739523  0.108779064 -0.879227135 -0.185035728  0.697254671
-## [21]  0.261406061 -0.897845513  0.393965637  0.393771119 -1.205446662
-## [26] -1.184848522 -0.578569002  0.920584823 -0.508153986  0.268723042</pre>
+<pre >##  [1] -1.87327970  1.07936708 -0.31699679  0.04716810 -0.39651834
+##  [6] -0.38928334  1.34672494 -0.94361611  0.48173606  1.64409650
+## [11]  0.59644767 -2.82097455 -0.19201685 -2.61063549  0.54750844
+## [16]  0.08974448  0.85991890  0.65529670  0.92562726 -0.82839503
+## [21] -1.94354001  0.12803369 -0.97066846 -0.32132921 -0.98977634
+## [26]  0.66148500  1.04674123 -1.28464304 -1.06028815  1.49807943</pre>
 
 </article></slide><slide class=""><hgroup><h2>Best practices for functions</h2></hgroup><article  id="best-practices-for-functions">
 
@@ -3541,7 +3541,6 @@ calculate_sample_mean(1)</pre>
 <ul>
 <li>Introduced functions</li>
 <li>Discussed function arguments</li>
-<li>Showed how to use functions with apply()</li>
 <li>Reviewed probability distributions</li>
 <li>Gave a few pointers for writing your own functions</li>
 </ul>
@@ -3658,12 +3657,12 @@ map(numbers, shout_number)</pre>
 
 map_dbl(1:30, calculate_sample_mean)</pre>
 
-<pre >##  [1] -1.31555857 -0.37746472  0.67822561 -0.50060410 -0.26811894
-##  [6] -0.81268591 -0.82378134 -0.18068968 -0.43609257  0.26392399
-## [11]  0.18577204 -0.03931005 -0.09676596  0.11692582 -0.19856432
-## [16] -0.50374810  0.53369171  0.05361486  0.26060521  0.06387813
-## [21] -0.05960498 -0.15903197  0.14504512  0.04841752 -0.02324889
-## [26]  0.04503333  0.18747561 -0.12303814 -0.11138935  0.04936348</pre>
+<pre >##  [1] -1.359739797  0.235788759 -0.107795139 -0.002821703 -0.791262239
+##  [6]  0.228520691 -0.274325159  0.478878245  0.275477553  0.347493997
+## [11] -0.309456548  0.250914455  0.151829078  0.122458463  0.075426433
+## [16] -0.204651692  0.009121486  0.551588748 -0.250487545  0.030039739
+## [21]  0.287613247  0.228013550 -0.127215658  0.425715263  0.025620113
+## [26]  0.285092844  0.118147663  0.159595624 -0.077065169  0.416110399</pre>
 
 <p>This is doing the same work as our for-loop from last week.</p></article></slide>
 
