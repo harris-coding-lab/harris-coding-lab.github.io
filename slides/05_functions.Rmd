@@ -8,7 +8,6 @@ output:
 ---
 ```{r, setup=TRUE, message=FALSE, echo=FALSE}
 library(tidyverse)
-library(readxl)
 ```
 
 ## Lecture Outline
@@ -176,7 +175,8 @@ calculate_sample_mean <- function(sample_size) {
 calculate_sample_mean(1)
 ```
 
-## Again, better in context of apply() 
+## Again, better in context of map() 
+
 
 ```{r}
 calculate_sample_mean <- function(sample_size) {
@@ -185,8 +185,9 @@ calculate_sample_mean <- function(sample_size) {
   sample_mean
 }
 
-sapply(1:30, calculate_sample_mean)
+map_dbl(1:30, calculate_sample_mean)
 ```
+This is doing the same work as our for-loop from last week. For more information on the `map()` family of functions,  see appendix. 
 
 ## Function defaults
 
@@ -210,11 +211,11 @@ We add more arguments, and set default values for them:
 
 ```{r}
 calculate_sample_mean <- function(sample_size, 
-                                  sample_mean = 0, 
-                                  sample_sd = 1) {
+                                  our_mean = 0, 
+                                  our_sd = 1) {
   sample_mean <- mean(rnorm(sample_size, 
-                            mean = sample_mean, 
-                            sd = sample_sd))
+                            mean = our_mean, 
+                            sd = our_sd))
   
   sample_mean
 }
@@ -223,18 +224,18 @@ calculate_sample_mean <- function(sample_size,
 ## Function defaults
 
 ```{r}
-calculate_sample_mean(10, sample_mean = 6, sample_sd = 2)
-calculate_sample_mean(sample_sd = 2, sample_size = 9)
+calculate_sample_mean(10, our_mean = 6, our_sd = 2)
+calculate_sample_mean(our_sd = 2, sample_size = 9)
 ```
 
 This won't work:
 
 ```{r eval=FALSE}
-calculate_sample_mean(sample_mean = 5)
+calculate_sample_mean(our_mean = 5)
 ```
 
 ```
-Error in rnorm(sample_size, mean = sample_mean, sd = sample_sd) : 
+Error in rnorm(sample_size, mean = our_mean, sd = our_sd) : 
   argument "sample_size" is missing, with no default
 ```
 
@@ -244,11 +245,11 @@ We can pass functions as arguments to other functions. Before:
 
 ```{r}
 calculate_sample_mean <- function(sample_size, 
-                                  sample_mean = 0, 
-                                  sample_sd = 1) {
+                                  our_mean = 0, 
+                                  our_sd = 1) {
   sample_mean <- mean(rnorm(sample_size, 
-                            mean = sample_mean, 
-                            sd = sample_sd))
+                            mean = our_mean, 
+                            sd = our_sd))
   
   sample_mean
 }
@@ -261,12 +262,12 @@ We can pass functions as arguments to other functions. After:
 
 ```{r}
 summarize_sample <- function(sample_size, 
-                                  sample_mean = 0, 
-                                  sample_sd = 1,
+                                  our_mean = 0, 
+                                  our_sd = 1,
                                   summary_fxn = mean) {
   summary_stat <- summary_fxn(rnorm(sample_size, 
-                            mean = sample_mean, 
-                            sd = sample_sd))
+                            mean = our_mean, 
+                            sd = our_sd))
   
   summary_stat
 }
@@ -276,11 +277,11 @@ summarize_sample <- function(sample_size,
 
 ```{r}
 calculate_sample_mean(sample_size = 10, 
-                      sample_mean = 0, 
-                      sample_sd = 1)
+                      our_mean = 0, 
+                      our_sd = 1)
 summarize_sample(sample_size = 10, 
-                sample_mean = 0, 
-                sample_sd = 1, 
+                our_mean = 0, 
+                our_sd = 1, 
                 summary_fxn = max)
 ```
 
@@ -288,16 +289,19 @@ summarize_sample(sample_size = 10,
 
 ## Detour: probability distributions
 
-Many distributions in R have multiple variants (i.e. the normal distribution has 4 families of functions):
+R has built-in functions for working with distributions.
 
-- `dnorm()`
-- `pnorm()`
-- `qnorm()`
-- `rnorm()`
+| | example | what it does? |
+| -- | -- | -- | 
+| d | `dnorm(x)` | returns pdf value at x |  
+| p | `pnorm(x)` | returns CDF value at x | 
+| q | `qnorm(q)` | returns inverse CDF for a given quantile |
+| r | `rnorm(n)` | generates a random sample of size n |
 
-These correspond to the density function of the distribution, the cumulative distribution function, the quantile function, and a random sampling function.
+Probability distributions you are familiar with are likely built-in to R.
 
-There's also `dbinom()`, `pbinom()`, `qbinom()`, `rbinom()`, etc.
+For example, the binomial distribution has `dbinom()`, `pbinom()`, `qbinom()`, `rbinom()`. The t distribution has `dt()`, `pt()`, `qt()`, `rt()`, etc.
+
 
 Read [this tutorial](https://thomasleeper.com/Rcourse/Tutorials/distributions.html) for more information.
 
@@ -349,6 +353,7 @@ rnorm(5)
 rnorm(30)
 ```
 
+
 ## Best practices for functions
 
 1. Keep your functions simple and short
@@ -359,7 +364,9 @@ rnorm(30)
 
 - [Functions Chapter](https://r4ds.had.co.nz/functions.html) in R for Data Science
 
-![](images/02_r4ds.png){#id .class width=30% height=30%}
+
+<img src="images/02_r4ds.png" width="600px" />
+
 
 ## Recap
 
@@ -378,9 +385,10 @@ http://harris-coding-lab.github.io
 
 ## Detour: Monte Carlo Simulations
 
-## Appendix: apply() family of functions
 
-Functions are powerful when `apply()`ed to lists:
+## Appendix: map() family of functions
+
+Functions are powerful when `map()`ed to lists:
 
 ```{r}
 shout_number <- function(number) {
@@ -391,17 +399,25 @@ shout_number <- function(number) {
 ```{r}
 numbers <- 1:10
 
-sapply(numbers, shout_number)
+# map returns a list the same length as numbers.
+map(numbers, shout_number)
+```
+*** 
+
+```{r}
+#for (item in .x){
+#  .f()
+#}
 ```
 
-## apply() family of functions
+## map() family of functions
 
-The prefixes influence the type of thing that is output:
+The infixes influence the type of thing that is output:
 
 ```{r}
 numbers <- 1:10
 
-lapply(numbers, shout_number)
+map_chr(numbers, shout_number)
 ```
 
 ## map() is nicer than apply()
