@@ -280,8 +280,8 @@ R has built-in functions for working with distributions.
 | | example | what it does? |
 | -- | -- | -- | 
 | d | `dnorm(x)` | returns pdf value at x |  
-| p | `pnorm(x)` | returns CDF value at x | 
-| q | `qnorm(q)` | returns inverse CDF for a given quantile |
+| p | `pnorm(q)` | returns CDF value at q | 
+| q | `qnorm(p)` | returns inverse CDF (the quantile) for a given probability |
 | r | `rnorm(n)` | generates a random sample of size n |
 
 Probability distributions you are familiar with are likely built-in to R.

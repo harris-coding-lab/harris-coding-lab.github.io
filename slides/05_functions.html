@@ -4,6 +4,7 @@
   <title>Coding Lab: Functions</title>
 
   <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
   <meta name="generator" content="pandoc" />
 
@@ -258,6 +259,7 @@ background: black;
 }
 
 slides > slide {
+display: none;
 font-family: 'Open Sans', Arial, sans-serif;
 font-size: 26px;
 color: #797979;
@@ -278,19 +280,17 @@ transition: all 0.6s ease-in-out;
 }
 
 slides > slide.far-past {
+display: none;
 }
 
 slides > slide.past {
+display: block;
 opacity: 0;
 }
 
 slides > slide.current {
 display: block;
 opacity: 1;
-z-index: 1;
-}
-slides > slide:not(.current) {
-z-index: 0;
 }
 
 slides > slide.current .auto-fadein {
@@ -305,11 +305,13 @@ background-size: 100% 100%;
 }
 
 slides > slide.next {
+display: block;
 opacity: 0;
 pointer-events: none;
 }
 
 slides > slide.far-next {
+display: none;
 }
 
 slides > slide.dark {
@@ -381,6 +383,8 @@ width: 1100px;
 
 slides.layout-widescreen > slide.far-past,
 slides.layout-faux-widescreen > slide.far-past {
+display: block;
+display: none;
 -webkit-transform: translate(-2260px);
 -moz-transform: translate(-2260px);
 -ms-transform: translate(-2260px);
@@ -414,6 +418,8 @@ pointer-events: none;
 
 slides.layout-widescreen > slide.far-next,
 slides.layout-faux-widescreen > slide.far-next {
+display: block;
+display: none;
 -webkit-transform: translate(2260px);
 -moz-transform: translate(2260px);
 -ms-transform: translate(2260px);
@@ -1344,13 +1350,6 @@ opacity: 1;
 
 .overview .slide-area {
 display: none;
-}
-slides > slide {
-background: linear-gradient(#ffffff, #ffffff 85%, #e6e6e6);
-background-color: white;
-}
-slides > slide {
-opacity: 0;
 }
 @media print {
 
@@ -3096,10 +3095,6 @@ if (document.readyState !== "loading" &&
       transition: opacity 0.6s ease-in 0.4s;
       opacity: 0;
     }
-/* https://github.com/ropensci/plotly/pull/524#issuecomment-468142578 */
-slide:not(.current) .plotly.html-widget{
-  display: block;
-}
 
   </style>
 
@@ -3153,15 +3148,15 @@ padding: 0.5em 1.5em;
 
 <pre class = 'prettyprint lang-r'>mean(rnorm(1))</pre>
 
-<pre >## [1] -0.8569026</pre>
+<pre >## [1] 0.4779326</pre>
 
 <pre class = 'prettyprint lang-r'>mean(rnorm(2))</pre>
 
-<pre >## [1] -0.8634373</pre>
+<pre >## [1] -0.3268178</pre>
 
 <pre class = 'prettyprint lang-r'>mean(rnorm(3))</pre>
 
-<pre >## [1] -0.08747819</pre>
+<pre >## [1] -0.3284426</pre>
 
 </article></slide><slide class=""><hgroup><h2>Review: Iteration with for loops</h2></hgroup><article  id="review-iteration-with-for-loops-1">
 
@@ -3176,12 +3171,12 @@ for (i in seq_along(sample_sizes)) {
 
 means</pre>
 
-<pre >##  [1] -1.374639999  0.195946806 -0.120729207  0.369265778  0.964317042
-##  [6]  0.461303588 -0.244343913  0.227667126 -0.270413031 -0.962284564
-## [11]  0.460428284  0.375111982  0.034429259  0.277888867 -0.079018851
-## [16]  0.140344301  0.094467266 -0.165355197 -0.131796696  0.110572781
-## [21] -0.054875264 -0.562736780  0.094017347 -0.013053766 -0.461084812
-## [26] -0.319686812  0.154897225  0.119841851  0.301692637  0.004954422</pre>
+<pre >##  [1]  0.90864225  0.19782820  0.46008951 -0.88222662 -0.73727426
+##  [6]  0.90690242 -0.10235403 -0.08936503 -0.15537574  0.37555545
+## [11]  0.23271712  0.09452207  0.14029632 -0.20689643  0.06658770
+## [16] -0.06243757  0.55277932  0.08303760  0.34501848  0.11387787
+## [21]  0.22076712 -0.33237591  0.35235036  0.13444633 -0.05322123
+## [26]  0.33422929 -0.12551844 -0.17960554  0.06732882  0.03209902</pre>
 
 </article></slide><slide class=""><hgroup><h2>Another way to repeat ourselves: functions!</h2></hgroup><article  id="another-way-to-repeat-ourselves-functions">
 
@@ -3195,7 +3190,7 @@ means</pre>
 
 calculate_sample_mean(1)</pre>
 
-<pre >## [1] -1.079832</pre>
+<pre >## [1] -1.315209</pre>
 
 <p>Let’s break it down…</p>
 
@@ -3302,7 +3297,7 @@ shout_number(1)</pre>
 
 calculate_sample_mean(1)</pre>
 
-<pre >## [1] -0.323238</pre>
+<pre >## [1] -0.09255879</pre>
 
 </article></slide><slide class=""><hgroup><h2>Function defaults</h2></hgroup><article  id="function-defaults">
 
@@ -3336,11 +3331,11 @@ calculate_sample_mean(1)</pre>
 
 <pre class = 'prettyprint lang-r'>calculate_sample_mean(10, our_mean = 6, our_sd = 2)</pre>
 
-<pre >## [1] 7.193346</pre>
+<pre >## [1] 5.982803</pre>
 
 <pre class = 'prettyprint lang-r'>calculate_sample_mean(our_sd = 2, sample_size = 9)</pre>
 
-<pre >## [1] 1.10882</pre>
+<pre >## [1] -0.5340442</pre>
 
 <p>This won’t work:</p>
 
@@ -3384,14 +3379,14 @@ calculate_sample_mean(1)</pre>
                       our_mean = 0, 
                       our_sd = 1)</pre>
 
-<pre >## [1] 0.3835129</pre>
+<pre >## [1] 0.5232829</pre>
 
 <pre class = 'prettyprint lang-r'>summarize_sample(sample_size = 10, 
                 our_mean = 0, 
                 our_sd = 1, 
                 summary_fxn = max)</pre>
 
-<pre >## [1] 1.273396</pre>
+<pre >## [1] 1.472968</pre>
 
 <p><code>calculate_sample_mean()</code> is now probably the wrong name for this function - we should call it <code>summarize_sample()</code> or something like that.</p>
 
@@ -3412,13 +3407,13 @@ calculate_sample_mean(1)</pre>
 </tr>
 <tr class="even">
 <td align="left">p</td>
-<td align="left"><code>pnorm(x)</code></td>
-<td align="left">returns CDF value at x</td>
+<td align="left"><code>pnorm(q)</code></td>
+<td align="left">returns CDF value at q</td>
 </tr>
 <tr class="odd">
 <td align="left">q</td>
-<td align="left"><code>qnorm(q)</code></td>
-<td align="left">returns inverse CDF for a given quantile</td>
+<td align="left"><code>qnorm(p)</code></td>
+<td align="left">returns inverse CDF (the quantile) for a given probability</td>
 </tr>
 <tr class="even">
 <td align="left">r</td>
@@ -3503,20 +3498,19 @@ calculate_sample_mean(1)</pre>
 
 <pre class = 'prettyprint lang-r'>rnorm(1)</pre>
 
-<pre >## [1] -0.1844624</pre>
+<pre >## [1] 1.512</pre>
 
 <pre class = 'prettyprint lang-r'>rnorm(5)</pre>
 
-<pre >## [1]  1.4394100 -0.5352627  0.6386154 -0.8068548 -0.8599873</pre>
+<pre >## [1]  0.00138504  0.59917440  0.86774686 -2.44397129  0.16783118</pre>
 
 <pre class = 'prettyprint lang-r'>rnorm(30)</pre>
 
-<pre >##  [1] -1.87327970  1.07936708 -0.31699679  0.04716810 -0.39651834
-##  [6] -0.38928334  1.34672494 -0.94361611  0.48173606  1.64409650
-## [11]  0.59644767 -2.82097455 -0.19201685 -2.61063549  0.54750844
-## [16]  0.08974448  0.85991890  0.65529670  0.92562726 -0.82839503
-## [21] -1.94354001  0.12803369 -0.97066846 -0.32132921 -0.98977634
-## [26]  0.66148500  1.04674123 -1.28464304 -1.06028815  1.49807943</pre>
+<pre >##  [1]  1.4549136  0.3609099 -0.1118318  0.9593363  1.5520531 -0.9759057
+##  [7]  0.5648750 -0.9046218 -1.1399470  1.4941778  0.3935411  0.1818493
+## [13]  0.1096552 -0.7830749 -0.4851587 -0.2919613 -0.4830477 -0.1291324
+## [19] -0.1278391 -1.0831788 -0.6827786  0.0151554 -0.2019645 -0.4117387
+## [25]  1.0182614  1.1715970 -0.4483821  0.5020953  0.8392909 -0.2671491</pre>
 
 </article></slide><slide class=""><hgroup><h2>Best practices for functions</h2></hgroup><article  id="best-practices-for-functions">
 
@@ -3657,12 +3651,12 @@ map(numbers, shout_number)</pre>
 
 map_dbl(1:30, calculate_sample_mean)</pre>
 
-<pre >##  [1] -1.359739797  0.235788759 -0.107795139 -0.002821703 -0.791262239
-##  [6]  0.228520691 -0.274325159  0.478878245  0.275477553  0.347493997
-## [11] -0.309456548  0.250914455  0.151829078  0.122458463  0.075426433
-## [16] -0.204651692  0.009121486  0.551588748 -0.250487545  0.030039739
-## [21]  0.287613247  0.228013550 -0.127215658  0.425715263  0.025620113
-## [26]  0.285092844  0.118147663  0.159595624 -0.077065169  0.416110399</pre>
+<pre >##  [1] -0.770679703 -1.202518648  0.062975845  0.297993879  0.247681332
+##  [6] -0.931632243  0.279796140 -0.352598283 -0.077761502  0.601494765
+## [11]  0.086607873  0.040618739  0.285679945 -0.015948535 -0.234724128
+## [16]  0.420278199 -0.166329965  0.179780769  0.101691417  0.021753537
+## [21] -0.009521356 -0.237516848  0.114023466  0.045228329 -0.147090483
+## [26]  0.108097499  0.225099659 -0.370085299  0.297717192 -0.153509261</pre>
 
 <p>This is doing the same work as our for-loop from last week.</p></article></slide>
 
