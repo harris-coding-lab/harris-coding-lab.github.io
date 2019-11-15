@@ -54,8 +54,9 @@ Links to materials for each week's workshop will be posted here as provided.
     - [tutorial solutions](code/04_solutions.R)
 - **Week 5: Functions**
   - [slides](slides/05_functions.html)
-  - [slide code](code/05_functions.R) 
+    - [slide code](code/05_functions.R) 
   - [interactive tutorial](https://harris-coding-lab.shinyapps.io/functions-a/)
+    - [tutorial solutions](code/05_solutions.R) 
 
 ### Additional Resources
 
