@@ -16,32 +16,33 @@ library(readxl)
 
 As part of the statistics curriculum, you will be asked to analyze data using the programming language R. R is an open source language that is widely used by data analysts. 
 
-This is a self-assessment. If you feel comfortable completing this assignment by yourself (with the help of google), than you are free to skip coding lab. In summer coding lab, we provide an introduction to R coding focused on data analysis. In fall summer coding lab, we repeat some of the data analysis material and also introduce using R for programming.
+This is a self-assessment. If you feel comfortable completing this assignment by yourself (with the help of google), then you are free to skip the summer coding camp. In summer coding camp, we provide an introduction to R coding focused on data analysis. In fall coding lab, we repeat some of the data analysis material and also introduce using R for programming.
 
 # Task 1:
 
 1. Install R and Rstudio.
 1. Install the package `readxl` and `tidyverse`. 
-1. Adjust the following code block to read in the provided data set `incarceration_counts_and_rates_by_type_over_time.xlsx`
+1. Adjust the following code block to read in the provided data set,  
+`incarceration_counts_and_rates_by_type_over_time.xlsx`
 
-```{r echo = FALSE, include=FALSE}
-incarceration_data <- read_xlsx("../data/incarceration_counts_and_rates_by_type_over_time.xlsx", 
-               range = "A7:CO10") %>%
-    rename("type" = ...1) %>%
-    pivot_longer(`1925`:`2016`, names_to = "year", values_to = "counts")
+    ```{r echo = FALSE, include=FALSE}
+    incarceration_data <- read_xlsx("../data/incarceration_counts_and_rates_by_type_over_time.xlsx", 
+                   range = "A7:CO10") %>%
+        rename("type" = ...1) %>%
+        pivot_longer(`1925`:`2016`, names_to = "year", values_to = "counts")
+    
+    write_csv(incarceration_data, "../data/incarceration_counts_and_rates_by_type_over_time.csv")
+    ```
 
-write_csv(incarceration_data, "../data/incarceration_counts_and_rates_by_type_over_time.csv")
-```
-
-```{r eval = FALSE}
-library(tidyverse)
-library(readxl)
-setwd(<Put path to file here>)
-incarceration_data <- read_xlsx("incarceration_counts_and_rates_by_type_over_time.xlsx", 
-               range = "A7:CO10") %>%
-    rename("type" = ...1) %>%
-    pivot_longer(`1925`:`2016`, names_to = "year", values_to = "counts")
-```
+    ```{r eval = FALSE}
+    library(tidyverse)
+    library(readxl)
+    setwd(<Put path to file here>)
+    incarceration_data <- read_xlsx("incarceration_counts_and_rates_by_type_over_time.xlsx", 
+                   range = "A7:CO10") %>%
+        rename("type" = ...1) %>%
+        pivot_longer(`1925`:`2016`, names_to = "year", values_to = "counts")
+    ```
 
 1. What does the code  `library(readxl)` do and why is it necessary?
 1. Why do you need to set a working directory (`setwd()`)?
@@ -53,13 +54,15 @@ If you had trouble with readxl, we provide a csv as well. You can load the data 
 # Task 2:
 
 You want to make a graph visualizing the change in incarceration counts in the United States over time.
+
 ```{r, eval = FALSE}
 incarceration_data %>%
   ggplot(aes(x = year, y = counts, color = type)) + 
   geom_line() +
   labs(title = "Incarceration counts (total population on a single day) over time")
 ```
-The following code doesn't work, because `year` is stored as characters. Change `year` data type to numeric and you'll get the following graph.
+
+The above code won't work, because `year` is stored as characters. Change the `year` data type to numeric in order to reproduce the following graph.
 
 ```{r, echo = FALSE, warning = FALSE}
 incarceration_data %>%
@@ -90,7 +93,7 @@ state_data %>% head(4)
 
 # Task 4: 
 
-In this section, you'll use `group_by()` and `summarize()` to answer questions about state prision counts by decade.
+In this section, you'll use `group_by()` and `summarize()` to answer questions about state prison counts by decade.
 
 1. Which decade saw the largest percentage growth in State prisons? Measure percent growth as $\frac{C_{d_e} - C_{d_s}}{C_{d_s}}$ where $C_{d_e}$ is the count at the end of decade and $C_{d_s}$ is the start of the decade). You can use the $first()$ and $last()$ functions.
 
@@ -108,7 +111,7 @@ We leave the data behind and test skills.
 
 1. Take `numbers <- rep(seq(-9, 10, 1), 10)`. Show that the mean of the vector is .5 and that the sum of the components is 100.
 
-1. Adjust the call to median, so that we ignore the NA value and return 3.
+1. Adjust the call to median below, so that we ignore the NA value and return 3.
 
     ```{r}
     toy_data <- c(1, 2, 3, NA, 4, 5)
@@ -135,42 +138,38 @@ These questions reflect skills covered in the fall coding lab and not during sum
 
 1. For loops: Take `numbers`. Using a for-loop, save the square of each number and add random noise using a call to `rnorm(1, sd = 5)` in a new vector called `noisy_numbers_squared`.
 
-You should be able to reproduce this graph:
+    You should be able to reproduce this graph:
 
-```{r include = FALSE}
-numbers <- rep(seq(-9, 10, 1), 10)
-numbers_squared <- vector(mode = "numeric", length = 200)
-noisy_numbers_squared <- vector(mode = "numeric", length = 200)
+    ```{r include = FALSE}
+    numbers <- rep(seq(-9, 10, 1), 10)
+    numbers_squared <- vector(mode = "numeric", length = 200)
+    noisy_numbers_squared <- vector(mode = "numeric", length = 200)
+    
+    for (i in seq_along(numbers)) {
+      numbers_squared[i] <- numbers[[i]] ^ 2
+      noisy_numbers_squared[i] <- numbers[[i]] ^ 2 + rnorm(1, sd = 5)
+    }
+    ```
 
-for (i in seq_along(numbers)) {
-  numbers_squared[i] <- numbers[[i]] ^ 2
-  noisy_numbers_squared[i] <- numbers[[i]] ^ 2 + rnorm(1, sd = 5)
-}
-```
-
-
-
-```{r}
-numbers_data <- tibble(numbers = numbers,
-                       noisy_numbers_squared = noisy_numbers_squared)
-
-numbers_data %>%
-  ggplot(aes(x = numbers, y = noisy_numbers_squared)) +
-  geom_point() +
-  geom_smooth()
-```
-
-
+    ```{r}
+    numbers_data <- tibble(numbers = numbers,
+                           noisy_numbers_squared = noisy_numbers_squared)
+    
+    numbers_data %>%
+      ggplot(aes(x = numbers, y = noisy_numbers_squared)) +
+      geom_point() +
+      geom_smooth()
+    ```
 
 1. Functions: Write a function that takes a name as an input and adds "is a boss" to the name like so:
 
-```{r include = FALSE}
-add_is_a_boss <- function(name) {
-  paste0(name, " is a boss")
-}
-```
-```{r}
-add_is_a_boss("Kate Shannon Biddle")
-```
+    ```{r include = FALSE}
+    add_is_a_boss <- function(name) {
+      paste0(name, " is a boss")
+    }
+    ```
+    ```{r}
+    add_is_a_boss("Kate Shannon Biddle")
+    ```
 
 
