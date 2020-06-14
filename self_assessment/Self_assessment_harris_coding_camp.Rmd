@@ -1,0 +1,176 @@
+---
+title: "Math camp coding self-assessment"
+author: "Ari Anisfeld"
+date: "6/13/2020"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(readxl)
+```
+
+
+As part of the statistics curriculum, you will be asked to analyze data using the programming language R. R is an open source language that is widely used by data analysts. 
+
+This is a self-assessment. If you feel comfortable completing this assignment by yourself (with the help of google), than you are free to skip coding lab. In summer coding lab, we provide an introduction to R coding focused on data analysis. In fall summer coding lab, we repeat some of the data analysis material and also introduce using R for programming.
+
+# Task 1:
+
+1. Install R and Rstudio.
+1. Install the package `readxl` and `tidyverse`. 
+1. Adjust the following code block to read in the provided data set `incarceration_counts_and_rates_by_type_over_time.xlsx`
+
+```{r echo = FALSE, include=FALSE}
+incarceration_data <- read_xlsx("../data/incarceration_counts_and_rates_by_type_over_time.xlsx", 
+               range = "A7:CO10") %>%
+    rename("type" = ...1) %>%
+    pivot_longer(`1925`:`2016`, names_to = "year", values_to = "counts")
+
+write_csv(incarceration_data, "../data/incarceration_counts_and_rates_by_type_over_time.csv")
+```
+
+```{r eval = FALSE}
+library(tidyverse)
+library(readxl)
+setwd(<Put path to file here>)
+incarceration_data <- read_xlsx("incarceration_counts_and_rates_by_type_over_time.xlsx", 
+               range = "A7:CO10") %>%
+    rename("type" = ...1) %>%
+    pivot_longer(`1925`:`2016`, names_to = "year", values_to = "counts")
+```
+
+1. What does the code  `library(readxl)` do and why is it necessary?
+1. Why do you need to set a working directory (`setwd()`)?
+
+If you had trouble with readxl, we provide a csv as well. You can load the data with the following code:
+`incarceration_data <- read_csv("incarceration_counts_and_rates_by_type_over_time.csv")` 
+
+
+# Task 2:
+
+You want to make a graph visualizing the change in incarceration counts in the United States over time.
+```{r, eval = FALSE}
+incarceration_data %>%
+  ggplot(aes(x = year, y = counts, color = type)) + 
+  geom_line() +
+  labs(title = "Incarceration counts (total population on a single day) over time")
+```
+The following code doesn't work, because `year` is stored as characters. Change `year` data type to numeric and you'll get the following graph.
+
+```{r, echo = FALSE, warning = FALSE}
+incarceration_data %>%
+  ggplot(aes(x = as.numeric(year), y = counts, color = type)) + 
+  geom_line() +
+  labs(x = "year", title =  "Incarceration counts (total population on a single day) over time")
+```
+
+
+# Task 3:
+
+We want to analyze state prison counts by decade. We'll prepare the data in the following ways. Store the following changes in a new tibble called `state_data`.
+
+1. Add a column called `decade` that reflects which decade the observation comes from.
+1. Filter the data so that you only have data from state prisons.
+1. Use `select` to reorder the columns so that your data is organized as below:
+
+```{r echo = FALSE}
+state_data <- incarceration_data %>%
+    filter(type == "State prisons") %>%
+    mutate(year = as.numeric(year),
+           decade = 10 * as.numeric(year) %/% 10) %>%
+    select(type, counts, decade, year)
+state_data %>% head(4)
+```
+
+
+
+# Task 4: 
+
+In this section, you'll use `group_by()` and `summarize()` to answer questions about state prision counts by decade.
+
+1. Which decade saw the largest percentage growth in State prisons? Measure percent growth as $\frac{C_{d_e} - C_{d_s}}{C_{d_s}}$ where $C_{d_e}$ is the count at the end of decade and $C_{d_s}$ is the start of the decade). You can use the $first()$ and $last()$ functions.
+
+
+```{r echo = FALSE}
+state_data %>% group_by(decade) %>%
+  summarize(percentage_growth = (last(counts) - first(counts))/first(counts))
+```
+
+
+# Task 5:
+
+Miscellanous tasks:
+We leave the data behind and test skills. 
+
+1. Take `numbers <- rep(seq(-9, 10, 1), 10)`. Show that the mean of the vector is .5 and that the sum of the components is 100.
+
+1. Adjust the call to median, so that we ignore the NA value and return 3.
+
+    ```{r}
+    toy_data <- c(1, 2, 3, NA, 4, 5)
+    
+    median(toy_data)
+    ```
+
+
+1. Use brackets to extract the number 4 from `toy_data`.
+
+1. Combine the strings assigned to `left` and `right` into a single string using an an R function.
+
+    ```{r}
+    left <- "Harris"
+    right <- "School of Public Policy"
+    ```
+
+
+
+# Task 6:
+These questions reflect skills covered in the fall coding lab and not during summer coding camp. 
+
+1. For loops: Take `numbers <- rep(seq(-9, 10, 1), 10)`. Using a for-loop, save the square of each number in a new vector called `numbers_squared`.
+
+1. For loops: Take `numbers`. Using a for-loop, save the square of each number and add random noise using a call to `rnorm(1, sd = 5)` in a new vector called `noisy_numbers_squared`.
+
+You should be able to reproduce this graph:
+
+```{r include = FALSE}
+numbers <- rep(seq(-9, 10, 1), 10)
+numbers_squared <- vector(mode = "numeric", length = 200)
+noisy_numbers_squared <- vector(mode = "numeric", length = 200)
+
+for (i in seq_along(numbers)) {
+  numbers_squared[i] <- numbers[[i]] ^ 2
+  noisy_numbers_squared[i] <- numbers[[i]] ^ 2 + rnorm(1, sd = 5)
+}
+```
+
+
+
+```{r}
+numbers_data <- tibble(numbers = numbers,
+                       noisy_numbers_squared = noisy_numbers_squared)
+
+numbers_data %>%
+  ggplot(aes(x = numbers, y = noisy_numbers_squared)) +
+  geom_point() +
+  geom_smooth()
+```
+
+
+
+1. Functions: Write a function that takes a name as an input and adds "is a boss" to the name like so:
+
+```{r include = FALSE}
+add_is_a_boss <- function(name) {
+  paste0(name, " is a boss")
+}
+```
+```{r}
+add_is_a_boss("Kate Shannon Biddle")
+```
+
+
