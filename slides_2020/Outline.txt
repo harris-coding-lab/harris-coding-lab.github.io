@@ -1,0 +1,121 @@
+
+Cover live:
+1. process of coding lab / camp
+
+# Outline
+
+Lesson 1: Brains
+Workshop: Installing R, Rstudio and the tidyverse (new, but minimal)
+- Why learn to code?
+- Sequence of R at Harris
+- The team
+- Computational reasoning / getting help (lyl1)
+
+*break* Bones
+# install.packages(), library()
+- install (new)
+- packages and `tidyverse` (from lyl2)
+
+*break* Heart
+- Repeat Computational reasoning / getting help (lyl1)
+- Example of using R
+
+Lesson 2: Loading data and basic manipulations (extending scl-lesson 2)
+Workshop: Reading files (new)
+# select(), mutate(), filter(), arrange()
+- manipulating data with `dplyr`
+
+ # read_*()
+ - reading data files into R
+ - detour: directory structures
+
+
+
+Lesson 3: Data types, vectors, vectorized functions and base R (scl-lesson 1)
+ # sum(), mean(), rep(), paste0(), [,], $, binary operators
+ Workshop (scl-workshop 1)
+ - Binary operators pt 1 + Variable assignment
+ - Types + Binary operators pt 2
+ - Data structures (Vectors, Tibbles)
+ - detour: manipulating data with `baseR`
+
+Lesson 4: Summarizing and analyzing data (extending scl-lesson 2)
+Workshop (scl-workshop 2)
+# group_by(), summarize()
+group_by and summarize
+
+Lesson 5:
+Workshop (scl-workshop 3)
+Conditional statements (scl-lesson 3)
+# if(){}, ifelse(), boolean operators
+
+
+Lesson 6: Visualizing data (new)
+# ggplot(), geom_point(), geom_line(), geom_col(), grammar of graphics
+Workshop: Work on final project
+
+
+Extras:
+# *_join(), spread(), gather()
+# p/d/r/q functions for distributions
+
+
+
+
+
+
+# Notes
+
+Day one:
+
+Introduction to R
+
+Why R?
+
+- R is awesome ... (someone else has a list of why)
+
+
+Do example of data analysis with interesting graph.
+
+By the end of
+
+
+
+
+
+What will we learn -- how does this fit into curriculum
+
+- We are going to learn basic data manipulation
+    - how to read data into R
+    - how to manipulate the data to fit our analytical needs
+    - how to make basic visualizations
+
+- In the fall, we'll include some more core programming skills
+    - loops and functions
+
+- In statistics courses, you'll develop content specific skills
+- etc
+
+
+Introduce self and TAs
+
+Expectations
+- Come to lab and work hard for the 60 mins
+- Get supported and be supportive --> engage with piazza e.g
+- Complete a data project -- make a data visualization of topic you care about (or )
+
+
+The lab courses are organized in the following way:
+    - video lecture
+    - labs --> work on developing R skills in small groups on zoom with peer support and TAs
+    (more info ... )
+
+Data project
+    - Ideally you pick data on a topic you care about
+        - we have a long list of data sets and you're free to find your own.
+    - Load the data
+    - make a graph
+    - manipulate the data, make another graph.
+
+    We will give feedback on these! and then suggest whether or not you should
+    take the 5 week version or the accelerated version.
