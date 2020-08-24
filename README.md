@@ -14,25 +14,28 @@ Links to materials for each week's workshop will be posted here as provided.
 
 
 - **Class 1: Why R?**
+  - Coming soon. 
 - **Class 2: Reading data files and manipulating data with `dplyr`**
   - [video 1: reading data](https://youtu.be/WwoMJODwFOQ) (~ 10 min)
   - [video 2: manipulating data with `dplyr`](https://youtu.be/o1a-9-RvNc4) (~ 18 min)
   - [slides]()
-    - [slide code]()
+    - [slide code]() - Coming soon. 
     - [dataset from slides](data/SCE-Public-LM-Quarterly-Microdata.xlsx) (you can download to follow along)
   - [interactive tutorial](https://harris-coding-lab.shinyapps.io/reading-files/)  NOTE TO TAs THESE WILL BE UPDATED SOON.
     - [tutorial solutions](code/02_solutions.R)
+- **Class 3: Vectors and Data Types**
+  - [video 1: reading data](https://youtu.be/0MIeGk_xwiQ) (~ 22 min)
 - **Class 4: If Statements**
-  - [video: if statements](https://youtu.be/WwoMJODwFOQ) (~ 10 min)
-  - [slides](slides/03_if-statements.html)
-    - [slide code](code/03_if-statements.R) 
+  - [video: if statements](https://youtu.be/WwoMJODwFOQ) (~ 20 min)
+  - [slides](slides/03_if-statements.html) - Coming soon. 
+    - [slide code](code/03_if-statements.R)  - Coming soon. 
   - [interactive tutorial](https://harris-coding-lab.shinyapps.io/if-statements/)
     - [tutorial solutions](code/03_solutions.R)
 - **Class 5: Grouped analysis with `dplyr`**
-  - [slides](slides/04_for-loops.html)
-    - [slide code](code/04_for-loops.R) 
+  - [slides](slides/04_for-loops.html) - Coming soon. 
+    - [slide code](code/04_for-loops.R) - Coming soon. 
   - [interactive tutorial](https://harris-coding-lab.shinyapps.io/for-loops/)
-    - [tutorial solutions](code/04_solutions.R)
+    - [tutorial solutions](code/04_solutions.R) 
 - **Class 6: Visualizing data with `ggplot`**
   - Coming soon. 
   
