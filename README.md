@@ -14,8 +14,8 @@ Links to materials for each week's workshop will be posted here as provided.
 
 
 - **Class 0: Why R?**
-  - [video part 1: why R?]().
-  - [video part 2: a quick introduction to R, Rstudio and `tidyverse`]()
+  - [video part 1: why R?](https://youtu.be/ptcdtMXbHkk) (~ 12 min)
+  - [video part 2: a quick introduction to R, Rstudio and `tidyverse`]() - Coming soon.
   - [slides:](slides/00_introduction.pdf)
 
 - **Class 1: Reading data files and manipulating data with `dplyr`**
@@ -30,20 +30,19 @@ Links to materials for each week's workshop will be posted here as provided.
     - [drug cartel data from slide](https://dataverse.harvard.edu/file.xhtml?persistentId=doi:10.7910/DVN/VIXNNE/XH5ZQU&version=1.0) (you'll need to download from Dataverse)
 
 - **Class 2: Vectors and Data Types**
-  - [video:](https://youtu.be/0MIeGk_xwiQ) (~ 22 min)
+  - [video](https://youtu.be/0MIeGk_xwiQ) (~ 22 min)
   - [slides](slides/02_vectors-and-data-types.pdf)
-    - [slide code](code/02_vectors-and-data-types.R)
+    - [slide code](code/02_vectors-and-data-types.R) - Coming soon.
 
 - **Class 3: If Statements**
-  - [video:](https://youtu.be/WwoMJODwFOQ) (~ 20 min)
-  - [slides](slides/03_if-statements.html) - Coming soon.
-    - [slide code](code/03_if-statements.R)  - Coming soon.
+  - [video](https://youtu.be/WwoMJODwFOQ) (~ 20 min)
+  - [slides](slides/03_if-statements.html)
+    - [slide code](code/03_if-statements.R) - Coming soon.
 
 - **Class 4: Grouped analysis with `dplyr`**
-  - [video:]()
-  - [slides](slides/04_grouped-data.pdf) - Coming soon.
+  - [video](https://youtu.be/9EQ9WB90VPw) (~13 min)
+  - [slides](slides/04_grouped-data.pdf)
     - [slide code](code/04_grouped-data.R) - Coming soon.
-
 
 - **Class 5: Visualizing data with `ggplot`**
   - Coming soon.
