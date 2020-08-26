@@ -1,27 +1,39 @@
 ---
-title: "Coding Lab: If Statements and Conditionals"
-author: "Ari Anisfeld, Angela Li"
-date: "10/15/2019"
-output:
-  ioslides_presentation
+title: "Coding Lab: If statements and conditionals"
+author: "Ari Anisfeld"
+date: "Summer 2020"
+output: 
+  beamer_presentation:
+    fig_width: 6
+    fig_height: 4
 ---
 ```{r, setup=TRUE, message=FALSE, echo=FALSE}
 library(tidyverse)
 library(readxl)
+texas_housing_data <- txhousing
 ```
 
-## Lecture Outline
+## Conditional statements (control flow 1)
 
- - Review: Logical operators
- - Comparing vectors
- - If statements
- - Ifelse statements 
-  - Detour: NAs and missing data
- - Conditional statements in dataframes
+We often want to our code to do something depending on the context. We start with "if" statements.
 
-## Review: Logical Operators {.build}
+```{r eval=FALSE}
+if (condition is true) {
+  do this
+} else {                      
+  do this other thing
+}
+```
 
-The main logical operators are AND (&), OR (|), and NOT (!). What happens when we use them on booleans?
+In this lesson, we'll
+
+ - review logical operators and comparing vectors
+ - introduce `if` and `else` statements
+ - introduce vectorized if with `ifelse` in tibbles
+
+## Review: Logical Operators
+
+The logical operators are AND (&), OR (|), and NOT (!). What happens when we use them on booleans?
 
 Let's start with NOT (!).
 
@@ -33,9 +45,17 @@ Let's start with NOT (!).
 !FALSE
 ```
 
-***
+## Review: Logical Operators
 
-## Replace these with conditional statements...{.build}
+Replace the conditional statements 
+
+```{r eval=FALSE}
+!(2 > 1)
+```
+
+## Review: Logical Operators
+
+Replace the conditional statements 
 
 ```{r eval=FALSE}
 !(2 > 1)
@@ -48,6 +68,15 @@ Let's start with NOT (!).
 ## What does this produce? {.build}
 
 ```{r eval=FALSE}
+# NOT (0 does not equal 0)
+!(0 != 0)
+```
+
+## What does this produce? {.build}
+
+
+```{r eval=FALSE}
+# NOT (0 does not equal 0)
 !(0 != 0)
 ```
 
@@ -55,155 +84,266 @@ Let's start with NOT (!).
 !FALSE
 ```
 
-## How about OR?
+## Review: Logical OR
+
+
+OR returns `TRUE` if at least one term is `TRUE`.
 
 ```{r}
 TRUE | FALSE
 ```
 
-Only one has to be `TRUE` for the whole statement to return `TRUE`.
+```{r}
+FALSE | FALSE
+```
 
-## Let's guess again {.build}
+Notice that Logical OR has a different meaning than "or" the conjunction  has in common English.
 
-Remember that `==` is the logical comparison for if two things are equal.
+## Review: Logical OR
 
 ```{r eval=FALSE}
 (5 > 7) | (10 == 10) 
 ```
 
+## Review: Logical OR
+
+Recall `==` is the logical comparison for if two things are equal.
+
+
+```{r eval=FALSE}
+# 5 is greater than 7 OR 10 equals 10"
+(5 > 7) | (10 == 10) 
+```
 ```{r}
 FALSE | TRUE
 ```
 
 ## Finally, AND (&)
 
+Returns `TRUE` when both operands are `TRUE`
+
 ```{r}
 TRUE & FALSE
 ```
 
-Both have to be `TRUE` for the whole statement to return `TRUE`.
+
+```{r}
+TRUE & TRUE
+```
+
+
+
+## This one is harder... 
+
+```{r eval=FALSE}
+!(2 > 6) & (4 > 9 | 3 == 3) 
+```
+
+
+## This one is harder... 
+
+```{r eval=FALSE}
+!(2 > 6) & (4 > 9 | 3 == 3) 
+```
+
+Break it down:
+```{r eval=FALSE}
+# Start with the left term
+# first
+2 > 6
+# then
+! 2 > 6
+```
+
+## This one is harder... 
+
+```{r eval=FALSE}
+!(2 > 6) & (4 > 9 | 3 == 3) 
+```
+
+Break it down:
+```{r eval=TRUE}
+# Start with the left term
+# first
+2 > 6
+# then
+! 2 > 6
+```
+
+
+## This one is harder... 
+
+```{r eval=FALSE}
+!(2 > 6) & (4 > 9 | 3 == 3) 
+```
+
+Break it down:
+```{r eval=FALSE}
+# Now try the right term
+# first
+4 > 9
+# then
+3 == 3
+# so
+(4 > 9 | 3 == 3) 
+```
+
+## This one is harder... 
+
+```{r eval=FALSE}
+!(2 > 6) & (4 > 9 | 3 == 3) 
+```
+
+Break it down:
+```{r eval=TRUE}
+# Now try the right term
+# first
+4 > 9
+# then
+3 == 3
+# so
+(4 > 9 | 3 == 3) 
+```
 
 ## This one is harder... {.build}
 
 ```{r eval=FALSE}
 !(2 > 6) & (4 > 9 | 3 == 3) 
 ```
+
+
 ```{r}
 !(FALSE) & (FALSE | TRUE) 
 ```
-
-## Comparing vectors
-
-We've just been comparing numbers, but we can use logical operators to compare vectors. Once again, R *vectorizes* the operation.
-
-```{r}
-c(1, 2, 3) > 0
-```
-
-```{r}
-c(1, 2, 3) > c(0, 2, 4)
-```
-
-## choose rows of interest with `filter()`
-
-```{r}
-library(tidyverse)
-texas_housing_data <- txhousing
-
-texas_housing_data %>%
-  filter(year == 2013)
-```
-
-***
-
-```{r}
-texas_housing_data %>%
-  filter(year == 2013, city == "Houston")
-```
-
-***
-
-```{r}
-texas_housing_data %>%
-  filter(year == 2013, city == "Houston" | city == "Galveston")
-```
-
-***
-
-```{r}
-texas_housing_data %>%
-  filter(year == 2013, city %in% c("Houston", "Galveston"))
-```
-
 
 
 ## If statements {.build}
 
 The general syntax of an if statement is as follows:
 ```{r eval=FALSE}
-if (condition is true) {
+if (condition is TRUE) {
   do this
 }
 ```
 
 For example:
 ```{r}
-if (2 > 1) {
-  print("Math works in R!")
+x <- 100
+
+if (x > 0) {
+  print("x is positive")
 }
+
 ```
 
 ## If/else statements
 
-Slightly more interesting, the syntax of an ifelse statement is as follows:
+Slightly more interesting, the syntax of an if else statement is as follows:
 
 ```{r eval=FALSE}
-if (condition is true) {
+if (condition is TRUE) {
   do this
 } else {                      
   do this other thing
 }
 ```
 
-## If/else statements, continued
+## If/else statements example: 
 
-```{r}
-today <- "October 15"
-my_birthday <- "October 22"
-```
+When working on a project with others, it's sometimes helpful to set 
 
-```{r}
-if (today == my_birthday) {
-  print("Happy birthday!")
-} else {                      
-  print("Not my birthday today.")
-}
-```
+```{r, eval = FALSE}
 
-## If/else statements, continued
-
-```{r}
-today <- "October 15"
-my_birthday <- "October 22"
-```
-
-```{r}
-if (today == my_birthday) {
-  print("Happy birthday!")
-} else if (today == "October 31") {                      
-  print("It's Halloween!")
+if (Sys.info()[["user"]] == "arianisfeld") {
+  base_path <- "~/Documents/coding_lab_examples/"
 } else {
-  print("Not a notable day.")
-}
+  base_path <- "~/gdrive/coding_lab_examples/"
+} 
+
+data <- read_csv(paste0(base_path, "our_data.csv"))
 ```
 
 
-## Ifelse statements {.build}
+^[Try running `Sys.info()` in your console to understand the code a bit more deeply.]
 
-If all you need to do is return output based on a condition, `ifelse()` statements are a good choice.
+## multiple tests with `if`, `else if` and `else`
+
+
+```{r eval=FALSE}
+if (condition is TRUE) {
+  do this
+} else if (second condition is TRUE) {                      
+  do this other thing
+} else if (third condition is TRUE) {
+  do this third thing
+} else {
+  do a default behavior
+}
+```
+
+NB: a default behavior with `else` is not necessary.
+
+
+## multiple tests with `if`, `else if` and `else`
+```{r, echo = FALSE}
+score <- 10
+my_cards <- 12
+computers_cards <- 22
+```
+
+Here's a cheap version of black jack.
+```{r}
+my_cards <- sample(2:11, 1) +  sample(2:11, 1)
+computers_cards <- sample(2:11, 1) +  sample(2:11, 1)
+```
 
 ```{r}
-ifelse(today == my_birthday, "Happy birthday!", "Not my birthday today.")
+if (my_cards > computers_cards) {
+  score <- score + 1
+  print("You win")
+} else if (my_cards < computers_cards) {
+  score <- score - 1
+  print("Better luck next time.")
+} else {
+  print("It's a tie")
+}
+```
+
+## `if` can take a compound condition
+
+```{r}
+if ((my_cards > computers_cards & my_cards <= 21) | 
+    computers_cards > 21) {
+  score <- score + 1
+  print("You win")
+} # etc
+```
+
+As the statement gets more complex, we're more likely to make errors. 
+
+
+## `if` is not vectorized and doesn't handle `NA`s
+
+```{r, eval = FALSE}
+if (c(TRUE, FALSE)) { print("if true") }
+#> [1] "if true"
+#> Warning in if (c(TRUE, FALSE)) {: 
+#  the condition has length > 1 and only the
+#> first element will be used
+
+if (NA) { print("if true") }
+#> Error in if (NA) {: missing value where TRUE/FALSE needed
+```
+
+## Vectorized if `ifelse` statements {.build}
+
+At first blush, `ifelse()` statements look like a quicker way to write an if else statement
+
+```{r}
+today <- Sys.Date()
+ifelse(today == "2020-11-03", 
+       "VOTE TODAY!!", 
+       "Don't forget to vote on Nov 3rd.")
 ```
 
 ```{}
@@ -215,60 +355,46 @@ ifelse(condition, returns this if TRUE, returns this if FALSE)
 ```{r eval=FALSE}
 ifelse(TRUE, 1, 2)
 ifelse(FALSE, 1, 2)
-ifelse(NA, 1, 2)
 ```
 
-```{r echo=FALSE}
+## What will the following statements return? {.build}
+
+```{r eval=TRUE}
 ifelse(TRUE, 1, 2)
 ifelse(FALSE, 1, 2)
-ifelse(NA, 1, 2)
 ```
+
+
+## What will the following statements return? {.build}
+
+```{r eval=FALSE}
+ifelse(c(TRUE, FALSE, TRUE), 1, 2)
+```
+
+## What will the following statements return? {.build}
+
+Unlike `if`, `ifelse` is vectorized! It evaluates item by item.
+
+```{r eval=TRUE}
+ifelse(c(TRUE, FALSE, TRUE), 1, 2)
+```
+
 
 ## Detour: NAs and missing data
 
-What's going on in that last `ifelse()` statement?
+What's going on in this `ifelse()` statement?
 
-We have missing data! It's denoted by `NA`.
-
-In this case, the condition needed for the `ifelse()` statement is missing, so our output is also `NA`.
-
-```{r echo=FALSE}
+```{r echo=TRUE}
 ifelse(NA, 1, 2)
 ```
 
-## Check for missing data with `is.na()` {.build}
 
-```{r}
-is.na(NA)
-
-x <- c(1, 2, NA)
-is.na(x)
-```
-
-## Remember from last time...`na.rm()`? {.build}
-
-Remove missing values in a vector with `na.rm()`.
-
-```{r}
-x <- c(1, 2, NA)
-mean(x)
-```
-
-```{r}
-mean(x, na.rm = TRUE)
-```
+Unlike `if`, `ifelse` can handle `NA`s and as usual `NA`s are contagious.
 
 ## Ifelse statements in dataframes {.build}
 
-Ifelse statements work well in dataframes with the `mutate()` dplyr function. Let's add a column to the `txhousing` based on a conditional.
-
-```{r}
-texas_housing_data %>% 
-  mutate(in_january = ifelse(month == 1, TRUE, FALSE))
-```
-
-*** 
-Oops, can't see it again - let's use `select()`!
+Ifelse statements work well in dataframes with the `mutate()` function. 
+Let's add a column to the `texas_housing_data` based on a conditional.
 
 ```{r}
 texas_housing_data %>% 
@@ -276,22 +402,9 @@ texas_housing_data %>%
   select(city, year, month, sales, in_january)
 ```
 
-## Ifelse statements, supercharged
+## `case_when` statements, supercharged for multiple cases 
 
-If you have a lot of categories, ditch the ifelse statement and use dplyr's `case_when()` function, which is essentially a compressed ifelse statement.
-
-```{r}
-texas_housing_data %>% 
-  mutate(housing_market = 
-           case_when(
-             median < 100000 ~ "first quartile",
-             100000 <= median & median < 123800 ~ "second quartile",
-             123800 <= median & median < 150000 ~ "third quartile",
-             150000 <= median & median < 350000 ~ "fourth quartile"
-           )) 
-```
-
-***
+If you have a lot of categories, ditch the ifelse statement and use dplyr's `case_when()` function, which allows for multiple conditions, like the `else if`s we saw earlier. 
 
 ```{r}
 texas_housing_data %>% 
@@ -305,15 +418,43 @@ texas_housing_data %>%
   select(city, median, housing_market)
 ```
 
-## Recap
 
-Today we:
+NB: The conditions in `case_when` can rely on multiple columns. 
 
-- Reviewed logical operators and conditional statements
-- Introduced if and if/else statements
-- Used ifelse statements in conjunction with `mutate` to create logical columns
+## `case_when` statements are a bit "surly"
 
-Next week: `for` loops
+`case_when` will not do type coercion. 
 
-Find the workshop link on the course web page:
-http://harris-coding-lab.github.io
+```{r, eval = FALSE}
+texas_housing_data %>% 
+  mutate(housing_market = 
+   case_when(
+     median < 100000 ~ 1,
+     100000 <= median & median < 123800 ~ "second quartile",
+     123800 <= median & median < 150000 ~ "third quartile",
+     150000 <= median & median < 350000 ~ "fourth quartile"
+    )) %>% 
+  select(city, median, housing_market)
+
+Error: must be a double vector, not a character vector
+Run `rlang::last_error()` to see where the error occurred.
+```
+
+Here we try to but doubles and characters in the `housing_market` column, but atomic vectors only have one type!
+
+  - Rather than coerce and provide a warning, the developers decided to make this an error
+  - If using `NA` as an output you have to specify `NA` types e.g. `NA_integer_`, `NA_character_`
+
+
+## Recap: `if` and `ifelse`
+
+Today we learned how to:
+
+- better understand logical operators and conditional statements
+- use control flow with `if` and `if`/`else` statements
+- use `ifelse()` and `case_when()` statements in conjunction 
+with `mutate` to create columns based on conditional statements.
+
+
+
+
