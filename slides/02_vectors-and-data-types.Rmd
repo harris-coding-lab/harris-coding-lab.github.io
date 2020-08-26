@@ -1,0 +1,482 @@
+---
+title: "Coding Lab: Vectors and data types"
+author: "Ari Anisfeld"
+date: "Summer 2020"
+output: 
+  beamer_presentation:
+    fig_width: 6
+    fig_height: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+care_data <- tibble(
+  id = 1:5,
+  n_kids = c(2, 4, 0, 0, "Unknown"),
+  child_care_costs = c(1000, 3000, 0, 0, 500)
+)
+
+```
+
+## Vectors^[Technically, I'm talking about "atomic vectors".]
+
+Vectors are the foundational data structure in R.  
+
+Here we will discuss how to:
+
+- construct vectors and tibbles
+- do vectorized math and computations
+- deal with missing values
+- work with vectors of different data types
+
+
+## Vectors 
+
+Vectors store an arbitrary^[Within limits determined by hardware] number of items of the same type. 
+
+```{r}
+# numeric vector of length 6
+my_numbers <- c(1, 2, 3, 4, 5, 6)
+
+# character vector of length 3
+my_characters <- c("public", "policy", "101")
+```
+
+## Vectors 
+
+In R, nearly every object you will work with is a vector
+```{r}
+# vectors of length 1
+tis_a_vector <- 1919
+technically_a_logical_vector <- TRUE
+```
+
+The `c()` function combines vectors
+```{r}
+c(c(1, 2, 3), c(4, 5, 6))
+c(tis_a_vector, 1920)
+```
+
+## Creating vectors
+
+There are some nice shortcuts for creating vectors.
+
+```{r}
+c("a", "a", "a", "a")
+rep("a", 4)
+```
+
+Try out the following:
+```{r, eval = FALSE}
+rep(c("a", 5), 10)
+rep(c("a", 5), each = 10)
+```
+
+## Creating vectors
+There are also several ways to create vectors of sequential numbers:
+```{r}
+c(2, 3, 4, 5)
+2:5
+seq(2, 5)
+```
+
+
+## Creating random vectors
+
+Create random data following a certain distribution
+```{r}
+(my_random_normals <- rnorm(5))
+(my_random_uniforms <- runif(5))
+```
+
+
+## Creating empty vectors of a given type
+
+Create empty vectors of a given type^[We'll discuss what types are soon.]
+```{r}
+# 1 million 0
+my_integers <- integer(1e6)
+
+# 40K ""
+my_chrs <- character(4e5)
+my_chrs[1:10]
+```
+
+## Binary operators are vectorized
+
+We can do math with vectors!
+
+```{r}
+my_numbers <- 1:6
+
+# this adds the vectors item by item
+my_numbers + my_numbers 
+
+# this adds 6 to each object  (called recycling)
+my_numbers + 6 
+```
+
+
+## Binary operators are vectorized
+
+We can do boolean logic with vectors!
+
+```{r}
+my_numbers <- 1:6
+
+# c(1, 2, 3, 4, 5, 6) >  c(1, 1, 3, 3, pi, pi) 
+# occurs item by item
+my_numbers > c(1, 1, 3, 3, pi, pi)
+```
+
+
+## Binary operators are vectorized
+
+We can do boolean logic with vectors!
+
+```{r}
+my_numbers <- 1:6
+# behind the scenes 4 is recycled 
+# to make c(4, 4, 4, 4, 4, 4)
+my_numbers > 4 
+my_numbers == 3 
+```
+
+
+## Warning: Vector recycling
+
+Be careful when operating with vectors. What's happening here?
+
+```{r}
+a <- 1:6 + 1:5
+a
+```
+
+## Warning: Vector recycling
+
+Be careful when operating with vectors. 
+If they're different lengths, the shorter vector starts from it's beginnig (`6 + 1 = 7`).
+
+```{r}
+
+a <- c(1, 2, 3, 4, 5, 6) + c(1, 2, 3, 4, 5)
+# 1 + 1, 
+# 2 + 2, 
+# 3 + 3, 
+# 4 + 4, 
+# 5 + 5, 
+# !!!6 + 1!!! Recycled.
+a
+```
+
+
+## Vectorized functions built into R
+
+Some vectorized functions operate on each value in the vector and return a vector of the same length^[try it out yourself! use `?func` to learn more]
+
+  - These are used with `mutate()`
+  
+```{r, eval = FALSE}
+a_vector <- rnorm(100)
+sqrt(a_vector) # take the square root of each number
+log(a_vector) # take the natural log of each number
+exp(a_vector) # e to the power of each number
+round(a_vector, 2) # round each number
+
+str_to_upper(a_chr_vector) # make each chr uppercase
+str_replace(a_chr_vector, "e", "3")
+```
+
+
+## Functions that reduce vectors
+
+Others take a vector and return a summary^[try it out yourself! use `?func` to learn more]
+
+  - These are used with `summarize()`
+  
+```{r, eval=FALSE}
+sum(a_vector)  # add all the numbers 
+median(a_vector) # find the median
+length(a_vector) # how long is the vector
+any(a_vector > 1) # TRUE if any number in a_vector > 1
+
+a_chr_vector <- c("a", "w", "e", "s", "o", "m", "e")
+paste0(a_chr_vector) # combine strings
+```
+
+
+## Tibble columns are vectors
+
+We can create tibbles manually 
+
+- To test out code on a simpler tibble
+- To organize data from a simulation
+
+```{r}
+care_data <- tibble(
+  id = 1:5,
+  n_kids = c(2, 4, 1, 1, NA),
+  child_care_costs = c(1000, 3000, 300, 300, 500),
+  random_noise = rnorm(5, sd = 5)*30
+)
+```
+
+## Subsetting
+
+Three ways to pull out a column as a vector.^[See Appendix for more on subsetting]
+
+
+```{r}
+# tidy way
+care_data %>% pull(n_kids)
+
+# base R way
+care_data$n_kids
+# base R way
+care_data[["n_kids"]]
+```
+
+## Subsetting
+
+Two ways to pull out a column as a tibble
+
+```{r}
+# tidy way
+care_data %>% select(n_kids)
+
+# base R way
+care_data["n_kids"]
+```
+
+
+## Type issues
+
+Sometimes you load a data set, write code that makes sense and get an error like this:
+```{r, eval = FALSE}
+care_data %>% 
+  mutate(spending_per_child = n_kids / child_care_costs)
+```
+`Error in n_kids/child_care_costs : non-numeric argument to binary operator`
+
+## Type issues
+```{r}
+glimpse(care_data)
+```
+
+## Data types
+R has four primary types of atomic vectors 
+  
+  - these determine how R stores the data (technical)
+  
+  ![](images/summary-tree-atomic.png){}
+^[Image from https://adv-r.hadley.nz/vectors-chap.html]
+
+
+## Data types
+
+Focusing on the types, we have:
+
+```{r}
+# logical, also known as booleans
+type_logical <- FALSE
+type_logical <- TRUE
+
+# integer and double, together are called: numeric
+type_integer <- 1L
+type_double <- 1.0
+
+type_character <- "abbreviated as chr" 
+type_character <- "also known as a string"
+```
+
+## Testing types
+
+```{r}
+a <- "1"
+typeof(a)
+is.integer(a)
+is.character(a)
+```
+
+## Testing types
+
+In our example:
+```{r}
+typeof(care_data$child_care_costs)
+typeof(care_data$n_kids)
+```
+
+## Type coercion 
+
+The error we got when we tried `a + b` was because `a` is a character. We can reassign types on the fly:
+```{r}
+a <- "4"
+as.integer(a) + 3
+as.numeric(a) + 3
+```
+
+## Type coercion
+
+To address our problem, we use `mutate()` and `as.integer()` to change the type of `n_kids`
+```{r}
+care_data %>%
+  mutate( n_kids = as.integer(n_kids),
+          spending_per_kid = child_care_costs / n_kids)
+```
+
+
+## NAs introduced by coercion
+
+The code produces a warning! Why? R does not know how to turn the string "unknown" into an integer. So, it uses `NA` which is how R represents missing or unknown values. 
+
+```{r}
+as.integer("Unknown")
+```
+
+## `NA`s are contagious
+
+```{r}
+NA + 4
+max(c(NA, 4, 1000))
+```
+
+## Automatic coercion (Extension material to be discussed live)
+
+Some type coercion is done by R automatically:
+```{r}
+# paste0() is a function that combines two chr into one
+paste0("str", "ing")
+paste0(1L, "ing")
+```
+
+`1L` is an `int`, but R will coerce it into a `chr` in this context.
+
+## Automatic coercion
+
+Logicals are coercible to numeric or character. This is very useful!
+
+What do you think the following code will return?
+```{r, eval=FALSE}
+TRUE + 4
+FALSE + 4
+paste0(FALSE, "?")
+mean(c(TRUE, TRUE, FALSE, FALSE, TRUE))
+```
+
+## Automatic coercion
+```{r, eval=TRUE}
+TRUE + 4
+FALSE + 4
+paste0(FALSE, "?")
+mean(c(TRUE, TRUE, FALSE, FALSE, TRUE))
+```
+
+
+
+## `NA`s are contagious, redux.
+
+```{r}
+b <- c(NA, 3, 4, 5)
+sum(b)
+```
+
+## `NA`s are contagious, redux.
+
+Often, we can tell R to ignore the missing values. 
+
+```{r}
+b <- c(NA, 3, 4, 5)
+sum(b, na.rm = TRUE)
+```
+
+## Subsetting vectors
+
+Use `[[` for subsetting a single value
+```{r}
+# letters is built into R and has lower case letters from the alphabet
+# get the third letter in the alphabet
+letters[[3]]
+```
+
+Use `[` for subsetting multiple values
+```{r}
+# get the 25th, 5th and 19th letters in the alphabet
+letters[c(25,5,19)]
+```
+
+## Subsetting vectors 
+
+Using a negative sign, allows subsetting everything except th
+
+```{r}
+my_numbers <- c(2, 4, 6, 8, 10)
+# get all numbers besides the 1st 
+my_numbers[-1]
+# get all numbers besides the 1st and second
+my_numbers[-c(1,2)]
+```
+
+ We can also subset with booleans
+```{r}
+# get all numbers where true
+my_numbers[c(TRUE, FALSE, FALSE, TRUE, FALSE)]
+my_numbers[my_numbers > 4]
+```
+
+
+## Subsetting recommendations
+
+I recommend sticking with the tidy version when working with tibbles and data. 
+
+- Tidyverse functions will cover nearly all of your data processing needs.
+- The `[` and `[[` subsetting have a lot of subtle and unexpected behavior.
+- If you find yourself doing "programming"" in R then it is worth revisiting subsetting in `adv-r`
+
+
+## Example: Using vectors to calculate a sum of fractions {.exercise}
+
+Use R to calculate the sum 
+
+$$\sum_{n=0}^{10} \frac{1}{2^n}$$
+
+How would you translate this into code?
+
+## Example:  Using vectors to calculate a sum of fractions 
+
+We go from math notation $$\sum_{n=0}^{10} \frac{1}{2^n}$$ to R code:
+
+```{r warning=FALSE}
+numerators <- rep(1, 11)
+denominators <- 2 ^ c(0:10)
+
+sum(numerators/denominators)
+
+```
+
+## Recap: Vectors and data types
+
+We discussed how to:
+
+- Create vectors and tibbles for various circumstances
+- Do vectorize operations and math with vectors (we implicitly did this with `mutate`)
+- Subset tibbles (we explicitly did this with `select` and `filter`)
+- Understand data types and use type coercion when necessary.
+
+## Technical note: Atomic vectors vs lists
+
+- Atomic vectors have a single type.
+- Lists can hold data of multiple types.^[This is beyond our scope, but lists can be thought of as a vector of pointers. The interested student can read more at https://adv-r.hadley.nz/]
+
+![](images/summary-tree.png)
+
+## Technical note: a Lists holding multiple types.
+
+```{r}
+a_list <- list(1L, "fun", c(1,2,3))
+typeof(a_list)
+typeof(a_list[[1]])
+typeof(a_list[[2]])
+typeof(a_list[[3]])
+```
+

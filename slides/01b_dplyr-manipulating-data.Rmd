@@ -1,0 +1,349 @@
+---
+title: "Coding Lab: Manipulating data with `dplyr`"
+author: "Ari Anisfeld"
+date: "Summer 2020"
+output: 
+  beamer_presentation:
+    fig_width: 6
+    fig_height: 4
+---
+```{r, setup=TRUE, message=FALSE, echo=FALSE}
+library(tidyverse)
+library(readxl)
+write_csv(txhousing, "texas_housing_data.csv")
+texas_housing_data <- read_csv("texas_housing_data.csv")
+```
+
+
+
+## Data manipulation with `dplyr`
+
+Once you have data in R, you'll want to explore it. 
+
+The `tidyverse` package `dplyr` provides a toolkit for data manipulation.
+
+We will cover:
+
+- `select()` to pick columns
+- `arrange()` to order the data
+- `mutate()` to create new columns
+- `filter()` to get rows that meet a criteria
+- `summarize()` to summarize data
+
+
+## selecting columns with `select()` {.build}
+
+![](images/02_select.png){#id .class width=80% height=80%}
+
+
+## selecting columns with `select()` {.build}
+<!-- Unclear how much justice we can do here with the time available. Probably could do a full class on these-->
+Use case: You want to present a subset of your columns
+
+```{r}
+select(texas_housing_data, city, date, sales, listings)
+```
+
+## selecting columns with `select()`
+
+Use case: You want to present a subset of your columns
+
+```{r, eval = FALSE}
+select(texas_housing_data, -c(city, date, sales, listings))
+```
+
+The `-` says to exclude the columns listed in the vector.
+
+
+## selecting columns with `select()`, helpers {.build}
+
+Use case: You want to reorder your columns
+
+```{r}
+select(texas_housing_data, city, date, 
+       sales, listings, everything())
+```
+
+
+Notice we used a "select_helpers" function `everything()`. There are several useful functions, see `?tidyselect::select_helpers`. (For more information see r4ds chapter 5.4)
+
+## sort rows with `arrange()`
+
+![](images/02_arrange.png){#id .class width=80% height=80%}
+
+## sort rows with `arrange()`
+
+```{r}
+arrange(texas_housing_data, year)
+```
+
+## sort rows with `arrange()`
+
+To change the order of use `desc()`
+```{r}
+arrange(texas_housing_data, desc(year))
+```
+
+## Introducing the pipe operator
+
+![](images/magritte.jpg)
+
+## Interlude: Ceci est une `%>%` {.build}
+
+The pipe `%>%` operator takes the left-hand side and makes it *input* in the right-hand side.
+
+- by default, the left-hand side is the *first argument* of the right-hand side function.
+
+```{r, eval=FALSE}
+# a tibble is the first argument
+select(texas_housing_data, city, year, sales, volume) 
+
+texas_housing_data %>% 
+  select(city, year, sales, volume)
+```
+
+## Ceci est une `%>%` {.build}
+
+We can chain together tidyverse functions to avoid making so many intermediate data frames!
+```{r}
+texas_housing_data %>%
+  select(city, year, month, median) %>%
+  arrange(desc(median))
+```
+
+
+
+## creating columns with `mutate()` {.build}
+
+![](images/02_mutate.png){#id .class width=80% height=80%}
+
+
+## creating columns with `mutate()` {.build}
+
+```{r}
+texas_housing_data %>%
+  mutate(mean_price = volume / sales) %>%
+  select(city, year, month,  mean_price, sales, volume)
+```
+
+## Binary operators: Math in R
+
+R is a calculator! We can do math with numbers, using the following symbols:
+```{r, eval=FALSE}
+4 + 4
+4 - 4
+4 * 4
+4 / 4
+4 ^ 4
+5 %% 4  # gives the remainder after dividing
+```
+
+
+## creating columns with `mutate()` {.build}
+
+When we mutate, you can create new columns.
+
+- On the right side of the equal sign, you have the name of a new column. 
+- On the left side, you have code that creates a new column (using vector operations)^[more on vectors in the next lesson]
+
+```{r}
+texas_housing_data %>%
+  mutate(mean_price = volume / sales) %>%
+  select(city, year, month,  mean_price, sales, volume)
+```
+  
+
+
+## creating columns with `mutate()` {.build}
+
+You can create multiple columns at a single time and even use information from a newly created column as input.
+
+
+```{r}
+texas_housing_data %>%
+  mutate(mean_price = volume / sales,
+         sqrt_mean_price = sqrt(mean_price)) %>%
+  select(city, year, month,  mean_price, sales, volume)
+```
+  
+
+
+## choose rows that match a condition with `filter()`
+
+![](images/02_filter.png){#id .class width=80% height=80%}
+
+## choose rows that match a condition with `filter()`
+
+Get all the data from 2013
+```{r}
+filter(texas_housing_data, year == 2013)
+```
+
+## Relational operators return TRUE or FALSE
+Before moving forward with `filter()`, we need to know about relational operators and logical operators
+
+| Operator | Name |
+|:---------:|:---:|
+| < | less than |
+| > | greater than |
+| <= | less than or equal to |
+| >= | greater than or equal to |
+| == | equal to |
+| != | not equal to |
+| %in% | matches something in |
+
+## Relational operators in practice
+
+```{r}
+4 < 4
+4 >= 4
+4 == 4
+4 != 4
+4 %in% c(1, 2, 3)
+```
+
+## logical operators combine TRUEs and FALSEs logically
+
+| Operator | Name |
+|:---------:|:---:|
+| ! | not |
+| & | and |
+| `|` | or |
+
+```{r}
+# not true
+! TRUE
+
+# are both x & y TRUE?
+TRUE  &  FALSE
+
+# is either x | y TRUE?
+TRUE | FALSE
+```
+
+##  What do the following return? 
+
+Logical operators team up with relational operators.
+
+ - First, evaluate the relational operator 
+ - Then, care out the logic.
+ 
+```{r, eval = FALSE}
+! (4 > 3) # ! TRUE
+(5 > 1) & (5 > 2) # TRUE & TRUE
+(4 > 10) | (20 > 3) # FALSE | TRUE
+```
+
+This is hard to wrap your head around. We'll have plenty of practice!
+
+## choose rows that match a condition with `filter()`
+
+Get all the data from 2013 for Houston. 
+
+  - in `filter()` additional match criteria are treated like `and`
+ 
+```{r}
+texas_housing_data %>%
+  filter(year == 2013, 
+         city == "Houston")
+```
+
+
+## choose rows that match a condition with `filter()`
+
+Get all the data from 2013 for Houston or Austin
+
+  - in `filter()` additional match criteria are treated like `and`
+  - we get nothing returned here, because no observation is in Houston AND in Austin.
+ 
+```{r}
+texas_housing_data %>%
+  filter(year == 2013, 
+         city == "Houston", city == "Austin")
+```
+
+
+## choose rows that match a condition with `filter()`
+
+Get all the data from after than 2013 for Houston OR Austin
+```{r}
+texas_housing_data %>% 
+  filter(year > 2013, 
+         city == "Houston" | city == "Austin")
+```
+
+
+## choose rows that match a condition with `filter()`
+
+Get all the data from after than 2013 for Houston  Galveston
+```{r}
+texas_housing_data %>%
+  filter(year > 2013, 
+         city %in% c("Houston", "Dallas", "Austin"))
+```
+
+## summarize data with `summarize()`
+
+![](images/02_summarize.png)
+
+## summarize data with `summarize()`
+
+Calculate total volume of sales in Texas from 2014. 
+
+```{r}
+texas_housing_data %>%
+  filter(year == 2014) %>%
+  summarize(total_volume = sum(volume))
+```
+
+## summarize data with `summarize()`
+
+Calculate the mean and median number of sales in Texas's three largest cities. 
+
+```{r}
+texas_housing_data %>%
+  filter(city %in% 
+           c("Houston", "Dallas", "San Antonio")) %>% 
+  summarize(median_n_sales = median(sales),
+            mean_n_sales = mean(sales))
+```
+## summarize data with `summarize()`
+
+There are many useful functions that go with summarize. Try `?summarize` for more.
+
+```{r}
+texas_housing_data %>%
+  filter(city %in% 
+           c("Houston", "Dallas", "San Antonio")) %>% 
+  summarize(n_obs = n(),
+            n_cities = n_distinct(city))
+```
+
+## summarize data with `summarize()`
+
+If you try to make a summarize statistic that does not collapse the data to a single value (per group), you'll get an error like so: 
+
+```{r, eval = FALSE}
+texas_housing_data %>%
+  filter(city %in% 
+           c("Houston", "Dallas", "San Antonio")) %>% 
+  summarize(mean_price = volume / sales)
+
+Error: Column `mean_price` must be length 1 (a summary value), not 561
+```
+
+Get number of observations
+
+## Recap: manipulating data with `dplyr`
+
+We learned
+
+- how to employ the 5 `dplyr` verbs of highest importance including
+  - `select()` to pick columns
+  - `arrange()` to order the data
+  - `mutate()` to create new columns
+  - `filter()` to get rows that meet a criteria
+  - `summarize()` to summarize data
+
+- how to use relation operators, binary operators for math and logical operators in `dplyr` contexts
+  

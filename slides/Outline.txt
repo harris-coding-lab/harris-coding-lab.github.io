@@ -1,4 +1,15 @@
 
+Once you have data in R, you'll want to explore it.
+We're going to use the tidy verse package DPLYR that provides
+the gives you access to the most useful functions in R! 
+
+When I am analyzing data I use these 5 functions for 80 percent 
+
+
+
+
+
+
 Cover live:
 1. process of coding lab / camp
 
@@ -21,8 +32,9 @@ Workshop: Installing R, Rstudio and the tidyverse (new, but minimal)
 - Example of using R
 
 Lesson 2: Loading data and basic manipulations (extending scl-lesson 2)
-Workshop: Reading files (new)
-# select(), mutate(), filter(), arrange()
+Workshop: Reading files (new)\ 
+# Operators and assignment
+# select(), mutate(), filter(), arrange(),  binary operators
 - manipulating data with `dplyr`
 
  # read_*()
@@ -32,12 +44,17 @@ Workshop: Reading files (new)
 
 
 Lesson 3: Data types, vectors, vectorized functions and base R (scl-lesson 1)
- # sum(), mean(), rep(), paste0(), [,], $, binary operators
- Workshop (scl-workshop 1)
- - Binary operators pt 1 + Variable assignment
- - Types + Binary operators pt 2
+
+FOR CLASS: Finding the sum of 1/2^n; 
+	   Automatic type coercion (e.g. TRUE + TRUE = 2, "four" < 4)
+
+ # sum(), mean(), rep(), paste0(), [,], $, as.xxx(), Workshop (scl-workshop 1)
+ - Data Types 
  - Data structures (Vectors, Tibbles)
  - detour: manipulating data with `baseR`
+
+
+Note: add info about Dates and Factors (?)
 
 Lesson 4: Summarizing and analyzing data (extending scl-lesson 2)
 Workshop (scl-workshop 2)
@@ -61,7 +78,7 @@ Extras:
 
 
 
-
+773-702-6247
 
 
 # Notes
