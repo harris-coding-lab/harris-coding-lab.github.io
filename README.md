@@ -15,7 +15,7 @@ Links to materials for each week's workshop will be posted here as provided.
 
 - **Class 0: Why R?**
   - [video part 1: why R?](https://youtu.be/ptcdtMXbHkk) (~ 12 min)
-  - [video part 2: a quick introduction to R, Rstudio and `tidyverse`]() - Coming soon.
+  - [video part 2: a quick introduction to R, Rstudio and `tidyverse`](https://youtu.be/PvrUfHWzyII) (~ 14 min)
   - [slides:](slides/00_introduction.pdf)
 
 - **Class 1: Reading data files and manipulating data with `dplyr`**
