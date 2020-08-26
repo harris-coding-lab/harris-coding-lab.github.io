@@ -10,8 +10,7 @@ output:
 ```{r, setup=TRUE, message=FALSE, echo=FALSE}
 library(tidyverse)
 library(readxl)
-write_csv(txhousing, "texas_housing_data.csv")
-texas_housing_data <- read_csv("texas_housing_data.csv")
+texas_housing_data <- txhousing
 ```
 
 
