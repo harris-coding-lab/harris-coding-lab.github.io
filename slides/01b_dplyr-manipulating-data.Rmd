@@ -344,7 +344,8 @@ texas_housing_data %>%
   select(city, year, month, sales, volume) %>%
   mutate(log_mean_price = log(volume / sales)) %>%
   filter(year == 2013) %>%
-  summarize(log_mean_price_2013 = mean(log_mean_price, na.rm = TRUE))
+  summarize(log_mean_price_2013 = mean(log_mean_price,
+                                       na.rm = TRUE))
   
 # Won't give you the same result as 
 # texas_housing_data %>%
