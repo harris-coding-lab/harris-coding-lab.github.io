@@ -149,5 +149,22 @@ texas_housing_data %>%
   summarize(mean_price = volume / sales) #should get an error
 
 
+## dplyr verbs together
+
+texas_housing_data %>%
+  select(city, year, month, sales, volume) %>%
+  mutate(log_mean_price = log(volume / sales)) %>%
+  filter(year == 2013) %>%
+  summarize(log_mean_price_2013 = mean(log_mean_price, na.rm = TRUE))
+
+# Won't give you the same result as 
+ texas_housing_data %>%
+   select(city, year, month, sales, volume) %>%
+   mutate(log_mean_price = log(volume / sales)) %>%
+   summarize(log_mean_price = mean(log_mean_price, na.rm = TRUE)) %>%
+   filter(year == 2013)
+
+# Actually this code will give you an error, try it!
+
 
 
