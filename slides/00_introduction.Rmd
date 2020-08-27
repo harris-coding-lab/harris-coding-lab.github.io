@@ -94,7 +94,7 @@ In stats 1 and other courses, you will build off of these lessons:
 
 - We learn coding by experimenting with code.
 
-- Coding is requires a different modality of thinking 
+- Coding requires a different modality of thinking 
 
 - Coding can be frustrating <!-- I still forget commas and get errors -->
 
