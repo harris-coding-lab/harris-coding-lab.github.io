@@ -1,99 +1,88 @@
-## PPHA 31002 Statistics for Data Analysis I: Coding Lab
+## Summer and Fall Coding Lab
 
-This website (harris-coding-lab.github.io) contains the content for the 5-week Stats I Coding Lab accompanying PPHA 31002. The course is taught during Fall Quarter 2019 for students of Harris Public Policy School at the University of Chicago. The workshop aims to introduce R programming concepts including basic syntax, operators, reading files, dataframes and calculations, if statements, loops, and functions.
+This website (harris-coding-lab.github.io) contains the content for the Harris School's Summer and Fall Coding Labs. The workshop aims to introduce R programming concepts with a focus on preparing and analyzing data, and conducting statistical simulations. We will cover how to read data into R,  manipulate data with a suite of tools from the `tidyverse` package `dplyr`. We will also discuss some basic programming concepts including data types, operators, control flow with if statements and for loops, and how to write your own functions.
 
-### Schedule 
+### Schedule
 
-The Coding Lab will be offered at the following times during the first five weeks of the quarter:
-
-
-
- Monday | Tuesday | Wednesday | Thursday | Friday 
---|--|--|--|--
- 5 - 6:20pm| 5 - 6:20pm| 5 - 6:20pm| 5 - 6:20pm| 9:30 - 10:50am & 11:00 - 12:20 pm
- KC0001 | KC1002	| KC1002|	KC1022	|KC0001	
- 
- 
- ***NEW: TA Session locations***
- For weeks 6 to 10, we'll host TA office hours for coding questions.
- 
-  Monday | Tuesday | Wednesday | Thursday | Friday 
---|--|--|--|--
- 5 - 6:20pm| 5 - 6:20pm| 5 - 6:20pm| 5 - 6:20pm| 9:30 - 10:50am & 11:00 - 12:20 pm
- KC3008 | KC2004	| KC1010|	KC1010	|KC2004	
- 
 ### Prerequisites
 
-We ask that Coding Lab attendees have R and RStudio pre-installed on their local machine. If you need help getting set up, please visit the R Bar at Harris for assistance with installation.
+We ask that Coding Lab attendees have R and RStudio pre-installed on their local machine. If you need help getting set up, please visit the R Bar at Harris for assistance with installation. ... INSERT INFO FROM JEN / FAY
 
-### Materials 
+### Summer Lab Materials
 
 Links to materials for each week's workshop will be posted here as provided.
 
-- **Week 1: Basic Syntax and Operators**
-  - [slides](slides/01_basic-syntax-operators.html)
-    - [slide code](code/01_basic-syntax-operators.R) (clicking will download an R script with the code to your computer)
-  - [interactive tutorial](https://harris-coding-lab.shinyapps.io/basic-syntax)
-    - [tutorial solutions](code/01_solutions.R)
-  - [doc for questions](https://docs.google.com/document/d/1yog5fnWzDjv_H9FKZJ75wyPnyjiTfAkPBYwR-m6Dc4M/edit?usp=sharing)
-- **Week 2: Reading Files, Data Frames, and Calculations**
-  - [slides](slides/02_loading-data-data-frames-and-calculations.html)
-    - [slide code](code/02_reading-files.R)
-    - [dataset from slides](data/SCE-Public-LM-Quarterly-Microdata.xlsx) (you can download to follow along)
-  - [interactive tutorial](https://harris-coding-lab.shinyapps.io/reading-files/)
-    - [tutorial solutions](code/02_solutions.R)
-- **Week 3: If Statements**
+
+- **Class 0: Why R?**
+  - [video part 1: why R?](https://youtu.be/ptcdtMXbHkk) (~ 12 min)
+  - [video part 2: a quick introduction to R, Rstudio and `tidyverse`](https://youtu.be/PvrUfHWzyII) (~ 14 min)
+  - [slides:](slides/00_introduction.pdf)
+
+- **Class 1: Reading data files and manipulating data with `dplyr`**
+  - [video 1: reading data](https://youtu.be/WwoMJODwFOQ) (~ 10 min)
+  - [video 2: manipulating data with `dplyr`](https://youtu.be/o1a-9-RvNc4) (~ 18 min)
+  - [slides: reading data](slides/01a_reading-data.pdf)
+  - [slides: manipulating data with `dplyr`](slides/02a_dplyr-manipulating-data.pdf)
+    - [slide code: reading data](code/01a_reading-data.R) - Coming soon.
+    - [slide code: manipulating data with `dplyr`](code/01a_reading-data.R) - Coming soon.
+    - [FED data from slides](data/SCE-Public-LM-Quarterly-Microdata.xlsx) (you can download to follow along)
+    - [texas data from slides](data/texas_housing_data.csv)
+    - [drug cartel data from slide](https://dataverse.harvard.edu/file.xhtml?persistentId=doi:10.7910/DVN/VIXNNE/XH5ZQU&version=1.0) (you'll need to download from Dataverse)
+
+- **Class 2: Vectors and Data Types**
+  - [video](https://youtu.be/0MIeGk_xwiQ) (~ 22 min)
+  - [slides](slides/02_vectors-and-data-types.pdf)
+    - [slide code](code/02_vectors-and-data-types.R) - Coming soon.
+
+- **Class 3: If Statements**
+  - [video](https://youtu.be/WwoMJODwFOQ) (~ 20 min)
   - [slides](slides/03_if-statements.html)
-    - [slide code](code/03_if-statements.R) 
-  - [interactive tutorial](https://harris-coding-lab.shinyapps.io/if-statements/)
-    - [tutorial solutions](code/03_solutions.R)
-- **Week 4: Loops**
-  - [slides](slides/04_for-loops.html)
-    - [slide code](code/04_for-loops.R) 
-  - [interactive tutorial](https://harris-coding-lab.shinyapps.io/for-loops/)
-    - [tutorial solutions](code/04_solutions.R)
-- **Week 5: Functions**
-  - [slides](slides/05_functions.html)
-    - [slide code](code/05_functions.R) 
-  - [interactive tutorial](https://harris-coding-lab.shinyapps.io/functions-a/)
-    - [tutorial solutions](code/05_solutions.R) 
+    - [slide code](code/03_if-statements.R) - Coming soon.
+
+- **Class 4: Grouped analysis with `dplyr`**
+  - [video](https://youtu.be/9EQ9WB90VPw) (~13 min)
+  - [slides](slides/04_grouped-data.pdf)
+    - [slide code](code/04_grouped-data.R) - Coming soon.
+
+- **Class 5: Visualizing data with `ggplot`**
+  - Coming soon.
+
+
+The first three weeks of fall coding lab covers the same material (minus `ggplot`).
+Week 4 and 5 cover new material on for loops and functions.
+Accelerated fall coding lab consists solely of new material on for loops and functions.
+
 
 ### Additional Resources
 
 - **R Bar**: Harris-provided support for R-related issues. Mondays from 3:30-5:30pm, Rm #10; Wednesdays from 12:30-2pm, Rm #10
 - [R for Data Science](https://r4ds.had.co.nz/): free online book with clear explanations of many `tidyverse` functions, the book to read on data analysis with R
 - [DataQuest.io](https://www.dataquest.io): online modules about specific programming concepts, access provided by Harris. For students who would like additional guided practice we recommend:
-  - **Week 1**
+  - **Vectors**
     - [introduction to programming in r](https://app.dataquest.io/m/332/introduction-to-programming-in-r)
     - [working with vectors](https://app.dataquest.io/m/333/working-with-vectors)
-  - **Week 2**
+    - [vectorized functions](https://app.dataquest.io/m/339/working-with-vectorized-functions)
+  - **Data frames**
     - [working with data frames](https://app.dataquest.io/m/336/working-with-data-frames/)
     - [dplyr to investigate frequency distributions of data](https://app.dataquest.io/m/396/frequency-distributions)
-  - **Week 3**
+  - **Control flow and if statements**
     - [control flow](https://app.dataquest.io/m/338/working-with-control-structures)
-  - **Week 4**
-  - **Week 5**
+  - **Functions**
     - [writing custom functions](https://app.dataquest.io/m/340/writing-custom-functions)
     - [working with functionals](https://app.dataquest.io/m/341/working-with-functionals) (includes discussion of map)
   - **Extensions**
-     - [vectorized functions](https://app.dataquest.io/m/339/working-with-vectorized-functions)
      - [random sampling with `sample()`](https://app.dataquest.io/m/393/simple-random-sampling)
      - [basic string manipulation](https://app.dataquest.io/m/342/fundamentals-of-string-manipulation)
      - [`gather()` and correlations](https://app.dataquest.io/m/325/correlations-and-reshaping-data/4/gathering-data-into-columns)
-     - "step 2" is all about `ggplot` and potentially useful.
+       - "step 2" is all about `ggplot` and potentially useful.
 
 
 ### Questions?
 
-Please contact the instructors: Angela Li at ali6@uchicago.edu or Ari Anisfeld at anisfeld@uchicago.edu.
+Please contact: Ari Anisfeld at anisfeld@uchicago.edu.
 
 ### Teaching Assistants
 
 The teaching assistants for this workshop are:
 
-- Andres Nigenda Zarate	
-- Angelica Valdiviezo Issa
-- Borui Sun
-- Luis Eduardo San Martin
-- Yue Wang
-- Zihan (Zoey) Chen
+- will fill in shortly.
