@@ -88,9 +88,10 @@ Start by copying and pasting the following code to download and load data from C
 
 ```{r, cache = TRUE, message = FALSE}
 covid_data <- 
-  read_csv("https://data.cdc.gov/api/views/qfhf-uhaa/rows.csv?accessType=DOWNLOAD&bom=true&format=true%20target=", col_types = cols(Suppress = col_character())) %>%
+  read_csv(paste0("https://data.cdc.gov/api/views/qfhf-uhaa/rows.csv?",
+                  "accessType=DOWNLOAD&bom=true&format=true%20target="), 
+           col_types = cols(Suppress = col_character())) %>%
     mutate(week = `Week Ending Date`,
-           time_period = `Time Period`,
            race_ethnicity = `Race/Ethnicity`,
            n_deaths = `Number of Deaths`,
            diff = `Difference from 2015-2019 to 2020`,
@@ -101,8 +102,9 @@ covid_data <-
            jurisdiction = Jurisdiction,
            state = `State Abbreviation`
            )  %>%
-    filter(time_period == "2020", Outcome == "All Cause", Type != "Unweighted") %>%
-    select(jurisdiction, state, week, year, week_no, race_ethnicity, n_deaths, expected_deaths, diff, perc_diff)
+    filter(`Time Period` == "2020", Outcome == "All Cause", Type != "Unweighted") %>%
+    select(jurisdiction, state, week, year, week_no, 
+           race_ethnicity, n_deaths, expected_deaths, diff, perc_diff)
 ```
 
 
@@ -150,9 +152,9 @@ labs(x = "Percent above expected death count", y = "", title = "Racial dispariti
 
 1. Remove the `+ labs()` function from the above code. Describe what `labs()` does. What is the default plotting behavior?
 
-1. Remake the graph but for the state of IL. You should be able to do this by changing the above code in two places and get a graph that resembles this:
+1. Remake the graph but for the state of IL. You should be able to do this by changing the above code in two places.
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, eval = FALSE}
 covid_data %>%
   filter(state == "IL") %>%
   group_by(race_ethnicity) %>%
@@ -162,7 +164,9 @@ covid_data %>%
             )  %>%
   ggplot(aes(y = race_ethnicity, x = percent_diff)) + 
   geom_col() +
-labs(x = "Percent above expected death count", y = "", title = "Racial disparities of Covid-19 (Illinois, 2020)" )
+labs(x = "Percent above expected death count", 
+     y = "", 
+     title = "Racial disparities of Covid-19 (Illinois, 2020)" )
 ```
 
 
@@ -171,10 +175,14 @@ labs(x = "Percent above expected death count", y = "", title = "Racial dispariti
 ```{r}
 covid_data %>%
   filter(state == "US") %>%
-  # filter(race_ethnicity %in% c("Hispanic", "Non-Hispanic White", "Non-Hispanic Black", "Non-Hispanic Asian")) %>%
+  # filter(race_ethnicity %in% 
+  # c("Hispanic", "Non-Hispanic White", "Non-Hispanic Black", "Non-Hispanic Asian")) %>%
   ggplot(aes(x = week_no, y = perc_diff, color = race_ethnicity)) +
   geom_line()  +
-labs(y = "Percent above expected death count", x = "week since January 1, 2020", title = "Racial disparities of Covid-19 (USA, 2020)", color = "" )
+labs(y = "Percent above expected death count", 
+     x = "week since January 1, 2020", 
+     title = "Racial disparities of Covid-19 (USA, 2020)", 
+     color = "" )
 ```
 
 1. Notice that groups with smaller populations have noisier time-series. The unfortunately-named "Other" time series is saw toothed, while the "Non-Hispanic White" line is much smoother. Remove the `#` from the code above and run it again. `#` is used for "comments" in R. R ignores code that comes after `#` until a new line is started.
