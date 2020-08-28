@@ -13,7 +13,8 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
-covid_data <- read_csv("~/Downloads/Weekly_counts_of_deaths_by_jurisdiction_and_race_and_Hispanic_origin.csv", col_types = cols(Suppress = col_character())) %>%
+covid_data <- read_csv(paste0("https://data.cdc.gov/api/views/qfhf-uhaa/rows.csv?",
+                  "accessType=DOWNLOAD&bom=true&format=true%20target="), col_types = cols(Suppress = col_character())) %>%
     rename(week = `Week Ending Date`,
         time_period = `Time Period`,
          race_ethnicity = `Race/Ethnicity`,
@@ -154,13 +155,13 @@ We will
 - Discuss what the `tidyverse` is
 
 
-## Getting started with R and R Studio
+<!-- ## Getting started with R and R Studio -->
 
-Please install R and R Studio. These are two distinct things!
+<!-- Please install R and R Studio. These are two distinct things! -->
 
-We have provided information previously. 
+<!-- We have provided information previously.  -->
 
-- On the first day, Harris IT will be available for troubleshooting installations.
+<!-- - On the first day, Harris IT will be available for troubleshooting installations. -->
 
 
 
@@ -278,13 +279,15 @@ To use a package we need to:
 - install it once from the internet
 
 ```{r, eval=FALSE}
-install.packages("readxl")  # do this one time directly in console
+install.packages("readxl")  # do this one time
+                            # directly in console
 ```
 
 - load it *each time* we restart R
 
 ```{r, eval=FALSE}
-library(readxl) # add this to your script / Rmd everytime you want to use
+library(readxl) # add this to your script / Rmd
+                # everytime you want to use
 read_xlsx("some_data.xls") 
 ```
 
@@ -305,7 +308,8 @@ What goes wrong here?
 install.packages("haven")
 our_data <- read_dta("my_file.dta")
 
-Error in read_dta("my_file.dta") : could not find function "read_dta"
+Error in read_dta("my_file.dta") :
+  could not find function "read_dta"
 ```
 
 ## common package error
