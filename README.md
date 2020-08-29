@@ -33,8 +33,8 @@ Your [final project](lab/project_description.pdf) is quite simple. You will pick
 
 
 ### Additional Resources
-
 - **R Bar**: Harris-provided support for R-related issues. 
+- [tidyverse cheetsheets](https://rstudio.com/resources/cheatsheets/) start with `dplyr` and `ggplot` 
 - [R for Data Science](https://r4ds.had.co.nz/): free online book with clear explanations of many `tidyverse` functions, the book to read on data analysis with R
 - [DataQuest.io](https://www.dataquest.io): online modules about specific programming concepts, access provided by Harris. For students who would like additional guided practice we recommend:
   - **Vectors**
@@ -54,7 +54,8 @@ Your [final project](lab/project_description.pdf) is quite simple. You will pick
      - [basic string manipulation](https://app.dataquest.io/m/342/fundamentals-of-string-manipulation)
      - [`gather()` and correlations](https://app.dataquest.io/m/325/correlations-and-reshaping-data/4/gathering-data-into-columns)
        - "step 2" is all about `ggplot` and potentially useful.
-
+  - They're always adding content, so we probably missed some good ones.
+ 
 
 ### Questions?
 
@@ -62,6 +63,15 @@ Please contact: Ari Anisfeld at anisfeld@uchicago.edu.
 
 ### Teaching Assistants
 
-The teaching assistants for this workshop are:
+The teaching assistants for this workshop are (see Canvas for links and emails)
 
-- will fill in shortly.
+- Victor Fuentes Campos
+- Michael Gorman
+- Leandro Grespan
+- Nguyen Luong
+- Annie Phan
+- Josephina Rodrigeuz
+- Yalun Su
+- Emily (Jiayi) Sun
+- Dominic Teo
+- Ryan Webb
