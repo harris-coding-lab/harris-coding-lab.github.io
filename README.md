@@ -15,7 +15,7 @@ Links to materials for each week's workshop will be posted here as provided.
 |**Class 0: Why R?**| [video part 1: why R?](https://youtu.be/ptcdtMXbHkk) (~ 12 min) <br> [video part 2: a quick introduction to R, Rstudio and `tidyverse`](https://youtu.be/PvrUfHWzyII) (~ 14 min) | [slides](slides/00_introduction.pdf) <br> [slide code](code/00_introduction.R) | [lab](lab/00_lab_intro_to_R_and_tidyverse.pdf)|
 |**Class 1: Reading data files and manipulating data with `dplyr`** | [video 1: reading data](https://youtu.be/WwoMJODwFOQ) (~ 10 min) <br> [video 2: manipulating data with `dplyr`](https://youtu.be/o1a-9-RvNc4) (~ 18 min) |[slides: reading data](slides/01a_reading-data.pdf) <br> [slides: manipulating data with `dplyr`](slides/02a_dplyr-manipulating-data.pdf) <br> [slide code: reading data](code/01a_reading-data.R) - Coming soon.  <br> [slide code: manipulating data with `dplyr`](code/01a_reading-data.R) - Coming soon. | lab 1 material to come | [FED data from slides](data/SCE-Public-LM-Quarterly-Microdata.xlsx) (you can download to follow along) <br>[texas data from slides](data/texas_housing_data.csv) <br> [drug cartel data from slide](https://dataverse.harvard.edu/file.xhtml?persistentId=doi:10.7910/DVN/VIXNNE/XH5ZQU&version=1.0) (you'll need to download from Dataverse)|
 |**Class 2: Vectors and Data Types**|[video](https://youtu.be/0MIeGk_xwiQ) (~ 22 min)| [slides](slides/02_vectors-and-data-types.pdf) <br> [slide code](code/02_vectors-and-data-types.R) - Coming soon | lab 2 material to come  | |
-| **Class 3: If Statements** | [video](https://youtu.be/WwoMJODwFOQ) (~ 20 min) | [slides](slides/03_if-statements.html) <br> [slide code](code/03_if-statements.R) - Coming soon.| lab 3 material to come  | | 
+| **Class 3: If Statements** | [video](https://www.youtube.com/watch?v=HKC7RTpNt60) (~ 20 min) | [slides](slides/03_if-statements.pdf) <br> [slide code](code/03_if-statements.R) - Coming soon.| lab 3 material to come  | | 
 |**Class 4: Grouped analysis with `dplyr`**| [video](https://youtu.be/9EQ9WB90VPw) (~13 min) |  [slides](slides/04_grouped-data.pdf) <br> [slide code](code/04_grouped-data.R) - Coming soon. | lab 4 material to come| |
 |**Class 5: Visualizing data with `ggplot`**| | | | |
 
@@ -28,6 +28,9 @@ Accelerated fall coding lab consists solely of new material on for loops and fun
 ### [Final Project](lab/project_description.pdf)
 
 Your [final project](lab/project_description.pdf) is quite simple. You will pick a data set that speaks to you and try to uncover something interesting which you will visualize in a plot. You will also compute some summary statistics that you will show in a summary table. Your TAs will review your work and provide a non-binding suggestion as to whether you are ready for the 'accelerated' Fall Coding Lab. Click on the link for details.
+
+### Questions
+Post questions on [Piazza](https://piazza.com/class/kecymgc5x897lv)
 
 
 
@@ -57,10 +60,6 @@ Your [final project](lab/project_description.pdf) is quite simple. You will pick
   - They're always adding content, so we probably missed some good ones.
  
 
-### Questions?
-
-Please contact: Ari Anisfeld at anisfeld@uchicago.edu.
-
 ### Teaching Assistants
 
 The teaching assistants for this workshop are (see Canvas for links and emails)
@@ -70,7 +69,7 @@ The teaching assistants for this workshop are (see Canvas for links and emails)
 - Leandro Grespan
 - Nguyen Luong
 - Annie Phan
-- Josephina Rodrigeuz
+- Josefina Rodriguez
 - Yalun Su
 - Emily (Jiayi) Sun
 - Dominic Teo
