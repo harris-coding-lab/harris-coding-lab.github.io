@@ -29,6 +29,9 @@ Accelerated fall coding lab consists solely of new material on for loops and fun
 
 Your [final project](lab/project_description.pdf) is quite simple. You will pick a data set that speaks to you and try to uncover something interesting which you will visualize in a plot. You will also compute some summary statistics that you will show in a summary table. Your TAs will review your work and provide a non-binding suggestion as to whether you are ready for the 'accelerated' Fall Coding Lab. Click on the link for details.
 
+### Questions
+Post questions on [Piazza](https://piazza.com/class/kecymgc5x897lv)
+
 
 
 
@@ -56,10 +59,6 @@ Your [final project](lab/project_description.pdf) is quite simple. You will pick
        - "step 2" is all about `ggplot` and potentially useful.
   - They're always adding content, so we probably missed some good ones.
  
-
-### Questions?
-
-Please contact: Ari Anisfeld at anisfeld@uchicago.edu.
 
 ### Teaching Assistants
 
