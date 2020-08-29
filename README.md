@@ -69,7 +69,7 @@ The teaching assistants for this workshop are (see Canvas for links and emails)
 - Leandro Grespan
 - Nguyen Luong
 - Annie Phan
-- Josephina Rodrigeuz
+- Josefina Rodriguez
 - Yalun Su
 - Emily (Jiayi) Sun
 - Dominic Teo
