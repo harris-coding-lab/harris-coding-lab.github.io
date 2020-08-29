@@ -28,7 +28,7 @@ You are welcome to use google and stackoverflow as you procede. Please cite your
 Your TAs will review how to use Rmds with you. But here are some quick tips. 
 
 - You make a new section in Rmd using `# section title`. 
-- When you read in you data, we do not want to see messages or warnings. To avoid this start the code block where you read the data with the following" ```{r, message = FALSE, warning = FALSE}".  
+- When you read in you data, we do not want to see messages or warnings. To avoid this start the code block where you read the data with the following `{r, message = FALSE, warning = FALSE}`.  
 - If you have a line of code that is too long, it will be cutoff. Most R code can be split across two lines.
 - Knit early and often (this is how you test if the Rmd is working how you think it is).
 
