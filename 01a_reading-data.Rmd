@@ -1,0 +1,155 @@
+---
+title: "Coding Lab: Reading in data"
+author: "Ari Anisfeld"
+date: "Summer 2020"
+output: 
+  beamer_presentation:
+    fig_width: 6
+    fig_height: 4
+---
+```{r, setup=TRUE, message=FALSE, echo=FALSE}
+library(tidyverse)
+library(readxl)
+library(haven)
+texas_housing_data <- txhousing
+```
+
+
+## So you found some data
+
+Say you find a spreadsheet on the internet and want to start exploring it with R.
+
+## 
+
+Sometimes loading data is as easy as
+
+```{r, eval=FALSE}
+texas_housing_data <- read_csv("texas_housing_data.csv")
+```
+
+But often you'll need to consider:
+
+- File location
+- File type
+- Funky formatting
+
+## detour: directory structure
+
+Computer hard drives are organized using a file system. 
+In this way, each file has a unique "address" or **file path**. 
+
+- `~/Documents/coding_lab_examples/texas_housing_data.csv` 
+
+The files are stored in folders or directories which are analagous to "zip codes".
+
+- `~/Documents/coding_lab_examples/`
+
+
+In Windows, file paths start with `C://...`
+
+## detour: working directory
+
+The 'working directory' in an R session is the folder your script knows about. 
+If the data you want is in that folder you can refer to it directly.
+
+```{r, eval=FALSE}
+fed_data <- 
+  read_xlsx("SCE-Public-LM-Quarterly-Microdata.xlsx")
+```
+ 
+ `getwd()` shows your current working directory 
+<!--point out that if they don't know what a directory structure looks like on their computer (windows) they can see it there -->.
+
+## detour: directory structure
+
+if the data were not in your current working directory you could:
+
+- give the full address: `read_csv("~/Documents/coding_lab_examples/file.csv")`
+- give a relative address:
+`read_csv("coding_lab_examples/file.csv")`
+- change the current working directory: `setwd("~/Documents/coding_lab_examples")`
+- move the file to the current working directory: `drag and drop`
+
+## loading data of various formats
+
+We can load data into R with different functions depending on the data format. 
+<!--Script: live code read_csv("texas_housing_data.csv")  -->
+
+file type  | package  | function 
+-----------|----------|-------------
+.csv        | readr    | `read_csv()`
+.dta (stata)| haven    | `read_dta()`
+.xlsx       | readxl   | `read_xlsx()`
+
+Note: `readr` is loaded with `tidyverse`
+
+
+## loading data?
+
+Sometimes, as we experienced with our csv import, reading data is a straightforward process
+
+```{r}
+drug_war_data <- read_dta(
+  "../data/Dataset_HighProfileCriminalViolence.dta")
+head(drug_war_data)
+```
+
+## loading data?
+While often you can just load the data directly, we often require finesse
+
+```{r}
+fed_data <-
+  read_xlsx(
+    "../data/SCE-Public-LM-Quarterly-Microdata.xlsx")
+head(fed_data)
+```
+
+<div class="notes">
+  open excel workbook. ?read_xlsx
+</div>
+
+***
+```{r}
+fed_data <- 
+  read_xlsx(
+    "../data/SCE-Public-LM-Quarterly-Microdata.xlsx", 
+    sheet = "Data 2013", 
+    skip = 1)
+head(fed_data)
+```
+
+
+## looking at data: `head()`, `glimpse()` or `View()`
+
+- `head()` and `glimpse()` provide ways to see part of your data.
+
+- `View()` provides a more spreadsheet-like experience.
+
+```{r}
+head(texas_housing_data)
+```
+
+
+## getting meta data 
+
+Get number of rows
+```{r}
+nrow(texas_housing_data) 
+```
+
+
+See column names
+```{r}
+names(texas_housing_data)
+```
+
+
+## Recap
+
+ - For most file types there's a function of form `read_xxx()` that will get the data into R.
+ - Use `getwd()` and `setwd()` to ensure you're in the right directory.
+ - When you have funky formatting use `?` to see if R can help you fix the problem on read.
+ - R has useful functions like `View()`, `glimpse()`, `head()`, `names()` and `nrow()` to get to know your data.
+
+
+
