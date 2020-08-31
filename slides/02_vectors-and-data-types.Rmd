@@ -6,10 +6,13 @@ output:
   beamer_presentation:
     fig_width: 6
     fig_height: 4
+    includes:
+      in_header: header_page_n.tex
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+options(dplyr.summarise.inform = FALSE)
 library(tidyverse)
 care_data <- tibble(
   id = 1:5,

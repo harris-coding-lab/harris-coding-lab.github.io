@@ -6,12 +6,15 @@ output:
   beamer_presentation:
     fig_width: 6
     fig_height: 4
+    includes:
+      in_header: header_page_n.tex
 ---
 
 <!-- Create an Rmd. install and load packages (tidyverse). Copy and paste some code. Use ?-->
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+options(dplyr.summarise.inform = FALSE)
 library(tidyverse)
 covid_data <- read_csv(paste0("https://data.cdc.gov/api/views/qfhf-uhaa/rows.csv?",
                   "accessType=DOWNLOAD&bom=true&format=true%20target="), col_types = cols(Suppress = col_character())) %>%

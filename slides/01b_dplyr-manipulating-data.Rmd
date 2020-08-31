@@ -6,11 +6,13 @@ output:
   beamer_presentation:
     fig_width: 6
     fig_height: 4
+    includes:
+      in_header: header_page_n.tex
 ---
 ```{r, setup=TRUE, message=FALSE, echo=FALSE}
 library(tidyverse)
 library(readxl)
-
+options(dplyr.summarise.inform = FALSE)
 texas_housing_data <- txhousing
 ```
 
