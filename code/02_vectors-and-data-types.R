@@ -93,9 +93,10 @@ care_data <- tibble(
   child_care_costs = c(1000, 3000, 300, 300, 500),
   random_noise = rnorm(5, sd = 5)*30
 )
+View(case_data)
 
 ## Subsetting
-# Two ways to pull out a column as a tibble
+# three ways to pull out a column as a tibble
 care_data %>% pull(n_kids) # tidy way
 care_data$n_kids # base R way
 care_data[["n_kids"]] # base R way
