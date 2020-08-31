@@ -1,8 +1,11 @@
 ---
-title: "Lab Session 1: Read and manipulate data"
+title: 'Lab Session 1: Read and manipulate data'
 author: "Ari Anisfeld"
 date: "8/26/2020"
-output: pdf_document
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
 ---
 
 ```{r setup, include=FALSE}
@@ -12,7 +15,7 @@ library(tidyverse)
 
 We expect you to watch the `class 1` material, [here](harris-coding-lab.github.io) prior to lab. If you find yourself in lab without R installed, please ask one of your partners to share screen and work together though the problem set.
 
-##  Warm-up (5 - 10 mintues)
+##  Warm-up 
 
 1. Create a new R script and add code to load the `tidyverse`. 
 
@@ -39,7 +42,7 @@ You see the code:
 
 1. `rm()` is short for remove. Find the examples in `?rm` and run them in the console.
 
-## Working with data and scripts (10 - 15 minutes)
+## Working with data and scripts
 
 1. Do you have a folder on your computer for coding lab material?  If not, create one and make sure you know the path to the folder.
 
@@ -69,7 +72,7 @@ knitr::include_graphics("images/01_data_structure.jpeg")
 
 
 
-So we can create our own header in `read_xlsx`.
+So we can create our own header in `read_xlsx`. Calling the read_xlsx function using `readxl::read_xlsx()` ensures that we use the read_xlsx() function from the readxl package. 
 
 ```{r, eval = FALSE}
 wid_data_raw <- 
@@ -111,7 +114,7 @@ Now we have some data and are ready to use `select()`, `filter()`, `mutate()`, `
 
 ```{r, eval = FALSE}
 # replace each ... with relevant code
-french_data %>%
+french_data <- wid_data %>%
   filter( ... ,  ...)
 
 ```
@@ -149,14 +152,13 @@ russian_data %>%
   arrange(...)
 ```
 
-
 1. For both the Russian Federation and French data, calculate the average proportion of wealth owned by the top 10 percent over the period from 1995 to 2010. You'll have to filter and then summarize with `summarize()`.
 
 ```{r, eval = FALSE}
 # replace ... with relevant code
 russian_data %>%
   filter(...) %>%
-  arrange(top10 = mean(...))
+  summarize(top10 = mean(...))
 ```
 
 ```{r, echo = FALSE, eval = FALSE}
@@ -164,7 +166,7 @@ french_data %>% filter(percentile == "p90p100") %>% filter(between(year, 1995, 2
 russian_data %>% filter(percentile == "p90p100") %>% filter(between(year, 1995, 2010)) %>% summarize(top10 = mean(value))
 ```
 
-## manipulating midwest demographic data with `dplyr` (25 - 45 minutes)
+## manipulating midwest demographic data with `dplyr`
 
 1. Now we'll use midwestern demographic data which is [here](https://github.com/harris-coding-lab/harris-coding-lab.github.io/raw/master/data/midwest.dta). The dataset includes county level data for a single year. We call data this type of data "cross-sectional" since it gives a point-in-time cross-section of the counties of the midwest. (The world inequality data is "timeseries" data).
 
@@ -201,7 +203,7 @@ russian_data %>% filter(percentile == "p90p100") %>% filter(between(year, 1995, 
 
 1. How many people live in Michigan?
 
-1. What's the total area of Illinois? What are the units?^[Unless you have a great intuition about how large IL is in several metrics, this question requires googling.]
+1. What's the total area of Illinois? What are the units?^[Unless you have a great intuition about how large IL is in several metrics, this question requires googling.] If the units don't align with other sources, can this data still be useful?
 
 
 
