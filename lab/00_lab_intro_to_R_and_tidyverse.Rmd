@@ -147,7 +147,9 @@ covid_data %>%
 us_deaths_by_race %>%
   ggplot(aes(y = race_ethnicity, x = percent_diff)) + 
   geom_col() +
-labs(x = "Percent above expected death count", y = "", title = "Racial disparities of Covid-19 (USA, 2020)" )
+labs(x = "Percent above expected death count",
+     y = "",
+     title = "Racial disparities of Covid-19 (USA, 2020)" )
 ```
 
 6. Remove the `+ labs()` function from the above code. Describe what `labs()` does. What is the default plotting behavior?
