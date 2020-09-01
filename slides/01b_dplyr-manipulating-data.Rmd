@@ -6,11 +6,13 @@ output:
   beamer_presentation:
     fig_width: 6
     fig_height: 4
+    includes:
+      in_header: header_page_n.tex
 ---
 ```{r, setup=TRUE, message=FALSE, echo=FALSE}
 library(tidyverse)
 library(readxl)
-
+options(dplyr.summarise.inform = FALSE)
 texas_housing_data <- txhousing
 ```
 
@@ -334,6 +336,29 @@ Error: Column `mean_price` must be length 1 (a summary value), not 561
 
 Get number of observations
 
+## piping `dplyr` verbs together
+
+`dplyr`verbs can be piped together in any order you want, although different orders can give you different results, so be careful!
+
+```{r}
+
+texas_housing_data %>%
+  select(city, year, month, sales, volume) %>%
+  mutate(log_mean_price = log(volume / sales)) %>%
+  filter(year == 2013) %>%
+  summarize(log_mean_price_2013 = mean(log_mean_price,
+                                       na.rm = TRUE))
+  
+# Won't give you the same result as 
+# texas_housing_data %>%
+ #  select(city, year, month, sales, volume) %>%
+ #  mutate(log_mean_price = log(volume / sales)) %>%
+ #  summarize(log_mean_price = mean(log_mean_price, na.rm = TRUE)) %>%
+ #  filter(year == 2013)
+  
+# Actually this code will give you an error, try it!
+
+```
 ## Recap: manipulating data with `dplyr`
 
 We learned

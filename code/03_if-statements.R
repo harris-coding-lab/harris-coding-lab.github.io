@@ -1,44 +1,74 @@
+library(tidyverse)
+
 !TRUE
 !FALSE
-(2 > 1)
+
+!(2 > 1)
+
 !(0 != 0)
+
+TRUE | FALSE
+FALSE | FALSE
+
 (5 > 7) | (10 == 10)
-FALSE | TRUE
+
 TRUE & FALSE
+TRUE & TRUE
+
 !(2 > 6) & (4 > 9 | 3 == 3)
 
-c(1, 2, 3) > 0
-c(1, 2, 3) > c(0, 2, 4)
-
-if (2 > 1) {
-  print("Math works in R!")
+x <- 100
+if (x > 0) {
+  print("x is positive")
 }
 
-today <- "October 15"
-my_birthday <- "October 22"
-
-if (today == my_birthday) {
-  print("Happy birthday!")
-} else {                      
-  print("Not my birthday today.")
-}
-
-if (today == my_birthday) {
-  print("Happy birthday!")
-} else if (today == "October 31") {                      
-  print("It's Halloween!")
+if (Sys.info()[["user"]] == "arianisfeld") {
+  base_path <- "~/Documents/coding_lab_examples/"
 } else {
-  print("Not a notable day.")
+  base_path <- "~/gdrive/coding_lab_examples/"
+}
+data <- read_csv(paste0(base_path, "our_data.csv"))
+
+score <- 0
+my_cards <- sample(2:11, 1) + sample(2:11, 1)
+computers_cards <- sample(2:11, 1) + sample(2:11, 1)
+if (my_cards > computers_cards) {
+  score <- score + 1
+  print("You win")
+} else if (my_cards < computers_cards) {
+  score <- score - 1
+  print("Better luck next time.")
+} else {
+  print("It's a tie")
 }
 
-ifelse(today == my_birthday, "Happy birthday!", "Not my birthday today.")
+score <- 0
+my_cards <- sample(2:11, 1) + sample(2:11, 1)
+computers_cards <- sample(2:11, 1) + sample(2:11, 1)
+if ((my_cards > computers_cards & my_cards <= 21) |
+    computers_cards > 21) {
+  score <- score + 1
+  print("You win")
+} else if (my_cards < computers_cards) {
+  score <- score - 1
+  print("Better luck next time.")
+} else {
+  print("It's a tie")
+}
+
+if (c(TRUE, FALSE)) { print("if true") }
+if (NA) { print("if true") }
 
 ifelse(TRUE, 1, 2)
 ifelse(FALSE, 1, 2)
+ifelse(c(TRUE, FALSE, TRUE), 1, 2)
 ifelse(NA, 1, 2)
 
-library(tidyverse)
-texas_housing_data <- txhousing
+
+today <- Sys.Date()
+ifelse(today == "2020-11-03",
+       "VOTE TODAY!!",
+       "Don't forget to vote on Nov 3rd.")
 
 texas_housing_data %>% 
   mutate(in_january = ifelse(month == 1, TRUE, FALSE)) %>% 

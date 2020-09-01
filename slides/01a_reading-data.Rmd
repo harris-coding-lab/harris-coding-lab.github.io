@@ -6,10 +6,13 @@ output:
   beamer_presentation:
     fig_width: 6
     fig_height: 4
+    includes:
+      in_header: header_page_n.tex
 ---
 ```{r, setup=TRUE, message=FALSE, echo=FALSE}
 library(tidyverse)
 library(readxl)
+options(dplyr.summarise.inform = FALSE)
 texas_housing_data <- txhousing
 ```
 
@@ -52,7 +55,8 @@ The 'working directory' in an R session is the folder your script knows about.
 If the data you want is in that folder you can refer to it directly.
 
 ```{r, eval=FALSE}
-fed_data <- read_xlsx("SCE-Public-LM-Quarterly-Microdata.xlsx")
+fed_data <- 
+  read_xlsx("SCE-Public-LM-Quarterly-Microdata.xlsx")
 ```
  
  `getwd()` shows your current working directory 
@@ -88,7 +92,8 @@ While often you can just load the data directly, we often require finesse
 
 ```{r}
 fed_data <-
-  read_xlsx("../data/SCE-Public-LM-Quarterly-Microdata.xlsx")
+  read_xlsx(
+    "../data/SCE-Public-LM-Quarterly-Microdata.xlsx")
 head(fed_data)
 ```
 
@@ -99,9 +104,10 @@ head(fed_data)
 ***
 ```{r}
 fed_data <- 
-  read_xlsx("../data/SCE-Public-LM-Quarterly-Microdata.xlsx", 
-            sheet = "Data 2013", 
-            skip = 1)
+  read_xlsx(
+    "../data/SCE-Public-LM-Quarterly-Microdata.xlsx", 
+    sheet = "Data 2013", 
+    skip = 1)
 head(fed_data)
 ```
 

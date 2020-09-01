@@ -6,10 +6,13 @@ output:
   beamer_presentation:
     fig_width: 6
     fig_height: 4
+    includes:
+      in_header: header_page_n.tex
 ---
 ```{r, setup=TRUE, message=FALSE, echo=FALSE}
 library(tidyverse)
 library(readxl)
+options(dplyr.summarise.inform = FALSE) # Suppress summarize info in dplyr >= 1.0
 texas_housing_data <- txhousing
 ```
 
@@ -49,7 +52,7 @@ annual_housing_prices %>%
 ## grouped summary with `group_by()` + `summarize()`
 
 Use case: You want summary statistics for certain subsets of the data.
-
+\footnotesize
 ```{r}
 texas_housing_data %>%
   group_by(city, year) %>%
@@ -90,7 +93,7 @@ a_grouped_df <-
 ```
 
 ## What does `group_by()` do?
-
+\footnotesize
 ```{r}
 a_non_grouped_df %>% glimpse()
 a_grouped_df %>% glimpse()
@@ -104,7 +107,7 @@ a_grouped_df %>% glimpse()
   - In practice, R creates a list of row numbers assigned to each group.
   
 As an analyst, you just need to understand the concept. But to see what's going on ...  
-
+\footnotesize
 ```{r}
 # Recall, our "groups" are city-year combos
 # and there are 12 months of obs per year

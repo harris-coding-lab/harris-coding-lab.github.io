@@ -36,16 +36,22 @@ Your TAs will review how to use Rmds with you. But here are some quick tips.
 
 Below is a list of suitable data sources. You are welcome to and encouraged to find a data source not on this list that speaks to your policy interests. Many of these data sources have a wide range of data sets. Pick one that comes in tabular format with several variables that are interesting^[By which I mean there's variation.]. I recommend that once you pick a data source that is sufficient work with that so you have ample time to focus on your R skills.
 
+\pagebreak
 ```{r, echo = FALSE, message=FALSE, warning=FALSE}
 table <- "Description|url
 Weekly Covid data from US CDC (several datasets available, follow links)|https://www.cdc.gov/nchs/nvss/vsrr/covid_weekly/|
+Washington Post fatal police shooting data has records of every fatal shooting in the United States by a police officer in the line of duty since Jan. 1, 2015. Their github has other data mixed in with code they use for other stuff.|https://github.com/washingtonpost/data-police-shootings
+Open Policing has traffic stop data for several police departments with varying time horizons and variables|https://openpolicing.stanford.edu/data/
+Eviction Lab has eviction data at the block group / tract level from 2000-2016|https://evictionlab.org/get-the-data/|
 Google maps data aggregating how visits to places, such as grocery stores and parks, are changing in each geographic region since February 15, 2020 until today (3-4 days delay), compared to the same week of the day in January, 2020.|https://www.google.com/covid19/mobility/index.html?hl=en 
 World Inequality Database which allows you to download a customizable dataset. You are able to choose the indicators you want (per adult gdp, top 10% income share & dozens others), countries you want and date range that you want.|https://wid.world/data/ 
 The Humanitarian Data Exchange (HDX) is an open platform for sharing data across crises and organizations. They host thousands of datasets including development indicator data, geospatial data, damage assessments, and more.|https://data.humdata.org/ 
 World Bank publishes hundreds of different global development related datasets including datasets on World Development Indicators, all of World Bank's lending projects and access to sample survey data etc. Also able to search data by country or indicator.|https://data.worldbank.org/
 The City of Chicago publishes many different datasets, including ones on public finance, public safety, transportation, and education|https://data.cityofchicago.org/ 
 NYC also has an open data initiative that aims to provide data from different agencies in one central platform. Data on ride-share programs can be found there as well, but of course, the public version |https://opendata.cityofnewyork.us/ 
+List of datasets related to black lives and police violence. Kaggle is a platform for learning data science through competitions.|https://www.kaggle.com/data/177628
 FiveThirtyEight is a website focused on opinion poll analysis, politics, economics, and sports blogging. Currently, it has a unique repository of datasets about 2020 election polls and forecasts, Trump's popularity, Americans' view on COVID crisis Trump's response, NBA/NFL/MLB/Soccer predictions, among others.|https://data.fivethirtyeight.com/ 
+Propublica is a investigative news organization that does in-depth data reporting. Browse data sets about Health, Criminal Justice, Education, Politics, Business, Transportation, Military, Environment, Finance, or Religion. Not all data here is free.| https://www.propublica.org/datastore/
 National Bureau of Economic Research has a master page of data resources. |https://data.nber.org/data/
 Google also has a dataset search tool that is pretty handy for finding data without having to comb through niche websites. I would not rely on this completely, though, since not all datasets follow the standards required to show up in these search results|https://datasetsearch.research.google.com/ "
 library(purrr)

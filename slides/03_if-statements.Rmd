@@ -6,13 +6,16 @@ output:
   beamer_presentation:
     fig_width: 6
     fig_height: 4
+    includes:
+      in_header: header_page_n.tex
 ---
+
 ```{r, setup=TRUE, message=FALSE, echo=FALSE}
 library(tidyverse)
 library(readxl)
+options(dplyr.summarise.inform = FALSE) # Suppress summarize info in dplyr >= 1.0
 texas_housing_data <- txhousing
 ```
-
 ## Conditional statements (control flow 1)
 
 We often want to our code to do something depending on the context. We start with "if" statements.
