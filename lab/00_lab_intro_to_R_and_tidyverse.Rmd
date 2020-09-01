@@ -47,6 +47,7 @@ If you find yourself in lab without R installed, you can use google colab [colab
     ```{r, eval = FALSE}
     # storms is a dataset that comes with the tidyverse
     # use View(storms) to see the full dataset
+
     storms %>%
       group_by(name, year) %>%
       filter(max(category) == 5)
