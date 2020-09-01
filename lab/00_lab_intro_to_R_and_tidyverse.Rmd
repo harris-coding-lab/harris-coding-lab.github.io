@@ -84,7 +84,7 @@ Now you'll see an abridged version of the data exploration I undertook to make t
 
 The idea is to preview code we'll see in coding lab and get you tinkering. 
 
-Start by copying and pasting the following code to download and load data from CDC. It's a large enough file that it might take a minute to run. Look at the orignal names of the variables `diff` and `perc_diff`, otherwise you can safely ignore the following code. It does some pre-processing to make this lab more accessible to you.
+Copy and paste the following code to download and load data from CDC. It's a large enough file that it might take a minute to run. Note the original names of the variables `diff` and `perc_diff`. This code mainly does some pre-processing of the data for you.
 
 ```{r, cache = TRUE, message = FALSE}
 covid_data <- 
@@ -119,10 +119,10 @@ Analysis is easier with data that is "tidy", by which we mean
 
 Is `covid_data` tidy? What is the unit of observation for each row?
 
-1. R has a built in function to summarize each column called  `summary()`. Try calling the function, data goes in the first position.  It's not the prettiest, but it gives you some information with little code.  Look at `n_deaths`. What information are you getting from `summary()`. Does anything surprise you?
+1. R has a built in function to summarize each column called  `summary()`. Try calling the function. Your data goes in the first position in the parenthesis.  It's not the prettiest, but it gives you some information with little code.  Look at `n_deaths`. What information are you getting from `summary()`. Does anything surprise you?
 
 
-1.  In `summary()`, you saw that the Max values are quite high compared to the third quartile and so forth. That's worthy of investigation. Run the following code and explain why we have some super large values in our data set.
+1.  In `summary()`, you saw that the Max values are quite high compared to the third quartile. That's worthy of investigation. Run the following code and explain why we have some super large values in our data set.
 
 ```{r, eval = FALSE}
 covid_data %>% 
