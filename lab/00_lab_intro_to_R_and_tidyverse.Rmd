@@ -19,7 +19,7 @@ We expect you to watch the `class 0` material, [here](harris-coding-lab.github.i
 If you find yourself in lab without R installed, you can use google colab [colab.fan/r )](colab.fan/r) to run R in a notebook environment. You'll lose some of the RStudio functionality, but it'll work. 
 
 
-## Installation completetion
+## Installation completion
 
 1. If you have not yet, run the following code to install the `tidyverse`.
 
@@ -27,7 +27,7 @@ If you find yourself in lab without R installed, you can use google colab [colab
     install.packages("tidyverse")
     ```
 
-1. This code returns an error. Why? Fix it and install the packages. We'll see what they're for in the next lecture
+2. This code returns an error. Why? Fix it and install the packages. We'll see what they're for in the next lecture
 
     ```{r, eval = FALSE}
     install.packages(haven)
@@ -35,14 +35,14 @@ If you find yourself in lab without R installed, you can use google colab [colab
     ```
 
 
-1. In order to have access to `tidyverse` functions, you need to load the library.
+3. In order to have access to `tidyverse` functions, you need to load the library.
 
     ```{r, eval = FALSE}
     library("tidyverse")
     ```
 
 
-1. Run the following code to make sure you have installed successfully. Then, assign the resulting dataframe to the name `big_storms`.
+4. Run the following code to make sure you have installed successfully. Then, assign the resulting dataframe to the name `big_storms`.
 
     ```{r, eval = FALSE}
     # storms is a dataset that comes with the tidyverse
@@ -53,7 +53,7 @@ If you find yourself in lab without R installed, you can use google colab [colab
     ```
 
 
-1. This code makes the map seen below. If you run it you will get an error that says your code is missing a required package. Use the error to figure out what package is missing, install it and then reproduce the map on your computer. [This package is not essential, so if you're using a lot of time (> 3 min) trying to install it. It's okay to move on or try on google colab.]
+5. This code makes the map seen below. If you run it you will get an error that says your code is missing a required package. Use the error to figure out what package is missing, install it and then reproduce the map on your computer. [This package is not essential, so if you're using a lot of time (> 3 min) trying to install it. It's okay to move on or try on google colab.]
 
 ```{r, eval= FALSE}
   ggplot(aes(x = long, y = lat, color = name), data = big_storms) +
@@ -75,7 +75,7 @@ If you find yourself in lab without R installed, you can use google colab [colab
     
 ```
 
-1. The map is nice, but we cannot see where the storm baths begin. Play with the code to expand our view to capture the full path.
+6. The map is nice, but we cannot see where the storm baths begin. Play with the code to expand our view to capture the full path.
 
 
 ## Processing and analyzing data, an example:
@@ -119,17 +119,17 @@ Analysis is easier with data that is "tidy", by which we mean
 
 Is `covid_data` tidy? What is the unit of observation for each row?
 
-1. R has a built in function to summarize each column called  `summary()`. Try calling the function. Your data goes in the first position in the parenthesis.  It's not the prettiest, but it gives you some information with little code.  Look at `n_deaths`. What information are you getting from `summary()`. Does anything surprise you?
+2. R has a built in function to summarize each column called  `summary()`. Try calling the function. Your data goes in the first position in the parenthesis.  It's not the prettiest, but it gives you some information with little code.  Look at `n_deaths`. What information are you getting from `summary()`. Does anything surprise you?
 
 
-1.  In `summary()`, you saw that the Max values are quite high compared to the third quartile. That's worthy of investigation. Run the following code and explain why we have some super large values in our data set.
+3.  In `summary()`, you saw that the Max values are quite high compared to the third quartile. That's worthy of investigation. Run the following code and explain why we have some super large values in our data set.
 
 ```{r, eval = FALSE}
 covid_data %>% 
   filter(n_deaths > 10000) 
 ```
 
-1. Ah, that's actually quite useful. We have US data already aggregated for us. Let's start by aggregating the data so we have a single number for each `race_ethnicity`. Use the `<-` to assign the results to the name `us_deaths_by_race`.
+4. Ah, that's actually quite useful. We have US data already aggregated for us. Let's start by aggregating the data so we have a single number for each `race_ethnicity`. Use the `<-` to assign the results to the name `us_deaths_by_race`.
 
 ```{r, eval = FALSE}
 covid_data %>%
@@ -141,18 +141,20 @@ covid_data %>%
             ) 
 ```
 
-1. It's often nice to see the data. Run the code to make a bar graph.
+5. It's often nice to see the data. Run the code to make a bar graph.
 
 ```{r, eval = FALSE}
 us_deaths_by_race %>%
   ggplot(aes(y = race_ethnicity, x = percent_diff)) + 
   geom_col() +
-labs(x = "Percent above expected death count", y = "", title = "Racial disparities of Covid-19 (USA, 2020)" )
+labs(x = "Percent above expected death count",
+     y = "",
+     title = "Racial disparities of Covid-19 (USA, 2020)" )
 ```
 
-1. Remove the `+ labs()` function from the above code. Describe what `labs()` does. What is the default plotting behavior?
+6. Remove the `+ labs()` function from the above code. Describe what `labs()` does. What is the default plotting behavior?
 
-1. Remake the graph but for the state of IL. You should be able to do this by changing the above code in two places.
+7. Remake the graph but for the state of IL. You should be able to do this by changing the above code in two places.
 
 ```{r, echo = FALSE, eval = FALSE}
 covid_data %>%
@@ -170,7 +172,7 @@ labs(x = "Percent above expected death count",
 ```
 
 
-1. Seeing this graph, I thought to myself. I can tell a better story and understand the data better if I included the time series element. This would allow us to see how the disparities change over time.
+8. Seeing this graph, I thought to myself. I can tell a better story and understand the data better if I included the time series element. This would allow us to see how the disparities change over time.
 
 ```{r}
 covid_data %>%
@@ -185,8 +187,8 @@ labs(y = "Percent above expected death count",
      color = "" )
 ```
 
-1. Notice that groups with smaller populations have noisier time-series. The unfortunately-named "Other" time series is saw toothed, while the "Non-Hispanic White" line is much smoother. Remove the `#` from the code above and run it again. `#` is used for "comments" in R. R ignores code that comes after `#` until a new line is started.
+9. Notice that groups with smaller populations have noisier time-series. The unfortunately-named "Other" time series is saw toothed, while the "Non-Hispanic White" line is much smoother. Remove the `#` from the code above and run it again. `#` is used for "comments" in R. R ignores code that comes after `#` until a new line is started.
 
-1. Finally, you might notice that it looks like there's a suspicuous drop off in our "Percent above expected death count" after week 30. Let's investigate. Is this because there actually fewer deaths? Change the `y` value from `perc_diff` to a different column in your data set to graph death counts.
+10. Finally, you might notice that it looks like there's a suspicuous drop off in our "Percent above expected death count" after week 30. Let's investigate. Is this because there actually fewer deaths? Change the `y` value from `perc_diff` to a different column in your data set to graph death counts.
 
-1. With a little investigation you discover that the CDC updates these counts over time and the last 6 weeks are likely to increase substantially. Add this line `filter(week_no > 30) %>%` to your code to cutoff the data sooner.
+11. With a little investigation you discover that the CDC updates these counts over time and the last 6 weeks are likely to increase substantially. Add this line `filter(week_no > 30) %>%` to your code to cutoff the data sooner.
