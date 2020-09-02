@@ -9,7 +9,7 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(haven)
-mrc_data <- read_dta("~/Downloads/mrc_table10.dta")
+mrc_data <- read_dta("../data/mrc_table10.dta")
 ```
 
 

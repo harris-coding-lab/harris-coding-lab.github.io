@@ -54,7 +54,7 @@ You see the code:
 
 1. Add a line to your script where you `setwd()` to the `data` folder.
 
-1. Download the data [here](https://github.com/harris-coding-lab/harris-coding-lab.github.io/raw/master/data/world_wealth_inequality.xlsx) and put the data in your `data` folder. The data source is the World Inequality Database where you can find data about the distribution of income and wealth in several contries over time. See [wid.world](wid.world) for more information.
+1. Download the data [from this link](https://github.com/harris-coding-lab/harris-coding-lab.github.io/raw/master/data/world_wealth_inequality.xlsx) and put the data in your `data` folder. The data source is the World Inequality Database where you can find data about the distribution of income and wealth in several contries over time. See [wid.world](wid.world) for more information.
     
 1. If you followed the set-up from above, you should be able to run the following code with no error.
 
@@ -168,7 +168,7 @@ russian_data %>% filter(percentile == "p90p100") %>% filter(between(year, 1995, 
 
 ## manipulating midwest demographic data with `dplyr`
 
-1. Now we'll use midwestern demographic data which is [here](https://github.com/harris-coding-lab/harris-coding-lab.github.io/raw/master/data/midwest.dta). The dataset includes county level data for a single year. We call data this type of data "cross-sectional" since it gives a point-in-time cross-section of the counties of the midwest. (The world inequality data is "timeseries" data).
+1. Now we'll use midwestern demographic data which is [at this link](https://github.com/harris-coding-lab/harris-coding-lab.github.io/raw/master/data/midwest.dta). The dataset includes county level data for a single year. We call data this type of data "cross-sectional" since it gives a point-in-time cross-section of the counties of the midwest. (The world inequality data is "timeseries" data).
 
 1. Save `midwest.dta` in your data folder and load it into R.^[Hint: `read_dta()`]
 
