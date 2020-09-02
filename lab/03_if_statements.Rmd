@@ -13,6 +13,9 @@ mrc_data <- read_dta("../data/mrc_table10.dta")
 ```
 
 
+We expect you to watch the `class 3` material, [here](harris-coding-lab.github.io) prior to lab. Download the data before lab.
+
+
 ## Data:
 
 For this lab, we will use data from Opportunity Insights: https://opportunityinsights.org/data/ 
