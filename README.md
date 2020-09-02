@@ -17,7 +17,7 @@ Links to materials for each week's workshop will be posted here as provided.
 |**Class 2: Vectors and Data Types**|[video](https://youtu.be/0MIeGk_xwiQ) (~ 22 min)| [slides](slides/02_vectors-and-data-types.pdf) <br> [slide code](code/02_vectors-and-data-types.R) - Coming soon | lab 2 material to come  | |
 | **Class 3: If Statements** | [video](https://www.youtube.com/watch?v=HKC7RTpNt60) (~ 20 min) | [slides](slides/03_if-statements.pdf) <br> [slide code](code/03_if-statements.R) - Coming soon.| lab 3 material to come  | | 
 |**Class 4: Grouped analysis with `dplyr`**| [video](https://youtu.be/9EQ9WB90VPw) (~13 min) |  [slides](slides/04_grouped-data.pdf) <br> [slide code](code/04_grouped-data.R) - Coming soon. | lab 4 material to come| |
-|**Class 5: Visualizing data with `ggplot`**| | | | |
+|**Class 5: Visualizing data with `ggplot`**| | | Work on final project with TA and peer support | |
 
 
 The first three weeks of fall coding lab covers the same material (minus `ggplot`).
