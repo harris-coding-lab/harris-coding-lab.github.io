@@ -14,7 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 ```
 
-We expect you to watch the `class 1` material, [here](harris-coding-lab.github.io) prior to lab. If you find yourself in lab without R installed, please ask one of your partners to share screen and work together though the problem set.
+We expect you to watch the `class 1` material, [here](harris-coding-lab.github.io) prior to lab. If you find yourself in lab without R installed, try using RStudio cloud [https://rstudio.cloud/]( https://rstudio.cloud/).^[Sign up for the free tier which should be sufficient for camp. You will have to install packages.]
 
 In this lab we'll use two data sets. You can download them in advance [here](https://github.com/harris-coding-lab/harris-coding-lab.github.io/raw/master/data/world_wealth_inequality.xlsx) and [here](https://github.com/harris-coding-lab/harris-coding-lab.github.io/raw/master/data/midwest.dta).
 
