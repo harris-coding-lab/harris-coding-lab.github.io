@@ -6,6 +6,7 @@ output:
   pdf_document: default
   html_document:
     df_print: paged
+urlcolor: blue
 ---
 
 ```{r setup, include=FALSE}
@@ -14,6 +15,9 @@ library(tidyverse)
 ```
 
 We expect you to watch the `class 1` material, [here](harris-coding-lab.github.io) prior to lab. If you find yourself in lab without R installed, please ask one of your partners to share screen and work together though the problem set.
+
+In this lab we'll use two data sets. You can download them in advance [here](https://github.com/harris-coding-lab/harris-coding-lab.github.io/raw/master/data/world_wealth_inequality.xlsx) and [here](https://github.com/harris-coding-lab/harris-coding-lab.github.io/raw/master/data/midwest.dta).
+
 
 ##  Warm-up 
 

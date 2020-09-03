@@ -192,4 +192,4 @@ labs(y = "Percent above expected death count",
 
 10. Finally, you might notice that it looks like there's a suspicuous drop off in our "Percent above expected death count" after week 30. Let's investigate. Is this because there actually fewer deaths? Change the `y` value from `perc_diff` to a different column in your data set to graph death counts.
 
-11. With a little investigation you discover that the CDC updates these counts over time and the last 6 weeks are likely to increase substantially. Add this line `filter(week_no > 30) %>%` to your code to cutoff the data sooner.
+11. With a little investigation you discover that the CDC updates these counts over time and the last 6 weeks are likely to increase substantially. Add this line `filter(week_no < 30) %>%` to your code to cutoff the data sooner.
