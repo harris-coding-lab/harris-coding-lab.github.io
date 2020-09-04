@@ -13,7 +13,7 @@ library(tidyverse)
 ```
 
 
-We expect you to review the `class 2` material, [here](harris-coding-lab.github.io) prior to lab. If you find yourself in lab without R installed, please ask one of your partners to share screen and work together though the problem set. Alternatively, you can use google colab [colab.fan/r )](colab.fan/r) to run R in a notebook environment. You'll lose some of the RStudio functionality, but it'll work. 
+We expect you to review the `class 2` material, [here](harris-coding-lab.github.io) prior to lab. If you find yourself in lab without R installed, try using RStudio cloud: https://rstudio.cloud/.^[Sign up for the free tier which should be sufficient for camp. You will have to install packages.] 
 
 # Warm-up: Vector creation. 
 
@@ -198,7 +198,7 @@ We are going to calculate the mean, variance and standard deviation of the distr
 
 1. Temporarily delete `each =` (keep `1e5`). Explain why the resulting graph looks the way it does. Make sure you put `each = ` back.
 
-1. David and Rohen told me that when we add two independent `chi sq` distributions with degrees of freedom $df_1$ and $df_2$ the result is a `chi sq` with df $= df_1 + df_2$. I'm not sure whether or not they're right. Adjust the graph code to provide visual evidence for or against their claim. There's an easy way to mess this up that is difficult to explain until after lesson 4. Ask your TA to check your result for you.
+1. David and Rohen told me that when we add two independent `chi sq` distributions with degrees of freedom $df_1$ and $df_2$ the result is a `chi sq` with df $= df_1 + df_2$. I'm not sure whether or not they're right. Adjust the graph code to provide visual evidence for or against their claim. (*There's an easy way to mess this up that is difficult to explain until after lesson 4 - pay special attention to the values that you use for your "df" column. Ask your TA to check your result for you.*)
     
     
     
