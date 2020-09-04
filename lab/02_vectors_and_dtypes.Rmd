@@ -2,7 +2,9 @@
 title: 'Lab Session 2: Vectors and Data Types'
 author: "Ari Anisfeld"
 date: "8/31/2020"
-output: pdf_document
+output: 
+  pdf_document:
+    number_sections: true
 ---
 
 ```{r setup, include=FALSE}
@@ -11,11 +13,11 @@ library(tidyverse)
 ```
 
 
-We expect you to review the `class 2` material, [here](harris-coding-lab.github.io) prior to lab. If you find yourself in lab without R installed, you can use google colab [colab.fan/r )](colab.fan/r) to run R in a notebook environment. You'll lose some of the RStudio functionality, but it'll work. 
-
-TODO-- directions on Rmd | Script
+We expect you to review the `class 2` material, [here](harris-coding-lab.github.io) prior to lab. If you find yourself in lab without R installed, try using RStudio cloud: https://rstudio.cloud/.^[Sign up for the free tier which should be sufficient for camp. You will have to install packages.] 
 
 # Warm-up: Vector creation. 
+
+1. Create a new R script and add code to load the tidyverse.
 
 1. In the lecture, we covered `c()`, `:`, `rep()`, `seq()`, `rnorm()`, `runif()` among other ways to create vectors. Use each of these functions once as you create the vectors required below.
 
@@ -40,7 +42,7 @@ TODO-- directions on Rmd | Script
     ```
     a. We gave collapse the argument " " i.e. a character string that is a blank space. Try a different character string. 
     
-1. `paste0` (or it's `tidyverse` synonym `str_c`)^[`tidyverse` synonyms are usually preferrable since they have fewer quirky behaviors. For example, try `str_c(c("bob", NA, "maya"), "@gmail.com")` vs `paste0(c("bob", NA, "maya"), "@gmail.com")`] .
+1. Try these lines of code using `paste0` (or it's `tidyverse` synonym `str_c`)^[`tidyverse` synonyms are usually preferrable since they have fewer quirky behaviors. For example, try `str_c(c("bob", NA, "maya"), "@gmail.com")` vs `paste0(c("bob", NA, "maya"), "@gmail.com")`] .
 
     ```{r, eval = FALSE}
     paste0(angelou_quote, ".com")   
@@ -108,10 +110,10 @@ If we want to have independent draws from our sampling vector, we say `replace =
     ```
 
 
-1. Repeat the code to find estimated probability of heads from your `thousand_flips` sample and `million_flips` sample.^[In the fall, we'll discuss ways to write this type of code more efficiently without copy paste.]
+1. Repeat the code from part 3 to find the estimated probability of heads from your `thousand_flips` sample and `million_flips` sample.^[In the fall, we'll discuss ways to write this type of code more efficiently without copy paste.]
 
-  a. Run all the code a few times. Notice that the random number generator will give a different sequence of flips each time.
-  a. What do you notice about the estimated probabilities as the sample size gets larger? (This is an example of the "Law of Large Numbers")
+    a. Re-run all the code from parts 2 through 4 a few times. Notice that the random number generator will give a different sequence of flips each time.
+    a. What do you notice about the estimated probabilities as the sample size gets larger? (This is an example of the "Law of Large Numbers")
 
 1. We had you calculate the estimated probability with `sum() / length()`. R also has a function `mean()` built in. Simplify the computation for `p_hat_xxx` by using `mean()`.
 
@@ -191,9 +193,12 @@ We are going to calculate the mean, variance and standard deviation of the distr
       geom_density( alpha = .5) + 
       labs(fill = "df", x = "sample")
     ```
-    a. How many rows are in the tibble? Explain how the code that defines `x` and the code that defines `df` make vectors that are the right length.
-    a. Temporarily delete `each =` (keep `1e5`). Explain why the resulting graph looks the way it does. Make sure you put `each = ` back.
-    a. David and Rohen told me that when we add two independent `chi sq` distributions with degrees of freedom $df_1$ and $df_2$ the result is a `chi sq` with df $= df_1 + df_2$. I'm not sure whether or not they're right. Adjust the graph code to provide visual evidence for or against their claim. There's an easy way to mess this up that is difficult to explain until after lesson 4. Ask your TA to check your result for you.
+    
+1. How many rows are in the tibble? Explain how the code that defines `x` and the code that defines `df` make vectors that are the right length.
+
+1. Temporarily delete `each =` (keep `1e5`). Explain why the resulting graph looks the way it does. Make sure you put `each = ` back.
+
+1. David and Rohen told me that when we add two independent `chi sq` distributions with degrees of freedom $df_1$ and $df_2$ the result is a `chi sq` with df $= df_1 + df_2$. I'm not sure whether or not they're right. Adjust the graph code to provide visual evidence for or against their claim. (*There's an easy way to mess this up that is difficult to explain until after lesson 4 - pay special attention to the values that you use for your "df" column. Ask your TA to check your result for you.*)
     
     
     
