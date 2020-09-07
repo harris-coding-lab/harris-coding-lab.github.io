@@ -296,10 +296,12 @@ computers_cards <- 22
 
 Here's a cheap version of black jack.
 ```{r}
+score <- 0
 my_cards <- sample(2:11, 1) +  sample(2:11, 1)
 computers_cards <- sample(2:11, 1) +  sample(2:11, 1)
 ```
 
+\footnotesize
 ```{r}
 if (my_cards > computers_cards) {
   score <- score + 1
@@ -326,7 +328,7 @@ As the statement gets more complex, we're more likely to make errors.
 
 
 ## `if` is not vectorized and doesn't handle `NA`s
-
+\footnotesize
 ```{r, eval = FALSE}
 if (c(TRUE, FALSE)) { print("if true") }
 #> [1] "if true"
@@ -339,7 +341,7 @@ if (NA) { print("if true") }
 ```
 
 ## Vectorized if `ifelse` statements {.build}
-
+\footnotesize
 At first blush, `ifelse()` statements look like a quicker way to write an if else statement
 
 ```{r}
@@ -398,7 +400,7 @@ Unlike `if`, `ifelse` can handle `NA`s and as usual `NA`s are contagious.
 
 Ifelse statements work well in dataframes with the `mutate()` function. 
 Let's add a column to the `texas_housing_data` based on a conditional.
-
+\footnotesize
 ```{r}
 texas_housing_data %>% 
   mutate(in_january = ifelse(month == 1, TRUE, FALSE)) %>% 
@@ -408,7 +410,7 @@ texas_housing_data %>%
 ## `case_when` statements, supercharged for multiple cases 
 
 If you have a lot of categories, ditch the ifelse statement and use dplyr's `case_when()` function, which allows for multiple conditions, like the `else if`s we saw earlier. 
-
+\footnotesize
 ```{r}
 texas_housing_data %>% 
   mutate(housing_market = 
@@ -427,7 +429,7 @@ NB: The conditions in `case_when` can rely on multiple columns.
 ## `case_when` statements are a bit "surly"
 
 `case_when` will not do type coercion. 
-
+\footnotesize
 ```{r, eval = FALSE}
 texas_housing_data %>% 
   mutate(housing_market = 
