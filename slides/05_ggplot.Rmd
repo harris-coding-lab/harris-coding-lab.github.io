@@ -1,0 +1,288 @@
+---
+title: "Coding Lab: Visualizing data with `ggplot2`"
+author: "Ari Anisfeld"
+date: "Summer 2020"
+output: 
+  beamer_presentation:
+    fig_width: 3
+    fig_height: 1.5
+    includes:
+      in_header: header_page_n.tex
+---
+
+```{r, setup=TRUE, message=FALSE, echo=FALSE}
+library(tidyverse)
+library(readxl)
+options(dplyr.summarise.inform = FALSE)
+texas_housing_data <- txhousing
+```
+
+## What will we cover?
+
+
+- What is the syntax of `ggplot`? What is `aes()`? What are `geom_xxx()`?
+- How to use data visualization for exploration?
+- How to make data visualization for communication?
+
+
+## Understanding `ggplot()`
+
+By itself, `ggplot()` tells R to prepare to make a plot.
+
+```{r}
+ texas_annual_sales <- 
+  texas_housing_data %>%
+  group_by(year) %>%
+  summarize(total_volume = sum(volume, na.rm = TRUE))
+
+ggplot(data = texas_annual_sales)
+```
+
+## Adding a `mapping`
+
+Adding `mapping = aes()` says how the data will map to "aesthetics".
+
+  - e.g. tell R to make x-axis `year` and y-axis `total_volume`.
+  - Each row of the data has (`year`, `total_volume`).  
+    - R will map that to the coordinate pair (`x`,`y`) .
+    - Look at the data before moving on!
+
+```{r}
+ggplot(data = texas_annual_sales,
+       mapping = aes(x = year, y = total_volume)) 
+```
+
+## Visualizing the mapping with a `geom`
+
+`geom_<name>` tells R what type of visualization to produce.
+
+Here we see points.
+
+- Each row of the data has (`year`, `total_volume`).
+- R will map that to the coordinate pair (`x`,`y`).
+
+```{r}
+ggplot(data = texas_annual_sales,
+       mapping = aes(x = year, y = total_volume)) +
+  geom_point()
+```
+
+## Visualizing the mapping with a `geom`
+
+Here we see bars.
+
+- Each row of the data has (`year`, `total_volume`).  
+- R will map that to the coordinate pair (`x`,`y`) 
+
+
+```{r}
+ggplot(data = texas_annual_sales,
+       mapping = aes(x = year, y = total_volume)) +
+  geom_col()
+```
+
+
+## Visualizing the mapping with a `geom`
+
+Here we see a line connecting each (`x`,`y`) pair.
+
+
+```{r}
+ggplot(data = texas_annual_sales,
+       mapping = aes(x = year, y = total_volume)) +
+  geom_line()
+```
+
+## Visualizing the mapping with a `geom`
+\footnotesize
+Here we see a smooth line. R does a statistical transformation!
+
+ - Now R doesn't visualize the mapping (`year`, `total_volume`) to each (`x`,`y`) pair
+ - Instead it fits a model to the  (`x`,`y`) and then plots the "smooth" line
+
+```{r}
+ggplot(data = texas_annual_sales,
+       mapping = aes(x = year, y = total_volume)) +
+  geom_smooth(se = FALSE)
+```
+
+
+
+
+## Visualizing the mapping with a `geom`
+
+We can overlay several `geom`.
+
+```{r, message=FALSE}
+ggplot(data = texas_annual_sales,
+       mapping = aes(x = year, y = total_volume)) +
+  geom_smooth(se = FALSE) +
+  geom_point()
+```
+
+## Using aesthetics to explore data.
+\footnotesize
+Now we'll look at aesthetics that go beyond `x` and `y` axes so we can understand our data better.
+
+- `color` maps data to the color of points or lines.
+  - Each `state` is assigned a color.
+  - This works with discrete data and continuous data.
+
+```{r}
+midwest %>%
+   ggplot(aes(x = log(poptotal), 
+              y = percbelowpoverty, 
+              color = state)) +
+      geom_point()
+```
+
+## Using aesthetics to explore data.
+\footnotesize
+- `shape` maps data to the shape of points.
+  - Each `state` is assigned a shape.
+  - This works with discrete data only.
+
+```{r}
+midwest %>%
+   ggplot(aes(x = log(poptotal), 
+              y = percbelowpoverty, 
+              shape = state)) +
+      geom_point()
+```
+
+## Using aesthetics to explore data.
+\footnotesize
+- `alpha` maps data to the transparency of points.
+  - Here we map the percentage of people within a known poverty status to `alpha`^[Using `alpha` for a discrete variable is not advised.]
+
+```{r}
+midwest %>%
+   ggplot(aes(x = log(poptotal), 
+              y = percbelowpoverty, 
+              alpha = percpovertyknown)) +
+      geom_point()
+```
+
+## Using aesthetics to explore data.
+\footnotesize
+- `size` maps data to the size of points and width of lines.
+  - Here we map the percentage of people within a known poverty status to `size`^[Using `size` for a discrete variable is not advised.]
+
+```{r}
+midwest %>%
+   ggplot(aes(x = log(poptotal), 
+              y = percbelowpoverty, 
+              size = percpovertyknown)) +
+      geom_point()
+```
+
+## Using aesthetics to explore data.
+\footnotesize
+We can combine any and all aesthetics, and even map the same variable to multiple aesthetics
+
+```{r, eval = FALSE}
+midwest %>%
+   ggplot(aes(x = log(poptotal), 
+              y = percbelowpoverty, 
+              alpha = percpovertyknown,
+              color = state,
+              shape = state))+
+      geom_point()
+```
+
+## Using aesthetics to explore data.
+\footnotesize
+We can combine any and all aesthetics, and even map the same variable to multiple aesthetics
+
+```{r, echo = FALSE}
+midwest %>%
+   ggplot(aes(x = log(poptotal), 
+              y = percbelowpoverty, 
+              alpha = percpovertyknown,
+              color = state,
+              shape = state))+
+      geom_point()
+```
+
+## Using aesthetics to explore data
+
+Different geoms have specific aesthetics that go with them. 
+
+ - use `?` to see which aesthetics a geom accepts (e.g `?geom_point`) 
+    - the bold aesthetics are required.
+ - the ggplot cheatsheet shows all the `geom`s with their associated aesthetics
+ 
+## Facets
+
+Facets provide an additional tool to explore multidimenional data 
+ 
+```{r}
+midwest %>%
+   ggplot(aes(x = log(poptotal), 
+              y = percbelowpoverty)) +
+      geom_point() +
+      facet_wrap(vars(state))
+```
+ 
+## Using aesthetics to explore data
+
+Here's an example of how we can 
+ 
+
+```{r}
+midwest %>%
+  mutate(pc = ifelse(perchsd > median(perchsd), "top half", "bottom half")) %>%
+  ggplot(aes(x = log(poptotal), 
+             y = percbelowpoverty, 
+             color = pc, 
+             alpha = percpovertyknown / 100)) + 
+  geom_point() +
+  facet_wrap(~state)
+```
+
+
+
+
+## Key take aways 
+
+- `ggplot` starts by mapping data to "aesthetics". 
+    - e.g. What data shows up on `x` and `y` axes and how `color`, `size` and `shape` appear on the plot.
+    - We need to be aware of 'continuous' vs. 'discrete' variables.
+- Then, we use `geom`s to create a visualization based on the mapping.
+    - Again we need to be aware of 'continuous' vs. 'discrete' variables.
+- Making quick plots helps us understand data and makes aware of data issues
+- To communicate effectively with data visualizations, we ...
+
+
+? What is `aes()`? What are `geom_xxx()`?
+- How to use data visualization for exploration?
+- How to make data visualization for communication?
+
+
+
+
+```{r}
+big_cities <- c("Dallas", "Austin", "San Antonio", "Houston")
+texas_housing_cities <- 
+  texas_housing_data %>%
+   # I'm taking out 2015, since it only has 7 months
+   filter(city %in% big_cities, year < 2015) %>%
+    group_by(city, year) %>%
+  summarize(total_volume = sum(volume, na.rm = TRUE), 
+            total_sales = sum(sales, na.rm = TRUE),
+            annual_mean_price = total_volume / total_sales
+            )
+```
+
+## Appendix: Some graphs you made along the way
+
+```{r}
+storms %>% 
+  group_by(name, year) %>% 
+  filter(max(category) == 5) %>%
+ggplot(aes(x = long, y = lat, color = name)) + 
+  geom_path() +
+  borders("world") +
+  coord_quickmap(xlim = c(-130, -60), ylim = c(20, 50))
+```
+

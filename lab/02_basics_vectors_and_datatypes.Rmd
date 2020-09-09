@@ -1,0 +1,196 @@
+---
+title: "The basics: 02 Vectors and data types"
+author: "Ari Anisfeld"
+date: "9/8/2020"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+# Questions
+
+## Create vectors
+
+ 1. In the lecture, we covered `c()`, `:`, `rep()`, `seq()` among other ways to create vectors.
+ 
+    ```{r}
+    dolly <- c(9, 10, 11, 12, 13, 14, 15, 16, 17)
+    bees <- c("b", "b", "b", "b", "b")
+    ```
+ 
+  - Recreate `dolly` using `:`.
+  - Create the same vector using `seq()`.
+  - Recreate `bees` using `rep()`.
+
+## Random vectors
+
+1. In the lecture, we also created vectors using `rnorm()` and `runif()`. 
+
+    ```{r}
+    random_norm <- rnorm(100)
+    random_unif <- runif(1000)
+    ```
+    
+    - How long are the vectors `random_norm` and `random_unif`? Use `length()` to verify.
+    - What are the largest and smallest values in `random_norm` and `random_unif`? Use `min()` and `max()`.
+    - Use `mean()` and `sd()` to calculate the mean and standard deviation of the two distributions.
+    - Create a new vector with `10000` draws from the standard normal distribution. 
+    - `rnorm()` by default sets `mean = 0` (see `?rnorm`). Create a vector of `10000` draws from the normal distribution with `mean = 1`. Use `mean()` to verify.
+    
+    
+Notice the functions `min()`, `max()`, `mean()` and `sd()` all take a vector with many values and summarize them as one value. These are good to use with `summarize()` when doing data analysis on tibbles.
+
+## data types
+
+- Use `typeof()` to verify the data types of `dolly`, `bees`, `random_unif`
+
+- Coerce `dolly` to a character vector. Recall we have functions `as.<type>()` for this kind of coercion.
+
+- Try to coerce `bees` to type `numeric`. What does R do when you ask it to turn "b" into a number?
+
+## vectorized math
+
+`a` and `b` are vectors of length 10. Look at them in the console.
+
+```{r}
+a <- 1:10
+b <- rep(c(2, 4), 5)
+```
+
+
+1. Add `a` and `b` element by element.
+1. Subtract `a` and `b` element by element.
+1. Divide `a` by `b` element by element.
+1. Multiply `a` and `b` element by element.
+1. Raise the element of `a` to the power of `b` element by element.
+1. Multiply each element of `a` by 3 then subtract `b`
+1. Raise each element of `b` to the third power.
+1. Take the square root of each element of `a`.
+
+## vectorized comparison
+
+1. Run the following code and make sure you understand the output.
+
+```{r}
+a > b
+a == b
+```
+
+## creating tibbles with vectors
+
+1. Create a tibble with columns called `a` and `b` where `a` is the numbers 1 to 100 and `b` is 100 random numbers from the standard normal distribution.
+
+```{r, eval = FALSE}
+my_tibble<- 
+tibble(
+  a = ...,
+  b = ...
+)
+```
+
+
+## subsetting
+
+`midwest` is a data set that comes with `ggplot`.
+
+```{r, eval = FALSE}
+# try this to see midwest data
+library(tidyverse)
+midwest %>% head()
+```
+
+1. Use `pull()` to get the vector of `state` names.
+1. Use `[[` to get a vector of `state` names. This is baseR and requires (normal) quotes  around column names.
+1. Use `select()` to get a tibble with `state` as the only column.
+1. Use `[` to get a tibble with `state` as the only column
+
+
+# Solutions
+
+## Create vectors
+
+```{r}
+dolly_colon <- 9:17
+dolly_seq <- seq(9:17)
+bees_rep <- rep("b", 5)
+```
+
+## Random vectors
+
+```{r}
+# lengths
+length(random_norm)
+length(random_unif)
+
+# largest and smallest values (repeat with random_unif)
+max(random_norm)
+min(random_norm)
+
+# mean and sd  (repeat with random_unif)
+mean(random_norm)
+sd(random_norm)
+
+# rnorm with length 10000
+longer_rnorm <- rnorm(10000)
+
+# mean = 1
+rnorm_centered_on_one <- rnorm(10000, mean = 1)
+
+```
+
+
+## typeof
+
+```{r}
+typeof(dolly)
+typeof(bees)
+typeof(random_unif)
+
+# notice dolly is int if it's created by : or seq
+typeof(dolly_seq)
+typeof(dolly_colon)
+
+# coercion
+as.character(dolly)
+
+# R coerces "b" to NA because there is 
+# not a natural number to replace "b" with
+as.numeric(bees)
+```
+## vectorized math
+
+```{r}
+a + b
+a - b
+a / b
+a * b
+a ^ b
+2 * a - b
+b ^ 3
+sqrt(a)
+```
+
+
+## Creating tibbles
+
+```{r}
+my_tibble<- 
+tibble(
+  a = seq(1, 100),
+  b = rnorm(100)
+)
+```
+
+```{r}
+midwest %>% pull(state)
+midwest[["state"]]
+
+midwest %>% select(state)
+midwest[,"state"]
+```
+
