@@ -1,7 +1,7 @@
 ---
 title: 'Lab Session 1: Read and manipulate data'
 author: "Solutions"
-date: "9/7/2020"
+date: "9/8/2020"
 output:
   pdf_document: default
   html_document:
@@ -234,7 +234,10 @@ french_data %>%
 
 For the Russian data
 ```{r, eval = TRUE}
-russian_data %>% filter(percentile == "p90p100") %>% filter(between(year, 1995, 2010)) %>% summarize(top10 = mean(value))
+russian_data %>% 
+  filter(percentile == "p90p100") %>% 
+  filter(between(year, 1995, 2010)) %>% 
+  summarize(top10 = mean(value))
 ```
 
 ## Manipulating midwest demographic data with `dplyr`
@@ -333,7 +336,7 @@ midwest_pop %>%
 
 *Solution:*
 
-The data doesn't seem to allign with other sources from Google.
+The data doesn't seem to allign with other sources from Google. It is possible that the way that the dataset calculates the population density is different from how we conventionally think about it. It is likely that the dataset used a different formula than total population/total area (for instance, total population/total inhabitable land area).
 
 ```{r, eval=TRUE}
 midwest_pop %>%
