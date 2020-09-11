@@ -28,6 +28,7 @@ We expect you to review the `class 2` material, [here](harris-coding-lab.github.
     a. Create an integer vector from seven to seventy.
     ```{r}
     c(7:70)
+    7:70
     ```
     
     b. Create a numeric vector with 60 draws from the `r`andom `unif`orm distribution 
@@ -53,7 +54,7 @@ We expect you to review the `class 2` material, [here](harris-coding-lab.github.
     
     f. Create an integer vector with the numbers 0, 2, 4, ... 20.
     ```{r}
-    seq(from=0, to=20, by=2)
+    seq(from= 0 , to = 20, by = 2)
     ```
     
     
@@ -77,7 +78,8 @@ We expect you to review the `class 2` material, [here](harris-coding-lab.github.
     ```
     a. We gave collapse the argument " " i.e. a character string that is a blank space. Try a different character string. 
     ```{r}
-    paste0(angelou_quote, collapse= ". ")
+    paste0(angelou_quote, collapse = ". ")
+    paste0(angelou_quote, collapse = "#")
     ```
     
     
@@ -195,7 +197,6 @@ If we want to have independent draws from our sampling vector, we say `replace =
 Now we are going to take random samples from a chi-squared distribution with 3 degrees of freedom. Do not worry about what the distribution's name means, but be aware of that it looks something like the picture below. It's possible--but highly unlikely--to get values up to `Inf`, which is R for infinity. 
 
 ```{r, echo = FALSE}
-
 set.seed(11300)
 tibble(sampled_value = rchisq(1e5, 3)) %>%
   ggplot(aes(x = sampled_value)) +
@@ -277,19 +278,19 @@ We are going to calculate the mean, variance and standard deviation of the distr
             df = rep(c("2", "3", "4"), each = 1e5)) 
     
     chi_sq_samples %>%
-      ggplot(aes(x = x, group = df, fill =df)) +
+      ggplot(aes(x = x, group = df, fill = df)) +
       geom_density( alpha = .5) + 
       labs(fill = "df", x = "sample")
     ```
     
 1. How many rows are in the tibble? Explain how the code that defines `x` and the code that defines `df` make vectors that are the right length.  
-    **Solution:** There are 300000 rows in the tibble. The code that defines x creates the first column, which is made up of three 100000 length chi-squared draws that are combined into a single vector. The code that defines df (degrees of freedom) repeats each of the strings `2`, `3` and `4` 100000 times,
+    **Solution:** There are 300,000 rows in the tibble. The code that defines x creates the first column, which is made up of three 100,000 length chi-squared draws that are combined into a single vector. The code that defines `df` (degrees of freedom) repeats each of the strings `2`, `3` and `4` 100000 times,
     ```{r}
     nrow(chi_sq_samples)
     ```
 
 1. Temporarily delete `each =` (keep `1e5`). Explain why the resulting graph looks the way it does. Make sure you put `each = ` back.
-    **Solution:** The resulting graph has three very similar draws which are overlaid on each other. Without specifying `each = 1e5`, the vector that we are trying to create for the df column will repeat `c("2", "3", "4")` over and over again until it is the correct length. By saying `each = 1e5`, df column will instead repeat the first value (2) 100000 times before adding values for 3 and 4.
+    **Solution:** The resulting graph has three very similar draws which are overlaid on each other. Without specifying `each = 1e5`, the vector that we are trying to create for the df column will repeat `c("2", "3", "4")` over and over again until it is the correct length. By saying `each = 1e5`, `df` column will instead repeat the first value (2) 100000 times before adding values for 3 and 4.
     ```{r}
     chi_sq_samples_bad <-
      tibble(x = c(rchisq(100000, 1) + rchisq(100000, 1), 
@@ -298,7 +299,7 @@ We are going to calculate the mean, variance and standard deviation of the distr
             df = rep(c("2", "3", "4"), 1e5)) 
     
     chi_sq_samples_bad %>%
-      ggplot(aes(x = x, group = df, fill =df)) +
+      ggplot(aes(x = x, group = df, fill = df)) +
       geom_density( alpha = .5) + 
       labs(fill = "df", x = "sample")
     ```
