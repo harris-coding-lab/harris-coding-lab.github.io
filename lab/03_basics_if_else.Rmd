@@ -1,5 +1,5 @@
 ---
-title: "The basics: 02 Vectors and data types"
+title: "The basics: 03 ifelse"
 author: "Ari Anisfeld"
 date: "9/8/2020"
 output:
