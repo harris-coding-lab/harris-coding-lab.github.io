@@ -4,18 +4,18 @@ This website (harris-coding-lab.github.io) contains the content for the Harris S
 
 ### Prerequisites
 
-We ask that Coding Lab attendees have the latest stable versions of [R](https://cloud.r-project.org/) and [RStudio](https://rstudio.com/products/rstudio/download/#download) pre-installed on their local machine. If you need help getting set up, Harris IT is hosting office hours during on Sept 1 and 2 (you should have an email with the details.) and you can email the amazing staff of Harris IT at hsit-servicedesk@uchicago.edu. 
+We ask that Coding Lab attendees have the latest stable versions of [R](https://cloud.r-project.org/) and [RStudio](https://rstudio.com/products/rstudio/download/#download) pre-installed on their local machine. If you need help getting set up, Harris IT is hosting office hours during on Sept 1 and 2 (you should have an email with the details.) and you can email the amazing staff of Harris IT at hsit-servicedesk@uchicago.edu.
 
 ### Summer Lab Materials
 
-Links to materials for each week's workshop will be posted here as provided. For each class, watch the video. Then, go to lab and attempt the lab 
+Links to materials for each week's workshop will be posted here as provided. For each class, watch the video. Then, go to lab and attempt the lab
 
 | Class  | Videos | Slides & Code |  Problem sets | Additional Resources |
 | ---- | ----- | ----- | ----- | --- |
 |**Class 0: Why R?**| [video part 1: why R?](https://youtu.be/ptcdtMXbHkk) (~ 12 min) <br> [video part 2: a quick introduction to R, Rstudio and `tidyverse`](https://youtu.be/PvrUfHWzyII) (~ 14 min) | [slides](slides/00_introduction.pdf) <br> [slide code](code/00_introduction.R) | [lab](lab/00_lab_intro_to_R_and_tidyverse.pdf) <br> [solutions](lab/00_lab_intro_to_R_and_tidyverse_solutions.pdf)|[load covid_data code](code/00_lab_reading_covid_data.R)|
-|**Class 1: Reading data files and manipulating data with `dplyr`** | [video 1: reading data](https://youtu.be/WwoMJODwFOQ) (~ 10 min) <br> [video 2: manipulating data with `dplyr`](https://youtu.be/o1a-9-RvNc4) (~ 18 min) |- [slides: reading data](slides/01a_reading-data.pdf) <br> - [slides: manipulating data with `dplyr`](slides/01b_dplyr-manipulating-data.pdf) <br> - [slide code: reading data](code/01a_reading-data.R)  <br>  - [slide code: manipulating data with `dplyr`](code/01b_manipulating-data-dplyr.R) | [lab 1](lab/01_read_and_manipulate_data.pdf) <br> [solutions](lab/01_read_and_manipulate_data_solutions.pdf)| [FED data from slides](data/SCE-Public-LM-Quarterly-Microdata.xlsx) (you can download to follow along) <br>[texas data from slides](data/texas_housing_data.csv) <br> [drug cartel data from slide](https://dataverse.harvard.edu/file.xhtml?persistentId=doi:10.7910/DVN/VIXNNE/XH5ZQU&version=1.0) (you'll need to download from Dataverse)|
-|**Class 2: Vectors and Data Types**|[video](https://youtu.be/0MIeGk_xwiQ) (~ 22 min)| [slides](slides/02_vectors-and-data-types.pdf) <br> [slide code](code/02_vectors-and-data-types.R) | [lab 2](lab/02_vectors_and_dtypes.pdf)  | |
-| **Class 3: If Statements** | [video](https://www.youtube.com/watch?v=HKC7RTpNt60) (~ 20 min) | [slides](slides/03_if-statements.pdf) <br> [slide code](code/03_if-statements.R) | lab 3 material to come | | 
+|**Class 1: Reading data files and manipulating data with `dplyr`** | [video 1: reading data](https://youtu.be/WwoMJODwFOQ) (~ 10 min) <br> [video 2: manipulating data with `dplyr`](https://youtu.be/o1a-9-RvNc4) (~ 18 min) |- [slides: reading data](slides/01a_reading-data.pdf) <br> - [slides: manipulating data with `dplyr`](slides/01b_dplyr-manipulating-data.pdf) <br> - [slide code: reading data](code/01a_reading-data.R)  <br>  - [slide code: manipulating data with `dplyr`](code/01b_manipulating-data-dplyr.R) | [lab 1](lab/01_read_and_manipulate_data.pdf) <br> [solutions](lab/01_read_and_manipulate_data_solutions.pdf)| [FED data from slides](data/SCE-Public-LM-Quarterly-Microdata.xlsx) (you can download to follow along) <br>[texas data from slides](data/texas_housing_data.csv) <br> [drug cartel data from slide](https://dataverse.harvard.edu/file.xhtml?persistentId=doi:10.7910/DVN/VIXNNE/XH5ZQU&version=1.0) (you'll need to download the `dta` from Dataverse)|
+|**Class 2: Vectors and Data Types**|[video](https://youtu.be/0MIeGk_xwiQ) (~ 22 min)| [slides](slides/02_vectors-and-data-types.pdf) <br> [slide code](code/02_vectors-and-data-types.R) | [lab 2](lab/02_vectors_and_dtypes.pdf) <br> [basics review](lab/02_basics_vectors_and_datatypes.pdf)  | [lab 2 code](lab/02_vectors_and_dtypes.R)|
+| **Class 3: If Statements** | [video](https://www.youtube.com/watch?v=HKC7RTpNt60) (~ 20 min) | [slides](slides/03_if-statements.pdf) <br> [slide code](code/03_if-statements.R) | [lab 3](lab/03_if_statements.pdf) <br> [basic review](lab/03_basics_if_else.pdf) | [lab code](lab/03_if_statements.R) | 
 |**Class 4: Grouped analysis with `dplyr`**| [video](https://youtu.be/9EQ9WB90VPw) (~13 min) |  [slides](slides/04_grouped-data.pdf) <br> [slide code](code/04_grouped-data.R) | lab 4 material to come| |
 |**Class 5: Visualizing data with `ggplot`**| | | Work on final project with TA and peer support | |
 
@@ -36,8 +36,8 @@ Post questions on [Piazza](https://piazza.com/class/kecymgc5x897lv)
 
 
 ### Additional Resources
-- **R Bar**: Harris-provided support for R-related issues. 
-- [tidyverse cheetsheets](https://rstudio.com/resources/cheatsheets/) start with `dplyr` and `ggplot` 
+- **R Bar**: Harris-provided support for R-related issues.
+- [tidyverse cheetsheets](https://rstudio.com/resources/cheatsheets/) start with `dplyr` and `ggplot`
 - [R for Data Science](https://r4ds.had.co.nz/): free online book with clear explanations of many `tidyverse` functions, the book to read on data analysis with R
 - [DataQuest.io](https://www.dataquest.io): online modules about specific programming concepts, access provided by Harris. For students who would like additional guided practice we recommend:
   - **Vectors**
@@ -58,7 +58,7 @@ Post questions on [Piazza](https://piazza.com/class/kecymgc5x897lv)
      - [`gather()` and correlations](https://app.dataquest.io/m/325/correlations-and-reshaping-data/4/gathering-data-into-columns)
        - "step 2" is all about `ggplot` and potentially useful.
   - They're always adding content, so we probably missed some good ones.
- 
+
 
 ### Teaching Assistants
 
