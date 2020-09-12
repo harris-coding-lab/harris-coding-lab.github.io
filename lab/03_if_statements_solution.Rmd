@@ -1,5 +1,5 @@
 ---
-title: 'Lesson 3: Control flow with `if` and `ifelse` Solutions'
+title: 'Lesson 3: Control flow with `if` and `ifelse`'
 author: "Suggested Solutions"
 date: "9/10/2020"
 output: pdf_document
