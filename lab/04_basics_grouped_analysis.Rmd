@@ -1,0 +1,182 @@
+---
+title: "The basics: 04 grouped analysis"
+author: "Ari Anisfeld"
+date: "9/8/2020"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(dplyr.summarise.inform = FALSE)
+library(tidyverse)
+```
+
+# Questions
+
+
+## `group_by` and `summarize`
+
+1. `midwest` is a data set that comes bundled with `tidyverse`. In an earlier lab you calculated the population of Ohio in the following way.
+
+    ```{r, eval = FALSE}
+    midwest %>%
+      filter(state == "OH")
+      summarize(total_population = sum(poptotal))
+    ```
+    
+    With `group_by` you can calculate the total population of all the states at once!
+    
+    ```{r, eval= FALSE}
+    midwest %>%
+      group_by(...) %>%
+      summarize(total_population = sum(poptotal))
+    ```
+
+1. For each state in the `midwest` data, calculate total `area`.
+
+1. For each state in the `midwest` data, calculate the proportion of counties that are in a metro area (`inmetro`).^[Recall that the `mean()` of a column of `0` and `1`s tell you the proportion of `1`s.]
+
+1. For each state, calculate the proportion of people with a college degree and also with high school degrees.
+  
+    - First, use `mutate` to calculate the number of people with the degree type.
+    - Then, use `group_by` and `summarize` to calculate the proportions. 
+
+## `group_by` and `mutate`
+
+1. Add a column to midwest called `pop_state` that equals the state population. Compare your result to what you calculated early. 
+
+    ```{r, eval = FALSE}
+    # fill in the ... with approriate code
+    midwest %>%
+      group_by( ... ) %>%
+      mutate(pop_state = ... )
+    ```
+
+1. Building off the previous question, create a column that shows the number of people living below the poverty line (`percbelowpoverty`) in each county. Look at your results to make sure they make sense.
+
+## `count`
+
+1. Reproduce this table using `count()`.
+    ```{r, echo = FALSE}
+    midwest %>%
+      group_by(inmetro) %>%
+      summarize(n = n())
+    ```
+
+1. Reproduce this table using `add_count()`.
+    ```{r, echo = FALSE}
+    midwest %>%
+      select(state, inmetro) %>%
+      group_by(inmetro) %>%
+      mutate(n = n()) %>%
+      head()
+    ```
+```{r, eval = FALSE}
+# fill in the ... with the appropriate code.
+ midwest %>%
+    select(state, inmetro) %>%
+    ... %>%
+    head()
+
+```
+
+1. Reproduce the following table
+
+    ```{r, echo = FALSE}
+    midwest %>%
+      count(state, inmetro)
+    ```
+
+
+# Solutions
+
+##
+1.  
+    ```{r, eval= FALSE}
+    midwest %>%
+      group_by(state) %>%
+      summarize(total_population = sum(poptotal))
+    ```
+1. 
+
+    ```{r, eval= FALSE}
+    midwest %>%
+      group_by(state) %>%
+      summarize(total_area = sum(area))
+    ```
+
+1.
+    ```{r, eval = FALSE}
+    midwest %>%
+      group_by(state) %>%
+      summarize(prop_in_metro = mean(inmetro))
+    
+    ```
+
+
+
+
+1.
+    ```{r, eval = FALSE}
+     midwest %>%
+      mutate(pop_with_hs = perchsd * poptotal,
+             pop_with_college = percollege * poptotal) %>%
+      group_by(state) %>%
+      summarize(total_population = sum(poptotal),
+                perc_with_hs = sum(pop_with_hs)/total_population,
+                perc_with_college = sum(pop_with_college)/total_population,)
+
+    ```
+      You might have been tempted to do it in the following way, but this underestimates the statewide rates. Why?
+
+    ```{r, eval = FALSE}
+      midwest %>%
+        group_by(state) %>%
+        summarise(perc_with_hs = mean(perchsd))
+    ```
+
+## `group_by` and `mutate`
+
+1.
+
+    ```{r, eval = FALSE}
+    midwest %>%
+      group_by(state) %>%
+      mutate(pop_state = sum(poptotal)) 
+    ```
+
+1. A careful analyst would say this is wrong, because we do not know the poverty status of each and every person in the counties (see `percpovertyknown`). A challenge problem is to find the lower and upper bound on the number of people with poverty per county.
+
+    ```{r, eval = FALSE}
+    midwest %>%
+      group_by(state) %>%
+      mutate(pop_state = sum(poptotal),
+             pop_below_poverty = pop_state * percbelowpoverty/100)
+    ```
+
+## `count`
+
+1. 
+    ```{r}
+    midwest %>%
+      count(inmetro)
+    ```
+
+1. 
+    ```{r, eval = FALSE}
+    # fill in the ... with the appropriate code.
+     midwest %>%
+        select(state, inmetro) %>%
+        add_count(inmetro) %>%
+        head()
+    
+    ```
+    
+1.
+
+    ```{r, echo = FALSE}
+    midwest %>%
+      count(state, inmetro)
+    ```
