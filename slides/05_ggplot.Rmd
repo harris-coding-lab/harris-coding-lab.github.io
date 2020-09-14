@@ -13,6 +13,7 @@ output:
 ```{r, setup=TRUE, message=FALSE, echo=FALSE}
 library(tidyverse)
 library(readxl)
+library(maps)
 options(dplyr.summarise.inform = FALSE)
 texas_housing_data <- txhousing
 ```
@@ -107,7 +108,7 @@ Here we see a smooth line. R does a statistical transformation!
 ```{r}
 ggplot(data = texas_annual_sales,
        mapping = aes(x = year, y = total_volume)) +
-  geom_smooth(se = FALSE)
+  geom_smooth()
 ```
 
 
@@ -120,7 +121,7 @@ We can overlay several `geom`.
 ```{r, message=FALSE}
 ggplot(data = texas_annual_sales,
        mapping = aes(x = year, y = total_volume)) +
-  geom_smooth(se = FALSE) +
+  geom_smooth() +
   geom_point()
 ```
 
@@ -240,7 +241,7 @@ Different geoms have specific aesthetics that go with them.
  
 ## Facets
 
-Facets provide an additional tool to explore multidimenional data 
+Facets provide an additional tool to explore multidimentional data 
  
 ```{r}
 midwest %>%
@@ -249,6 +250,7 @@ midwest %>%
       geom_point() +
       facet_wrap(vars(state))
 ```
+
 ## discrete vs continuous data
 
 | aes | discrete | continuous |
