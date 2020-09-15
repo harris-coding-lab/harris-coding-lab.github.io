@@ -241,7 +241,7 @@ Different geoms have specific aesthetics that go with them.
  
 ## Facets
 
-Facets provide an additional tool to explore multidimentional data 
+Facets provide an additional tool to explore multidimensional data 
  
 ```{r}
 midwest %>%
