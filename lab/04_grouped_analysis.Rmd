@@ -33,7 +33,7 @@ include_tweet("https://twitter.com/nomadj1s/status/1294390352904966151")
 Follow the [tweet thread](https://twitter.com/nomadj1s/status/1294390352904966151) and you'll see that Prof. Damon Jones, of Harris, gets that data and does some analysis. In this lab, you're going to follow his lead and dig into traffic stop data from the University of Chicago Police Department, one of the largest private police forces in the world.
 
 
-Download the data [here](https://github.com/harris-coding-lab/harris-coding-lab.github.io/raw/master/data/data_traffic.csv).
+Download the data [here](https://github.com/harris-coding-lab/harris-coding-lab.github.io/raw/master/data/data_traffic.csv). You can save the file directly from your browser using ctrl + s or cmd + s. Alternatively, you can read the csv directly from the internet like we saw in lab 0. Using the link https://github.com/harris-coding-lab/harris-coding-lab.github.io/raw/master/data/data_traffic.csv
 
 
 # Warm-up
