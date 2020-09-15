@@ -4,8 +4,8 @@ author: "Ari Anisfeld"
 date: "Summer 2020"
 output: 
   beamer_presentation:
-    fig_width: 3
-    fig_height: 1.5
+    fig_width: 3.5
+    fig_height: 2
     includes:
       in_header: header_page_n.tex
 ---
@@ -17,12 +17,16 @@ options(dplyr.summarise.inform = FALSE)
 texas_housing_data <- txhousing
 ```
 
-## What will we cover?
+## How to use `ggplot`
+
+- How to map data to aesthetics with `aes()` (and what that means)
+- How to visualize the mappings with `geom`s 
+- How to get more out of your data by using multiple aesthetics
+- How to use facets to add dimensionality
 
 
-- What is the syntax of `ggplot`? What is `aes()`? What are `geom_xxx()`?
-- How to use data visualization for exploration?
-- How to make data visualization for communication?
+*There are whole books on how to use `ggplot`. This is a quick introduction!*
+
 
 
 ## Understanding `ggplot()`
@@ -120,9 +124,32 @@ ggplot(data = texas_annual_sales,
   geom_point()
 ```
 
+
+##  Visualizing the mapping with a `geom`
+
+
+- We saw that we can visualize a relationship between two variables mapping data to `x` and `y`
+
+- The data can be visualized with different geoms that can be composed (`+`) together.
+
+- We can even calculate new variables with statistics and plot those on the fly.
+
+
+**Next**: Now we'll look at aesthetics that go beyond `x` and `y` axes.
+
+## Using aesthetics to explore data.
+
+We'll use `midwest` data and start with only mapping to `x` and `y`
+
+```{r}
+midwest %>%
+   ggplot(aes(x = percollege, 
+              y = percbelowpoverty)) +
+      geom_point()
+```
+
 ## Using aesthetics to explore data.
 \footnotesize
-Now we'll look at aesthetics that go beyond `x` and `y` axes so we can understand our data better.
 
 - `color` maps data to the color of points or lines.
   - Each `state` is assigned a color.
@@ -130,7 +157,7 @@ Now we'll look at aesthetics that go beyond `x` and `y` axes so we can understan
 
 ```{r}
 midwest %>%
-   ggplot(aes(x = log(poptotal), 
+   ggplot(aes(x = percollege, 
               y = percbelowpoverty, 
               color = state)) +
       geom_point()
@@ -144,35 +171,36 @@ midwest %>%
 
 ```{r}
 midwest %>%
-   ggplot(aes(x = log(poptotal), 
-              y = percbelowpoverty, 
+   ggplot(aes(x = percollege, 
+              y = percbelowpoverty,  
               shape = state)) +
       geom_point()
 ```
 
 ## Using aesthetics to explore data.
+
 \footnotesize
 - `alpha` maps data to the transparency of points.
-  - Here we map the percentage of people within a known poverty status to `alpha`^[Using `alpha` for a discrete variable is not advised.]
+  - Here we map the percentage of people within a known poverty status to `alpha`
 
 ```{r}
 midwest %>%
-   ggplot(aes(x = log(poptotal), 
+   ggplot(aes(x = percollege, 
               y = percbelowpoverty, 
-              alpha = percpovertyknown)) +
+              alpha = poptotal)) +
       geom_point()
 ```
 
 ## Using aesthetics to explore data.
 \footnotesize
 - `size` maps data to the size of points and width of lines.
-  - Here we map the percentage of people within a known poverty status to `size`^[Using `size` for a discrete variable is not advised.]
+  - Here we map the percentage of people within a known poverty status to `size`
 
 ```{r}
 midwest %>%
-   ggplot(aes(x = log(poptotal), 
+   ggplot(aes(x = percollege, 
               y = percbelowpoverty, 
-              size = percpovertyknown)) +
+              size = poptotal)) +
       geom_point()
 ```
 
@@ -182,25 +210,23 @@ We can combine any and all aesthetics, and even map the same variable to multipl
 
 ```{r, eval = FALSE}
 midwest %>%
-   ggplot(aes(x = log(poptotal), 
+   ggplot(aes(x = percollege, 
               y = percbelowpoverty, 
               alpha = percpovertyknown,
-              color = state,
-              shape = state))+
+              size = poptotal,
+              color = state))+
       geom_point()
 ```
 
 ## Using aesthetics to explore data.
-\footnotesize
-We can combine any and all aesthetics, and even map the same variable to multiple aesthetics
 
 ```{r, echo = FALSE}
 midwest %>%
-   ggplot(aes(x = log(poptotal), 
+   ggplot(aes(x = percollege, 
               y = percbelowpoverty, 
               alpha = percpovertyknown,
-              color = state,
-              shape = state))+
+              size = poptotal,
+              color = state))+
       geom_point()
 ```
 
@@ -223,24 +249,74 @@ midwest %>%
       geom_point() +
       facet_wrap(vars(state))
 ```
- 
-## Using aesthetics to explore data
+## discrete vs continuous data
 
-Here's an example of how we can 
- 
+| aes | discrete | continuous |
+| --- | -------- | ----------|
+| | limited number of classes | unlimited number of classes | 
+| |usually `chr` or `lgl` | numeric |
+|`x`, `y`| yes | yes |
+| `color`, `fill` | yes | yes |
+| `shape`| yes (6 or fewer categories) | no |
+| `size`, `alpha` | not advised | yes|
+| `facet` | yes | not advised |
+
+Here, discrete and continuous have different meaning than in math
+
+- For `ggplot` meaning is more fluid. 
+  - If you do `group_by` with the var and there are fewer than 6 to 10 groups, discrete visualizations can work
+  - If your "discrete" data is numeric,  `as.character()` or `as_factor()` to enforce the decision.
+
+## `color` can be continuous
 
 ```{r}
 midwest %>%
-  mutate(pc = ifelse(perchsd > median(perchsd), "top half", "bottom half")) %>%
-  ggplot(aes(x = log(poptotal), 
-             y = percbelowpoverty, 
-             color = pc, 
-             alpha = percpovertyknown / 100)) + 
-  geom_point() +
-  facet_wrap(~state)
+    ggplot(aes(x = percollege, 
+               y = percbelowpoverty, 
+               color = percpovertyknown)) +
+  geom_point()
+```
+
+## `shape` does not play well with many categories
+\footnotesize
+- Will only map to 6 categories, the rest become `NA`.
+- We can override this behavior and get up to 25 distinct shapes
+
+```{r, warning = FALSE}
+midwest %>%
+    ggplot(aes(x = percollege, 
+               y = percbelowpoverty, 
+               shape = county)) +
+  geom_point() + 
+  # legend off, otherwise it overwhelms
+  theme(legend.position = "none") 
+```
+
+## `alpha` and `size` can be misleading with discrete data
+
+```{r}
+midwest %>%
+    ggplot(aes(x = percollege, 
+               y = percbelowpoverty, 
+               alpha = state)) +
+  geom_point()
 ```
 
 
+
+
+## Adding vertical lines
+
+```{r}
+texas_annual_sales %>%
+  ggplot(aes(x = year, y = total_volume)) +
+    geom_point() + 
+    geom_vline(aes(xintercept = 2007),
+                linetype = "dotted")
+```
+
+- add horizontal lines with `geom_hline()`
+- add any linear fit using `geom_abline()` by providing a slope and intercept.
 
 
 ## Key take aways 
@@ -248,35 +324,21 @@ midwest %>%
 - `ggplot` starts by mapping data to "aesthetics". 
     - e.g. What data shows up on `x` and `y` axes and how `color`, `size` and `shape` appear on the plot.
     - We need to be aware of 'continuous' vs. 'discrete' variables.
+
 - Then, we use `geom`s to create a visualization based on the mapping.
     - Again we need to be aware of 'continuous' vs. 'discrete' variables.
-- Making quick plots helps us understand data and makes aware of data issues
-- To communicate effectively with data visualizations, we ...
+    
+- Making quick plots helps us understand data and makes us aware of data issues
 
-
-? What is `aes()`? What are `geom_xxx()`?
-- How to use data visualization for exploration?
-- How to make data visualization for communication?
-
-
-
-
-```{r}
-big_cities <- c("Dallas", "Austin", "San Antonio", "Houston")
-texas_housing_cities <- 
-  texas_housing_data %>%
-   # I'm taking out 2015, since it only has 7 months
-   filter(city %in% big_cities, year < 2015) %>%
-    group_by(city, year) %>%
-  summarize(total_volume = sum(volume, na.rm = TRUE), 
-            total_sales = sum(sales, na.rm = TRUE),
-            annual_mean_price = total_volume / total_sales
-            )
-```
+**Resources**: R for Data Science chap. 3 (r4ds.had.co.nz); RStudio's ggplot cheatsheet.
 
 ## Appendix: Some graphs you made along the way
 
-```{r}
+## lab 0: a map
+
+`geom_path` is like `geom_line`, but connects (`x`, `y`) pairs in the order they appear in the data set.
+
+```{r, eval = FALSE}
 storms %>% 
   group_by(name, year) %>% 
   filter(max(category) == 5) %>%
@@ -284,5 +346,169 @@ ggplot(aes(x = long, y = lat, color = name)) +
   geom_path() +
   borders("world") +
   coord_quickmap(xlim = c(-130, -60), ylim = c(20, 50))
+```
+
+
+## lab 0: a map
+
+```{r, echo = FALSE}
+storms %>% 
+  group_by(name, year) %>% 
+  filter(max(category) == 5) %>%
+ggplot(aes(x = long, y = lat, color = name)) + 
+  geom_path() +
+  borders("world") +
+  coord_quickmap(xlim = c(-130, -60), ylim = c(20, 50))
+```
+
+## lab 1: a line plot
+
+```{r, eval = FALSE, warning=FALSE}
+french_data <- 
+  wid_data %>% 
+  filter(type == "Net personal wealth", 
+         country == "France") %>%
+  mutate(perc_national_wealth = value * 100)
+
+french_data %>%
+  ggplot(aes(y = perc_national_wealth, 
+             x = year, 
+             color = percentile)) +
+  geom_line()
+```
+
+## lab 1: a line plot
+
+```{r, echo = FALSE, warning=FALSE}
+
+wid_data_raw <- 
+    # You will like have to adjust the file path
+    readxl::read_xlsx("../data/world_wealth_inequality.xlsx", 
+                      col_names = c("country", "indicator", "percentile", "year", "value")) %>%
+    separate(indicator, sep = "\\n", into = c("row_tag", "type", "notes")) 
+  
+wid_data <- wid_data_raw 
+    
+french_data <- 
+  wid_data %>% 
+  filter(type == "Net personal wealth", country == "France") %>%
+  mutate(perc_national_wealth = value * 100)
+
+french_data %>%
+  ggplot(aes(y = perc_national_wealth, x = year, color = percentile)) +
+  geom_line()
+```
+
+
+
+## lab 2: distributions
+
+- `geom_density()` only requires an `x` asthetic and it calculates the distribution to plot.
+- We can set the aesthetics manually, independent of data for nicer graphs.
+
+```{r, eval = FALSE}
+    
+    chi_sq_samples <-
+     tibble(x = c(rchisq(100000, 2), 
+                  rchisq(100000, 3), 
+                  rchisq(100000, 4)),
+            df = rep(c("2", "3", "4"), each = 1e5)) 
+    
+    chi_sq_samples %>%
+      ggplot(aes(x = x, fill = df)) +
+      geom_density( alpha = .5) + 
+      labs(fill = "df", x = "sample")
+```
+
+## lab 2: distributions
+
+```{r,echo = FALSE}
+    
+    chi_sq_samples <-
+     tibble(x = c(rchisq(100000, 1) + rchisq(100000, 1), 
+                  rchisq(100000, 3), 
+                  rchisq(100000, 4)),
+            df = rep(c("2", "3", "4"), each = 1e5)) 
+    
+    chi_sq_samples %>%
+      ggplot(aes(x = x, fill = df)) +
+      geom_density( alpha = .5) + 
+      labs(fill = "df", x = "sample")
+```
+
+
+## lab 4: grouped bar graphs
+
+- `position = "dodge2"` tells R to put bars next to each other, rather than stacked on top of each other.
+- Notice we use `fill` and not `color` because we're "filling" an area.
+
+```{r, eval = FALSE}
+    mean_share_per_country %>%
+      ggplot(aes(y = country, 
+                 x = mean_share, 
+                 fill = percentile)) +
+      geom_col(position = "dodge2") +
+      labs(x = "Mean share of national wealth", 
+           y = "", 
+           fill = "Wealth\npercentile")
+```
+
+## lab 4: grouped bar graphs
+
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
+
+  mean_share_per_country <-
+    wid_data %>% 
+      filter(percentile %in% c("p99p100", "p90p100")) %>% 
+      group_by(country, percentile) %>% 
+      summarize(mean_share = mean(value, na.rm = TRUE),
+                sd_share = sd(value, na.rm = TRUE))
+  
+  
+  mean_share_per_country_with_time <-
+    wid_data %>% 
+      filter(country %in% c("China", "India", "USA")) %>%
+      filter(percentile %in% c("p99p100", "p90p100")) %>% 
+      mutate(time_period = case_when(year < 1960 ~ "1959 and earlier",
+                                     year < 1980 ~ "1960 to 1979",
+                                     year < 2000 ~ "1980 to 1999",
+                                     TRUE ~ "2000 to present")) %>%
+      group_by(country, percentile, time_period) %>% 
+      summarize(mean_share = mean(value, na.rm = TRUE),
+                sd_share = sd(value, na.rm = TRUE))
+    
+    mean_share_per_country %>%
+      mutate(country = case_when(country == "Russian Federation" ~ "Russia", 
+                                 country == "United Kingdom" ~ "UK",
+                                 country == "South Africa" ~ "S Africa",
+                                 TRUE ~ country)) %>%
+      ggplot(aes(y = country, x = mean_share, fill = percentile)) +
+      geom_col(position = "dodge2") +
+      labs(x = "Mean share of national wealth", y = "", fill = "Wealth\npercentile")
+```
+
+
+## lab 4: faceted bar graph
+
+- Notice that we manipulate our data to the right specification before making this graph
+- Using `facet_wrap` we get a distinct graph for each time period.
+
+```{r, eval = FALSE}
+     mean_share_per_country_with_time %>%
+      ggplot(aes(x = country, 
+                 y = mean_share, 
+                 fill = percentile)) +
+        geom_col(position = "dodge2") + 
+        facet_wrap(vars(time_period))
+```
+
+
+## lab 4: faceted bar graph
+
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
+     mean_share_per_country_with_time %>%
+      ggplot(aes(x = country, y = mean_share, fill = percentile)) +
+        geom_col(position = "dodge2") + 
+        facet_wrap(~time_period)
 ```
 

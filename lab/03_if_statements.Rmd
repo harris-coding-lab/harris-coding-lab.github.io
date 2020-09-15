@@ -25,6 +25,14 @@ For this lab, we will use data from Opportunity Insights: https://opportunityins
 
 ## Intro to `Rmd`s
 
+1. Before getting started, run the following code in the console. This gives R the necessary tools to make pdfs from your `Rmd`s. 
+
+    ```{r, eval = FALSE}
+    install.packages("tinytex")
+    tinytex::install_tinytex()
+    ```
+
+
 1. Create an `Rmd` file. (In RStudio's menu `File > New File > R Markdown`). Name the document and select PDF. These settings can be changed later.
 1. Save the `Rmd` in your coding lab folder as `lab_3.Rmd`. 
 1. New `Rmd`s comes with some example code. Read the document and then knit to pdf by clicking the knit button. If `pdf` doesn't work, try `html`. 

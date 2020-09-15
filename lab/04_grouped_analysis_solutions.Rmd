@@ -1,0 +1,322 @@
+---
+title: "Lab Session 4 - Solutions"
+author: "Leandro Grespan"
+date: "8/26/2020"
+output: pdf_document
+urlcolor: blue
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(dplyr.summarise.inform = FALSE)
+library(tidyverse)
+library(tweetrmd)
+library(stringr)
+traffic_data <- read_csv("../data/data_traffic.csv")
+traffic_stop_frequencies <-
+    traffic_data %>% 
+      group_by(Race) %>% 
+      summarize(n = n()) %>%
+      mutate(freq = n / sum(n))    
+```
+
+
+
+We expect you to **watch the `class 4` material**, [here](harris-coding-lab.github.io) prior to lab. In addition, **read the background and data section before lab**.
+
+# Background and data
+
+```{r, echo = FALSE, maxwidth = 150}
+#include_tweet("https://twitter.com/nomadj1s/status/1294390352904966151")
+```
+
+
+Follow the [tweet thread](https://twitter.com/nomadj1s/status/1294390352904966151) and you'll see that Prof. Damon Jones, of Harris, gets that data and does some analysis. In this lab, you're going to follow his lead and dig into traffic stop data from the University of Chicago Police Department, one of the largest private police forces in the world.
+
+
+Download the data [here](https://github.com/harris-coding-lab/harris-coding-lab.github.io/raw/master/data/data_traffic.csv).
+
+
+# Warm-up
+
+1. Open a new `Rmd` and save it in your coding lab folder. If you have not yet, move your data file to your preferred data location. 
+
+1. In your `Rmd`, write code to load your packages. If you load packages in the console, you will get an error when you knit because knitting starts a fresh R session.
+
+```{r}
+  library("tidyverse")
+```
+
+1. Load `data_traffic.csv` and assign it to the name `traffic_data`. This data was scrapped from the UCPD website and partially cleaned by Prof. Jones. 
+
+  *Note:* This solution may vary depending on where your csv file is, compared to the Rmd file location. Please refer to Lab 3's Problem Set for more information
+
+```{r, message=FALSE}
+  traffic_data <- read_csv("../data/data_traffic.csv")
+```
+
+
+1. Recall that `group_by()` operates silently. How can you tell `grouped_data` different from `traffic_data`?
+
+    
+    You can use summarise() to check the grouped data: 
+    
+    ```{r}
+    grouped_data <- 
+      traffic_data %>%
+        group_by(Race, Gender)
+    
+    summarise(grouped_data)
+    ```
+    
+    a. How many groups (Race-Gender pairs) are in the data? (This information should be available without writing additional code!)
+    
+       14, the number of rows in the tibble.
+    
+    a. Before running the code. Predict the dimensions (number of rows by number of columns) of the tibbles created by `traffic_data %>% summarize(n = n())` and `grouped_data %>% summarize(n = n())`. Now check you intuition by running the code.
+    
+       The traffic_data summary will be a 1x1 tibble and the grouped_data summary will be a 14x3 tibble
+    
+    ```{r}
+    traffic_data %>% summarize(n = n())
+    ```
+
+    ```{r}
+    grouped_data %>% summarize(n = n())
+    ```
+
+    
+1. Use `group_by()` and `summarize()` to recreate the following table.
+    ```{r}
+    traffic_data %>% 
+      group_by(Race) %>% 
+      summarize(n = n())
+    
+    ```
+1. Use `count()` to produce the same table.
+
+    ```{r}
+    traffic_data %>% 
+      count(Race)
+    ```
+    
+
+## Moving beyond counts
+
+1. Raw counts are okay, but frequencies (or proportions) are easier to compare across data sets. Add a column with frequencies and assign the new tibble to the name `traffic_stop_freq`. The result should be identical to Prof. Jones's analysis on twitter.
+
+    Try on your own first. If you're not sure how to add a frequency though, you could google "add a proportion to count with tidyverse" and find this [stackoverflow post](https://stackoverflow.com/questions/24576515/relative-frequencies-proportions-with-dplyr).  Follow the advice of the number one answer. The green checkmark and large number of upvotes indicate the answer is likely reliable.
+    
+    ```{r}
+      traffic_stop_freq <- traffic_data %>%
+        group_by(Race) %>%
+        summarise(n = n()) %>%
+        mutate(freq = n / sum(n))
+    
+      traffic_stop_freq
+    ```
+            
+
+1. The frequencies out of context are not super insightful. What additional information do we need to argue the police are disproportionately stopping members of a certain group? (Hint: Prof. Jones shares the information in his tweets.)^[To be fair, even with this information, this is crude evidence that can be explained away in any number of ways. One job of a policy analyst is to bring together evidence from a variety of sources to better understand the issue.]
+
+    Prof Jones compares these frequencies with two other frequencies: the demographic breakdown of Hyde Park and the breakdown of UChicago Students races. 
+
+1. For the problem above, your groupmate tried the following code. Explain why the frequencies are all 1.^[Hint: This is a lesson about `group_by()`!]
+
+    ```{r, eval = FALSE}
+    traffic_stop_freq_bad <-
+    traffic_data %>% 
+      group_by(Race) %>% 
+      summarize(n = n(),
+                freq = n / sum(n))
+    
+    traffic_stop_freq_bad
+    ```
+    
+    As explained in the linked stackoverflow post, the last grouping variable is peeled off after the summarise function. So, if you calculate frequencies within the summarize function, each race will be treated as a single group, and its frequency must be 1. However, if you calculate frequencies after the summerise function, the whole data will be treated as one group.
+    
+1. Now we want to go a step further than Prof. Jones.^[The analysis that follows is partially inspired by Eric Langowski, a Harris alum, who was also inspired to investigate by the existence of this data  (You may have seen Prof. Jones retweet him at the end of the thread.)] Do outcomes differ by race? In the first code block below, I provide code so you can visualize disposition by race. "Disposition" is police jargon that means the current status or final outcome of a police interaction.
+
+    ```{r}
+    citation_strings <- c("citation issued", "citations issued", "citation  issued" )
+    
+    arrest_strings <- c("citation issued, arrested on active warrant",
+                    "citation issued; arrested on warrant",
+                    "arrested by cpd",
+                    "arrested on warrant",
+                    "arrested",
+                    "arrest")
+    
+    disposition_by_race <-
+        traffic_data %>% 
+          mutate(Disposition = str_to_lower(Disposition),
+                 Disposition = case_when(Disposition %in% citation_strings ~ "citation",
+                                         Disposition %in% arrest_strings ~ "arrest",
+                                         TRUE ~ Disposition)) %>%
+          count(Race, Disposition) %>%
+          group_by(Race) %>%
+          mutate(freq = round(n / sum(n), 3))  
+        
+    
+    disposition_by_race %>%
+      filter(n > 5, Disposition == "citation") %>%
+      ggplot(aes(y = freq, x = Race)) + 
+      geom_col() + 
+      labs(y = "Citation Rate Once Stopped", x = "", title = "Traffic Citation Rate") + 
+      theme_minimal()
+    ```
+
+    Let's break down how we got to this code. First, I ran `traffic_data %>% count(Race, Disposition)` and noticed that we have a lot of variety in how officers enter information into the system.^[Try it yourself!] I knew I could deal with some of the issue by standardizing capitalization.  
+    a. In the console, try out `str_to_lower(...)` by replacing the `...` with different strings. The name may be clear enough, but what does  `str_to_lower()` do?^[This code comes from the `stringr` package. Checkout `?str_to_lower` to learn about some related functions.]
+
+    ```{r}
+      traffic_data %>%
+        count(Race, Disposition)
+    ```
+      
+    ```{r}
+      str_to_lower("Citation Issued")
+    ```
+      
+    After using `mutate` with  `str_to_lower()`, I piped into `count()` again and looked for strings that represent the same `Disposition`. I stored terms in character vectors (e.g. `citation_strings`). The purpose is to make the `case_when()` easier to code and read. Once I got that right, I added frequencies to finalize `disposition_by_race`. 
+    See code above.
+
+1. To make the graph, I first tried to get all the disposition data on the same plot.
+    ```{r}
+        disposition_by_race %>%
+          ggplot(aes(y = freq, x = Race, fill = Disposition)) + 
+          geom_col() 
+    
+    ```
+By default, the bar graph is stacked. Look at the resulting graph and discuss the pros and cons of this plot with your group.
+
+
+1. I decided I would focus on citations only and added the `filter(n > 5, Disposition == "citation")` to the code.^[Notice that I get the data exactly how I wanted it using `dplyr` verbs and then try to make the graph.] What is the impact of filtering based on `n > 5`? Would you make the same choice? This question doesn't have a "right" answer. You should try different options and reflect.
+
+    Here are some arguments (not a comprehensive list):
+    *Against
+        + We throw away information. 
+        + `n` here is already subdivided based on "Disposition", but it would make more sense to filter based on number of observations for a given race rather than a race-disposition count.
+    *For 
+        + small `n` groups can be misleading since one interaction can sway the result significantly.
+        + An alternative is to create an "other" category, though that might bury heterogeneity across the smallest groups.
+  
+
+
+1. Now, you can create a similar plot based called "Search Rate" using the `Search` variable. Write code to reproduce this plot.
+
+```{r}
+search <-
+traffic_data %>% 
+  mutate(Search = str_to_lower(Search),
+         Search = ifelse(is.na(Search) | Search == "N/A","No" , Search)) %>%
+  count(Race, Search) %>%
+  group_by(Race) %>%
+  mutate(freq = n / sum(n))
+
+
+search %>%
+  filter(Search == "yes", n > 0) %>%
+ggplot(aes(y = freq, x = Race)) + 
+      geom_col() + 
+      labs(y = "Search Rate Once Stopped", x = "", title = "Search Rate") + 
+      theme_minimal()
+```
+
+
+## Extension: Revisiting world inequality data
+
+
+When we explored the World Inequality Database data in lab 1, we mimicked grouped analysis by filtering the data to only show data for France and then repeated the analysis for Russia. Using `group_by()`, we can complete the analysis for each country  simultaneously.
+
+1. Read in the `wid_data`.^[If you are still having trouble, you may want to re-download the file [here](https://github.com/harris-coding-lab/harris-coding-lab.github.io/raw/master/data/world_wealth_inequality.xlsx)  and do not open with Excel!]
+
+    ```{r, warning = FALSE}
+    wid_data_raw <- 
+        # You will likely have to adjust the file path
+        readxl::read_xlsx("../data/world_wealth_inequality.xlsx", 
+                          col_names = c("country", "indicator", "percentile", "year", "value")) %>%
+        separate(indicator, sep = "\\n", into = c("row_tag", "type", "notes")) 
+  
+    wid_data <- wid_data_raw %>% 
+                  select(-row_tag) %>%
+                  select(-notes, everything()) %>% 
+                  # some students had trouble because excel added "\r" to the end 
+                  # of each string. mutate standardizes the string across platforms.
+                  mutate(type = ifelse(str_detect(type, "Net personal wealth"), 
+                                       "Net personal wealth", type)) %>%
+                  filter(type == "Net personal wealth")
+    ```
+
+1. Create a table that tells us the number of years observed per country and  first and last year we have data^[i.e. not `NA`s.] for each country.^[Hint: `?summarize` lists "Useful functions" for summarizing data. Look at the "Range" or "Position" functions. If you are going to use the "Position" functions, make sure the data is sorted properly.] For example, India has 6 years of observations and has data from 1961 to 2012.
+
+    ```{r}
+    wid_data %>% 
+      filter(!is.na(value)) %>% 
+      group_by(country) %>% 
+      summarize(n_obs = as.integer(n()/4),
+                first_year = min(year), 
+                last_year = max(year))
+    ```
+
+
+
+1. Create a table that provides the mean and standard deviation of the share of wealth owned by the top 10 percent and top 1 percent for each country. Call the resulting tibble `mean_share_per_country`.
+
+    ```{r}
+    mean_share_per_country <-
+    wid_data %>% 
+      filter(percentile %in% c("p99p100", "p90p100")) %>% 
+      group_by(country, percentile) %>% 
+      summarize(mean_share = mean(value, na.rm = TRUE),
+                sd_share = sd(value, na.rm = TRUE))
+    
+    mean_share_per_country
+    ```
+
+
+    a. Which country has the smallest standard deviation in share of wealth owned by the top 10 percent? Use `arrange()` to order the countries by standard deviation. Compare the order to you results above about the number of observation and time horizon.^[Usually when we get more data we expect variances to decreased, but that reasoning assumes independence between observations. In this case, there is high temporal correlation, which means if the top 10 percent own 50 percent of wealth this year, they'll own some proportion near 50 percent in the next year.  South Korean only has observations during a short and highly stable historical period, so that explains the low variance.]
+      
+    ```{r}
+      mean_share_per_country %>%
+        filter(percentile == "p90p100") %>%
+        arrange(sd_share)
+    ```
+    
+    a. If your code worked, you should be able to make this bar chart.
+
+    ```{r}
+    mean_share_per_country %>%
+      mutate(country = case_when(country == "Russian Federation" ~ "Russia", 
+                                 country == "United Kingdom" ~ "UK",
+                                 country == "South Africa" ~ "S Africa",
+                                 TRUE ~ country)) %>%
+      ggplot(aes(x = country, y = mean_share, fill = percentile)) +
+      geom_col(position = "dodge2") +
+      labs(y = "Mean share of national wealth", x = "", fill = "Wealth\npercentile")
+    ```
+
+
+    ```{r, echo=FALSE, include = FALSE}
+    mean_share_per_country_with_time <-
+    wid_data %>% 
+      filter(country %in% c("China", "India", "USA")) %>%
+      filter(percentile %in% c("p99p100", "p90p100")) %>% 
+      mutate(time_period = case_when(year < 1960 ~ "1959 and earlier",
+                                     year < 1980 ~ "1960 to 1979",
+                                     year < 2000 ~ "1980 to 1999",
+                                     TRUE ~ "2000 to present")) %>%
+      group_by(country, percentile, time_period) %>% 
+      summarize(mean_share = mean(value, na.rm = TRUE),
+                sd_share = sd(value, na.rm = TRUE))
+    ```
+
+1. **Challenge** Write code to create `mean_share_per_country_with_time` a tibble that produces the following graph which lets us see how the share of national wealth held by the top 10 and 1 percent change over time.^[Hint: use `case_when` or several `ifelse` to create a new column called `time_period` that labels data as  "1959 and earlier", "1960 to 1979", "1980 to 1999", or "2000 to present". Then, add `time_period` to your `group_by()` along with other relevant grouping variables.]
+
+    ```{r}
+    mean_share_per_country_with_time %>%
+      ggplot(aes(x = country, y = mean_share, fill = percentile)) +
+        geom_col(position = "dodge2") + 
+        facet_wrap(~time_period)
+    ```
+
