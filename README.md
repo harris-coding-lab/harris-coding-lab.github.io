@@ -17,7 +17,7 @@ Links to materials for each week's workshop will be posted here as provided. For
 |**Class 2: Vectors and Data Types**|[video](https://youtu.be/0MIeGk_xwiQ) (~ 22 min)| [slides](slides/02_vectors-and-data-types.pdf) <br> [slide code](code/02_vectors-and-data-types.R) | [lab 2](lab/02_vectors_and_dtypes.pdf) <br> [basics review](lab/02_basics_vectors_and_datatypes.pdf) <br> [solutions](lab/02_vectors_and_dtypes_solutions.pdf) | [lab code](lab/02_vectors_and_dtypes.R) |
 |**Class 3: If Statements** | [video](https://www.youtube.com/watch?v=HKC7RTpNt60) (~ 20 min) | [slides](slides/03_if-statements.pdf) <br> [slide code](code/03_if-statements.R) | [lab 3](lab/03_if_statements.pdf) <br> [basic review](lab/03_basics_if_else.pdf) <br> [solutions](lab/03_if_statements_solution.pdf)| [lab code](lab/03_if_statements.R) | 
 |**Class 4: Grouped analysis with `dplyr`**| [video](https://youtu.be/9EQ9WB90VPw) (~13 min) |  [slides](slides/04_grouped-data.pdf) <br> [slide code](code/04_grouped-data.R) | [lab 4](lab/04_grouped_analysis.pdf) <br> [basic review](lab/04_basics_grouped_analysis.pdf)| |
-|**Class 5: Visualizing data with `ggplot`**| [video](https://youtu.be/rnaWwRfrWk4 ) (~ 18 min) | [slides](slides/05_ggplot.pdf) <br> slide code to come[](code/05_ggplot.R)| Work on final project with TA and peer support | |
+|**Class 5: Visualizing data with `ggplot`**| [video](https://youtu.be/rnaWwRfrWk4 ) (~ 18 min) | [slides](slides/05_ggplot.pdf) <br> slide code to come[](code/05_ggplot.R)| Work on final project with TA and peer support <br> [basic review](lab/05_basics_ggplot.pdf) | |
 
 
 The first three weeks of fall coding lab covers the same material (minus `ggplot`).
