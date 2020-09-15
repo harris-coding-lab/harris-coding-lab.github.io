@@ -1,0 +1,374 @@
+---
+title: "The basics: 05 ggplot"
+author: "Ari Anisfeld"
+date: "9/8/2020"
+output:
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(dplyr.summarise.inform = FALSE)
+library(tidyverse)
+```
+
+# Questions
+
+Recall `ggplot` works by mapping data to aesthetics and then telling ggplot how to visualize the aesthetic with geoms. Like so:
+
+```{r}
+midwest %>%
+  ggplot(aes(x = percollege, 
+             y = percbelowpoverty,
+             color = state,
+             size = poptotal,
+             alpha = percpovertyknown)) + 
+  geom_point() + 
+  facet_wrap(vars(state))
+```
+
+
+1. Which is more highly correlated with poverty at the county level, college completion rates or high school completion rates?  Is it consistent across states? Change one line of code in the above graph. 
+
+
+## `geoms`
+
+For the following, write code to reproduce each plot using `midwest`
+
+1. 
+
+    ```{r, echo = FALSE, fig.height = 3, fig.width = 4}
+    midwest %>%
+      ggplot(aes(x = perchsd, y = percollege)) + 
+      geom_point()
+    ```
+
+
+1.
+
+    ```{r, echo = FALSE, fig.height = 3, fig.width = 4}
+    midwest %>%
+      ggplot(aes(x = perchsd, y = percollege)) + 
+      geom_point() +
+      geom_smooth() 
+    ```
+
+1.
+
+    ```{r, echo = FALSE}
+    midwest %>%
+      ggplot(aes(x = perchsd, y = percollege)) + 
+      geom_point() +
+      geom_smooth() + 
+      facet_wrap(vars(state))
+    ``` 
+
+
+
+1. Notice here `inmetro` is numeric, but I want it to behave like a discrete variable so I use `x = as.character(inmetro)`. Use `labs(title = "Asian population by metro status")` to create the title.
+
+    ```{r, echo = FALSE, fig.height = 3, fig.width = 4}
+    midwest %>%
+      ggplot(aes(x = as.character(inmetro), y = percasian)) +
+      geom_point() +
+      labs(title = "Asian population by metro status")
+    ```
+
+1. Use `geom_boxplot()` instead of `geom_point()` for "Asian population by metro status".
+
+    ```{r, echo = FALSE, eval = FALSE, fig.height = 3, fig.width = 4}
+    midwest %>%
+      ggplot(aes(x = as.character(inmetro), y = percasian)) +
+      geom_boxplot()
+    ```
+    
+
+1. Use `geom_jitter()` instead of `geom_point()`  for "Asian population by metro status"
+
+    ```{r, echo = FALSE, eval = FALSE, fig.height = 3, fig.width = 4}
+    midwest %>%
+      ggplot(aes(x = as.character(inmetro), y = percasian)) +
+      geom_jitter()
+    ```
+
+1. Use `geom_jitter()` and `geom_boxplot()` at the same time  for "Asian population by metro status". Does order matter?
+
+    ```{r, echo = FALSE, eval = FALSE, fig.height = 3, fig.width = 4}
+    midwest %>%
+      ggplot(aes(x = as.character(inmetro), y = percasian)) +
+      geom_boxplot() + 
+      geom_jitter() 
+    
+    midwest %>%
+      ggplot(aes(x = as.character(inmetro), y = percasian)) +
+      geom_jitter()  +
+      geom_boxplot() 
+    ```
+    
+
+1. Histograms are used to visualize distributions. What happens when you change the `bins` argument? What happens if you leave the `bins` argument off? 
+
+    ```{r}
+    midwest %>%
+      ggplot(aes(x = perchsd)) + 
+      geom_histogram(bins = 100) + 
+      labs(title = "distribution of county-level hs completion rate")
+    ```
+
+1. Remake "distribution of county-level hs completion rate" with `geom_density()` instead of `geom_histogram()`.
+
+    ```{r, eval = FALSE, echo = FALSE, fig.height = 3, fig.width = 4}
+    midwest %>%
+      ggplot(aes(x = perchsd)) + 
+      geom_density() + 
+      labs(title = "distribution of county-level hs completion rate")
+    ```
+
+1. Add a vertical line at the median `perchsd` using `geom_vline`. You can calculate the median directly in the ggplot code. 
+
+
+    ```{r, eval = FALSE, echo = FALSE, fig.height = 3, fig.width = 4}
+    midwest %>%
+      ggplot(aes(x = perchsd)) + 
+      geom_density() + 
+      geom_vline(aes(xintercept = median(perchsd)), linetype = "dashed") + 
+      labs(title = "distribution of county-level hs completion rate")
+    ```
+
+\newpage
+
+## Aesthetics
+
+For the following, write code to reproduce each plot using `midwest`
+
+1. Use `x`, `y`, `color` and `size` 
+
+    ```{r, echo = FALSE, fig.height = 3, fig.width = 4}
+    midwest %>%
+      ggplot(aes(x = state, y = percprof, color = state, size = poptotal )) +
+      geom_point()
+    ```
+
+1. Use `x`, `y`, `color` and `size`. 
+
+    ```{r, echo = FALSE, fig.height = 3, fig.width = 4}
+    midwest %>%
+      ggplot(aes(x = percollege, y = perchsd, 
+                 color = state, size = poptotal, 
+                 alpha = percwhite)) +
+      geom_point() +
+      labs(title = "Relationship between college and high school attainment rates by county") 
+    ``` 
+
+1. Add smooth lines.  Get rid of the error around your smooth lines by adding the argument `se = FALSE`.
+   
+1. Now try faceting with `facet_grid` and the code `facet_grid(col = vars(inmetro), rows = vars(state))` to your plot
+
+    ```{r, echo = FALSE, eval = FALSE, fig.height = 3, fig.width = 4}
+    midwest %>%
+      ggplot(aes(x = percollege, y = perchsd, 
+                 color = state, size = poptotal, 
+                 alpha = percwhite)) +
+      geom_point() +
+      geom_smooth(se = FALSE) +
+      facet_grid(col = vars(inmetro), rows = vars(state)) +
+      labs(title = "Relationship between college and high school attainment rates by county",
+           subtitle = "Shown by metro status and state (in metro = 1)") 
+    ``` 
+    
+    
+    
+1. When making bar graphs, `color` only changes the outline of the bar. Change the aestethic name to `fill` to get the desired result
+
+    ```{r}
+    midwest %>%
+      count(state) %>%
+      ggplot(aes(x = state, y = n, color = state)) +
+      geom_col()
+    ```
+    
+    
+  1. There's a `geom` called `geom_bar` that takes a dataset and calculates the count. Read the following code and compare it to the `geom_col` code above. Describe how `geom_bar()` is different than `geom_col`
+  
+```{r, eval = FALSE, fig.height = 3, fig.width = 4}
+   midwest %>%
+    ggplot(aes(x = state, color = state)) +
+    geom_bar()
+```
+
+
+\newpage
+# Solutions
+
+Recall `ggplot` works by mapping data to aesthetics and then telling ggplot how to visualize the aesthetic with geoms. Like so:
+
+```{r fig.height = 3, fig.width = 4}
+midwest %>%
+  ggplot(aes(x = perchsd, 
+             y = percbelowpoverty,
+             color = state,
+             size = poptotal,
+             alpha = percpovertyknown)) + 
+  geom_point() + 
+  facet_wrap(vars(state))
+```
+
+
+1. Which is more highly correlated with poverty at the county level, college completion rates or high school completion rates?  Is it consistent across states? Change one line of code in the above graph. 
+
+    It appears that high school degree attainment is more strongly correlated with poverty rates at the county level.
+
+
+## `geoms`
+
+For the following, write code to reproduce each plot using `midwest`
+
+1. 
+    ```{r, eval = FALSE, fig.height = 3, fig.width = 4}
+    midwest %>%
+      ggplot(aes(x = perchsd, y = percollege)) + 
+      geom_point()
+    ```
+
+
+1.
+    ```{r, eval = FALSE, fig.height = 3, fig.width = 4}
+    midwest %>%
+      ggplot(aes(x = perchsd, y = percollege)) + 
+      geom_point() +
+      geom_smooth() 
+    ```
+
+1.
+
+    ```{r, eval = FALSE, fig.height = 3, fig.width = 4}
+    midwest %>%
+      ggplot(aes(x = perchsd, y = percollege)) + 
+      geom_point() +
+      geom_smooth() + 
+      facet_wrap(vars(state))
+    ``` 
+
+
+
+1. Notice here `inmetro` is numeric, but I want it to behave like a discrete variable so I use `as.character(inmetro)`. Use `labs(title = "Asian population by metro status")` to create the title.
+
+    ```{r, eval = FALSE, fig.height = 3, fig.width = 4}
+    midwest %>%
+      ggplot(aes(x = as.character(inmetro), y = percasian)) +
+      geom_point() +
+      labs(title = "Asian population by metro status")
+    ```
+
+1. Use `geom_boxplot()` instead of `geom_point()` for "Asian population by metro status".
+
+    ```{r, echo =TRUE, eval = FALSE, fig.height = 3, fig.width = 4}
+    midwest %>%
+      ggplot(aes(x = as.character(inmetro), y = percasian)) +
+      geom_boxplot()
+    ```
+    
+
+1. Use `geom_jitter()` instead of `geom_point()`  for "Asian population by metro status"
+
+    ```{r, echo = TRUE, eval = FALSE, fig.height = 3, fig.width = 4}
+    midwest %>%
+      ggplot(aes(x = as.character(inmetro), y = percasian)) +
+      geom_jitter()
+    ```
+
+1. Use `geom_jitter()` and `geom_boxplot()` at the same time  for "Asian population by metro status". Does order matter?
+
+    ```{r, echo = TRUE, eval = FALSE, fig.height = 3, fig.width = 4}
+    midwest %>%
+      ggplot(aes(x = as.character(inmetro), y = percasian)) +
+      geom_boxplot() + 
+      geom_jitter() 
+    
+    midwest %>%
+      ggplot(aes(x = as.character(inmetro), y = percasian)) +
+      geom_jitter()  +
+      geom_boxplot() 
+    ```
+    
+
+1. Histograms are used to visualize distributions. What happens when you change the `bins` argument? What happens if you leave the `bins` argument off? 
+
+    `bins` determine the number of bins to divide the data into. E.g. midwest has 437 obs, so if we use 40 bins each bin will contain 437/40 = roughly 11 counties. By default, there are 30 bins and ggplot gives you a warning, because it's an arbitrary default.
+
+
+1. Remake "distribution of county-level hs completion rate" with `geom_density()`.
+
+    ```{r, eval = FALSE, echo = TRUE, fig.height = 3, fig.width = 4}
+    midwest %>%
+      ggplot(aes(x = perchsd)) + 
+      geom_density() + 
+      labs(title = "distribution of county-level hs completion rate")
+    ```
+
+1. Add a vertical line at the median `perchsd` using `geom_vline`. You can calculate the median directly in the ggplot code. 
+
+
+    ```{r, eval = FALSE, echo = TRUE}
+    midwest %>%
+      ggplot(aes(x = perchsd)) + 
+      geom_density() + 
+      geom_vline(aes(xintercept = median(perchsd)), linetype = "dashed") + 
+      labs(title = "distribution of county-level hs completion rate")
+    ```
+
+## Aesthetics
+
+For the following, write code to reproduce each plot using `midwest`
+
+1. Use `x`, `y`, `color` and `size` 
+
+    ```{r, eval = FALSE, fig.height = 3, fig.width = 4}
+    midwest %>%
+      ggplot(aes(x = state, y = percprof, color = state, size = poptotal )) +
+      geom_point()
+    ```
+
+1. Use `x`, `y`, `color` and `size`. 
+
+    ```{r,  eval = FALSE, fig.height = 3, fig.width = 4}
+    midwest %>%
+      ggplot(aes(x = percollege, y = perchsd, 
+                 color = state, size = poptotal, 
+                 alpha = percwhite)) +
+      geom_point() +
+      labs(title = "Relationship between college and high school attainment rates by county") 
+    ``` 
+
+1. Add smooth lines.  Get rid of the error around your smooth lines by adding the argument `se = FALSE`.
+   
+1. Now try faceting with `facet_grid` and the code `facet_grid(col = vars(inmetro), rows = vars(state))` to your plot
+
+    ```{r, echo = TRUE, eval = FALSE, fig.height = 3, fig.width = 4}
+    midwest %>%
+      ggplot(aes(x = percollege, y = perchsd, 
+                 color = state, size = poptotal, 
+                 alpha = percwhite)) +
+      geom_point() +
+      geom_smooth(se = FALSE) +
+      facet_grid(col = vars(inmetro), rows = vars(state)) +
+      labs(title = "Relationship between college and high school attainment rates by county",
+           subtitle = "Shown by metro status and state (in metro = 1)") 
+    ``` 
+    
+    
+    
+1. When making bar graphs, `color` only changes the outline of the bar. Change the aestethic name to `fill` to get the desired result
+
+```{r, fig.height = 3, fig.width = 4}
+midwest %>%
+  count(state) %>%
+  ggplot(aes(x = state, y = n, fill = state)) +
+  geom_col()
+```
+    
+    
+1. There's a `geom` called `geom_bar` that takes a dataset and calculates the count. Read the following code and compare it to the `geom_col` code above. Describe how `geom_bar()` is different than `geom_col`
+        
+    `geom_bar` does a statistical transformation where it calculates the number of rows per group (`x` value) and makes that the height of the bar. This is the same as using `count` on the data and then using `geom_col`.  By default, `geom_bar()` has `stat = "count"` where `stat` is an argument that tells `geom_bar()` what kind of statistical transformation to do. We can get the `geom_col` behavior with `geom_bar(stat = "identity")`, `stat = "identity"` means we just take the `y` value from `n` directly. 
+        
