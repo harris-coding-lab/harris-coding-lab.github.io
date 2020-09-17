@@ -1,7 +1,6 @@
 ---
 title: "Lab Session 4 - Solutions"
-author: "Leandro Grespan"
-date: "8/26/2020"
+date: "9/17/2020"
 output: pdf_document
 urlcolor: blue
 ---
