@@ -1,0 +1,223 @@
+---
+title: "For Loops"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+library(parsons)
+
+tutorial_event_recorder <- function(..., data = NULL) {
+  if (!is.null(data)) {
+    if(!is.null(data$output)) {
+      output <- as.character(data$output)
+      if(nchar(output) > 150) {
+        output <- paste0(substr(output, 1, 150), "....")
+        data$output <- output
+      }
+    }
+  }
+  cat("Event - ", paste0(capture.output({dput(list(..., data = data))}), collapse = " "), "\n")
+}
+options(tutorial.event_recorder = tutorial_event_recorder)
+
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Reordering For Loops
+
+Put the for loops in the correct order:
+
+```{r loop1}
+question_parsons(
+ initial = c(
+  "res[i] <- a[i] + b[i]",
+  "res <- numeric(length = length(a))",
+   "for (i in seq_along(a)) {",
+  "}"
+ ),
+ answer(c(
+  "res <- numeric(length = length(a))",
+   "for (i in seq_along(a)) {",
+  "res[i] <- a[i] + b[i]",
+  "}"
+  ), correct = TRUE),
+ submit_button = "Check answer"
+)
+```
+
+```{r loop2}
+question_parsons(
+ initial = c(
+   "}",
+  "mutate(count = as.numeric(count))",
+  "for (file in all_files) {",
+  "write_csv(the_data, file = paste0(\"data-output/\", file))",
+  "the_data <- read_csv(file) %>%",
+  "all_files <- list.files(\"data/\", pattern = \"*.csv\", full.names = TRUE)"
+ ),
+ answer(c(
+  "all_files <- list.files(\"data/\", pattern = \"*.csv\", full.names = TRUE)",
+  "for (file in all_files) {",
+  "the_data <- read_csv(file) %>%",
+  "mutate(count = as.numeric(count))",
+  "write_csv(the_data, file = paste0(\"data-output/\", file))",
+  "}"
+  ), correct = TRUE),
+ submit_button = "Check answer"
+)
+```
+
+```{r loop3}
+question_parsons(
+ initial = c(
+  "output[[i]] <- median(df[[i]])",
+  "}",
+  "output <- vector(\"double\", ncol(df))",
+  "for (i in seq_along(df)) {"
+ ),
+ answer(c(
+  "output <- vector(\"double\", ncol(df))",
+  "for (i in seq_along(df)) {",
+  "output[[i]] <- median(df[[i]])",
+  "}"
+  ), correct = TRUE),
+ submit_button = "Check answer"
+)
+```
+
+```{r loop4}
+question_parsons(
+ initial = c(
+  "sample_sizes <- seq(1, 30, 1)",
+  "estimates <- tibble(n = integer(), sample_mean = double())",
+  "for (n in sample_sizes) {",
+  "sample_mean <- mean(rnorm(n, mean = 0, sd = 5))",
+  "estimates <- bind_rows(estimates, c(n = n, sample_mean = sample_mean))",
+  "}"
+ ),
+ answer(c(
+  "sample_sizes <- seq(1, 30, 1)",
+  "estimates <- tibble(n = integer(), sample_mean = double())",
+  "for (n in sample_sizes) {",
+  "sample_mean <- mean(rnorm(n, mean = 0, sd = 5))",
+  "estimates <- bind_rows(estimates, c(n = n, sample_mean = sample_mean))",
+  "}"
+  ), correct = TRUE),
+  answer(c(
+  "estimates <- tibble(n = integer(), sample_mean = double())",
+  "sample_sizes <- seq(1, 30, 1)",
+  "for (n in sample_sizes) {",
+  "sample_mean <- mean(rnorm(n, mean = 0, sd = 5))",
+  "estimates <- bind_rows(estimates, c(n = n, sample_mean = sample_mean))",
+  "}"
+  ), correct = TRUE),
+ submit_button = "Check answer"
+)
+```
+
+## Simulating the Law of Large Numbers
+
+The Law of Large Numbers says that as sample sizes increase, the mean of the sample will approach the true mean of the distribution. We are going to simulate this phenomenon!
+
+We'll start by making a vector of sample sizes from 1 to 30, to represent increasing sample sizes.
+
+Create a vector called `sample_sizes` that is made up of the numbers 1 through 30. You can use `seq()` or `:` notation.
+
+```{r vector, exercise=TRUE}
+
+```
+
+We'll make a tibble to store the results of the for loop:
+```{r estimates, echo=TRUE, eval=FALSE}
+estimates <- tibble(n = integer(), sample_mean = double())
+```
+
+Write a loop over the `sample_sizes` you specified above. In the loop, for each sample size you will:
+
+1. calculate the mean of a sample from the random normal distribution with mean = 0 and sd = 5
+2. make a named vector and the new rows to your tibble using bind_rows()
+
+```{r loop-setup}
+sample_sizes <- 1:30
+estimates <- tibble(n = integer(), sample_mean = double())
+```
+
+```{r loop, exercise=TRUE, exercise.lines=5}
+for (__ in _____) {
+  sample_mean <- _____
+  estimates <- ____
+}
+```
+
+```{r ggplot-setup}
+sample_sizes <- 1:30
+estimates <- tibble(n = integer(), sample_mean = double())
+for (n in sample_sizes) {
+  sample_mean <- mean(rnorm(n, mean= 0, sd = 5))
+  estimates <- bind_rows(estimates, c(n = n, sample_mean = sample_mean))
+}
+```
+
+We can use ggplot2 to view the results. Fill in the correct information for the data and x and y variables, so that the `n` column of the `estimates` tibble is plotted on the x-axis, while the `sample_mean` column of the `estimates` tibble is plotted on the y-axis.
+```{r ggplot, exercise = TRUE, exercise.lines=5}
+____ %>%
+  ggplot(aes(x = __, y = ___)) +
+  geom_line()
+```
+
+```{r samplesize-quiz}
+quiz(
+  question("As the sample size (n) increases, the sample mean:",
+    answer("Becomes closer to 0", correct=TRUE),
+    answer("Becomes farther away from 0"))
+)
+```
+
+Rerun the above code with a wider range of sample sizes. Try several different sample size combinations. What happens when you increase the sample size to 100? 500? 1000?
+```{r sampsizes, exercise = TRUE}
+sample_sizes <- ___
+
+estimates <- tibble(n = integer(), sample_mean = double())
+
+for (__ in _____) {
+  sample_mean <- _____
+  estimates <- ____
+}
+
+____ %>%
+  ggplot(aes(x = __, y = ___)) +
+  geom_line()
+```
+
+## Extending Our Simulation
+
+Looking at your results, you might think a small sample size is sufficient for estimating a mean, but your data had a relatively small standard deviation compared to the mean. Let's run the same simulation as before with different standard deviations. 
+
+Do the following:
+
+1. Create a vector called `population_standard_deviations` of length 4 with values 0, 1, 5, and 10 (you're welcome to add larger numbers if you wish).
+2. Make a tibble to store the output. This has an extra column for the changing population standard deviations.
+3. Write a loop inside a loop over `population_standard_deviations` and then `sample_sizes`.
+4. Then, make a ggplot graph where the x and y axes are the same, but we facet (aka we create small multiples of individual graphs) on `population_standard_deviations`.
+
+```{r loopinloop, exercise = TRUE}
+_____ <- ______
+
+____ <- tibble(____ = integer(), ____ = double(), ____ = integer() )
+
+for (____){
+  for (____) {
+    sample_mean <- _____
+    estimates <- _____
+    }
+}
+
+____ %>%
+  ggplot(aes(x = ____, y = ____)) +
+  geom_line() +
+  facet_wrap(~____) +
+  theme_minimal()
+```

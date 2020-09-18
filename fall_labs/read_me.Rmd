@@ -1,0 +1,147 @@
+---
+title: "Tutorial Read Me"
+output: 
+  html_notebook:
+    toc: true
+    toc_float: true
+---
+
+Hi all! This is an R notebook. This is where you'll be doing a lot of your
+coding, especially when piloting code or when you want to present your 
+results to others.
+
+All the tutorials for Fall Coding Lab will consist of notebooks which will be
+mostly pre-filled for you, and your goal will be to figure out the remaining
+code. This serves several purposes: 
+
+1. It familiarizes you with the file format you'll likely be interacting with 
+the most while coding in R.
+2. It familiarizes you with working within RStudio in general.
+3. You don't have to write code from scratch, which can be daunting. 
+
+Unfortunately, it does mean that because you're adhering to our "skeleton" for the 
+code, the range of solutions you can come up with can sometimes be limited. So 
+as you go through the code, if you think of a different solution, feel free to 
+ignore the code we gave you and try it out! The worst that can happen is you have to 
+undo your changes. Coding is *very* flexible like that.
+
+# Some Basics
+
+R notebooks are written in a language called R Markdown, so the scripts that 
+generate them have the .Rmd file format. These are the files you'll be editing
+in your lab assignments. They're very nice because you can write plain text,
+like what you're reading right now, but you can also embed R code, run it, and
+show the results as well:
+
+```{r}
+2 + 2
+```
+
+The way you tell RStudio that there's code to run is to insert a block of code,
+called a chunk, starting with \`\`\`{r} and ending with \`\`\`. The keyboard 
+shortcut to insert one is Ctrl + Alt + I on Windows, or Cmd + Option + I on OS X. 
+There are many options for these chunks, that you can read up on here:
+
+https://rmarkdown.rstudio.com/lesson-3.html
+
+And on the topic of keyboard shortcuts, there are lots of them! You can find a
+cheatsheet here:
+
+https://rstudio.com/wp-content/uploads/2016/01/rstudio-IDE-cheatsheet.pdf
+
+And a complete listing here:
+
+https://support.rstudio.com/hc/en-us/articles/200711853-Keyboard-Shortcuts
+
+No need to memorize them all, but if there's something you do often, it's 
+better to learn the shortcut than to mouse around the user interface.
+
+Once your code is ready to go, you can press Ctrl + Enter (Win) or Cmd + Return 
+(OS X) to run the current line, or Ctrl + Shift + Enter or Cmd + Shift + Return
+to run the entire current chunk. Try both out!
+
+```{r}
+print("COVID stinks.")
+print("But at least I know some R Markdown now.")
+```
+
+Another command you'll likely use is Ctrl + Alt + R or Cmd + Option + R, which
+runs the entire file.
+
+# An Coding Lab Example
+
+So now that you have an idea of how to work with a notebook, here's an example
+of how a coding lab tutorial might look like.
+
+Assume we're trying to write some simple code to solve the following scenario:
+in non-COVID times, you're having a meal at Nella, Medici, or Shinju with 3 
+friends, and you get a $75 bill. You want to figure out tax, tip, and the split.
+What do you do?
+
+The code you'll receive could look like:
+
+```{r, eval = FALSE}
+bill <- 75
+tax <- 0.1075
+tip <- # Tip appropriately!
+number_people <- 
+
+# Calculate total bill    
+total <- bill + bill * (tax + tip)
+
+# Split total equally between everyone
+split <- 
+```
+
+And all you have to do is fill it out and run it:
+
+```{r}
+bill <- 75
+tax <- 0.1075
+tip <- 0.20 # Tip appropriately!
+number_people <- 4
+
+# Calculate total bill    
+total <- bill + bill * (tax + tip)
+
+# Split total equally between everyone
+split <- total/number_people
+```
+
+So how much do you owe?
+
+```{r}
+split
+```
+
+Obviously the examples we'll use will be more complicated, but you get the 
+gist of it. Some time after the actual session, we'll release the completed
+notebooks so you can check your answers. 
+
+# Text Formatting
+
+R Markdown is a very complete language, and there are a lot of formatting 
+options for text. You have all the usual suspects, **bold**, *italics*, etc.
+If you're familiar with plain Markdown, great, they're pretty much the same. 
+If not, here's a cheatsheet you can refer to:
+
+https://rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf
+
+# Output Formats
+
+R Markdown is very flexible in terms of output formats, but for this lab we'll 
+stick to HTML notebooks. In this same folder, you'll find an identically named 
+file ending in `nb.html`. This is a notebook that holds all of this text, code,
+and results in an html file you can open in any browser, or share with others.
+Every time you save your .Rmd, you're also saving your notebook.
+
+However, this is only scratching the surface. You can make PDFs and many other
+things using the same R Markdown script. Take a look at some examples at this
+gallery:
+
+https://rmarkdown.rstudio.com/gallery.html
+
+If you get a chance, look up how to generate PDFs from an R Markdown file, this
+will be super helpful for some of your classes where you have to turn in neatly
+formatted empirical analyses!
+
