@@ -116,7 +116,20 @@ split
 
 Obviously the examples we'll use will be more complicated, but you get the 
 gist of it. Some time after the actual session, we'll release the completed
-notebooks so you can check your answers. 
+notebooks so you can check your answers. We'll often pepper little knowledge
+check questions in the text, make sure you answer them before you move on. 
+We'll often include the answers at the end of each notebook so you can verify
+your output.
+
+On the topic of code chunk options, one important option you'll see a lot in
+the files we give you is the `eval = FALSE` flag. It means "don't evaluate
+this code". We use this when we want to show you how to write some piece of code, 
+but we don't want to run it. Note that if you just ran the incomplete code
+in the first chunk, R would totally throw a tantrum. So we added the 
+`eval = FALSE` as a way of telling it to relax and to not even try it.
+
+So if you copy a code chunk and it doesn't do anything, make sure you didn't 
+copy the `eval = FALSE` flag too!
 
 # Text Formatting
 
