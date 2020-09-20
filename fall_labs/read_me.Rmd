@@ -95,7 +95,7 @@ split <-
 
 And all you have to do is fill it out and run it:
 
-```{r}
+```{r bill_split}
 bill <- 75
 tax <- 0.1075
 tip <- 0.20 # Tip appropriately!
@@ -129,7 +129,10 @@ in the first chunk, R would totally throw a tantrum. So we added the
 `eval = FALSE` as a way of telling it to relax and to not even try it.
 
 So if you copy a code chunk and it doesn't do anything, make sure you didn't 
-copy the `eval = FALSE` flag too!
+copy the `eval = FALSE` flag too! Also, some code chunks will have some 
+text next to the `{r`, like `{r calculate_mean}`. This is how you name or label a 
+code chunk, which allows you to reference it by name if need be. Feel free to
+ignore the labels.
 
 # Text Formatting
 
