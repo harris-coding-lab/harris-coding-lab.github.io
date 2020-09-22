@@ -6,6 +6,15 @@ This website (harris-coding-lab.github.io) contains the content for the Harris S
 
 We ask that Coding Lab attendees have the latest stable versions of [R](https://cloud.r-project.org/) and [RStudio](https://rstudio.com/products/rstudio/download/#download) pre-installed on their local machine. If you need help getting set up, Harris IT is hosting office hours during on Sept 1 and 2 (you should have an email with the details.) and you can email the amazing staff of Harris IT at hsit-servicedesk@uchicago.edu.
 
+### Fall Lab Materials
+
+| Class  | Videos | Slides & Code |  Problem sets | Additional Resources |
+| ---- | ----- | ----- | ----- | --- |
+|**Accelerated 1: Functions** <br> **Fall 4: Functions**| [video]( https://youtu.be/Y2SbF9JHI7Q  ) | [slides](slides/06_functions.pdf)| | |
+|**Accelerated 2: Iteration** <br> **Fall 5: Iteration**| [video]( https://youtu.be/0z8N8S-vz4U ) | [slides](slides/07_for_loops.pdf)| | |
+
+
+
 ### Summer Lab Materials
 
 Links to materials for each week's workshop will be posted here as provided. For each class, watch the video. Then, go to lab and attempt the lab
