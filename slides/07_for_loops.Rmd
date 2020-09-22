@@ -1,0 +1,370 @@
+---
+title: "Coding Lab: iteration and loops"
+author: "Ari Anisfeld"
+date: "Fall 2020"
+output: 
+  beamer_presentation:
+    fig_width: 3.5
+    fig_height: 2
+    includes:
+      in_header: header_page_n.tex
+---
+```{r, setup=TRUE, message=FALSE, echo=FALSE}
+library(tidyverse)
+library(readxl)
+```
+
+## Iteration and for-loops (Control flow II)
+
+We use for-loops to repeat a task over many different inputs or to repeat a simulation process several times.
+
+- How to write for-loops
+- When to use a for-loop vs vectorized code
+
+```{r}
+for(value in c(1, 2, 3, 4, 5)) {
+  print(value)
+}
+```
+
+
+## Simple for-loop
+
+```{r}
+for (x in c(3, 6, 9)) {
+  print(x)
+}
+```
+
+## Simple for-loop: what is going on?
+
+
+```{r, eval = FALSE}
+for (x in c(3, 6, 9)) {
+  print(x)
+}
+```
+
+Our for-loop is equivalent to the following code. For each value in `c(3,6,9)`, we assign the value to `x` and the do the action between the curly brackets in order.
+
+```{r, eval = FALSE}
+x <- 3
+print(x)
+x <- 6
+print(x)
+x <- 9
+print(x)
+```
+
+## For loops
+
+The general structure of a for loop is as follows:
+
+```{r eval=FALSE}
+for (value in list_of_values) {
+  do something (based on value)
+}
+
+for (index in list_of_indices) {
+  do something (based on index)
+}
+```
+
+
+## Example: find sample means
+
+Suppose we want to find the means of increasingly large samples.
+
+```{r}
+mean1 <- mean(rnorm(5))
+mean2 <- mean(rnorm(10))
+mean3 <- mean(rnorm(15))
+mean4 <- mean(rnorm(20))
+mean5 <- mean(rnorm(25000))
+
+means <- c(mean1, mean2, mean3, mean4, mean5)
+
+means
+```
+
+
+## Example: find sample means
+
+Let's avoid repeating code with a `for` loop. 
+
+```{r}
+sample_sizes <- c(5, 10, 15, 20, 25000)
+sample_means <- rep(0, length(sample_sizes))
+
+for (i in seq_along(sample_sizes)) {
+  sample_means[[i]] <- mean(rnorm(sample_sizes[[i]]))
+}
+
+sample_means
+```
+
+In the following slides we'll explain each step.
+
+## Finding sample means, broken down 
+
+Assign initial variables **before** starting the for loop.
+
+```{r eval=FALSE}
+# determine what to loop over
+sample_sizes <- c(5, 10, 15, 20, 25000)
+
+# pre-allocate space to store output
+sample_means <- rep(0, length(sample_sizes))
+```
+
+To start: 
+
+1. create a vector of the `sample_sizes` we want to use
+2. create a vector to store the output 
+
+## What does `sample_means` currently look like?
+
+
+```{r}
+sample_means <- rep(0, length(sample_sizes))
+sample_means
+```
+
+**Why do this?** It makes the code more efficient. An alternative is to build up an object as you go, but this requires copying the data over and over again.
+
+
+## Alternative ways to preallocate space
+
+```{r, eval=FALSE}
+sample_means <- vector("double", length = 5)
+sample_means <- double(5)
+```
+
+Each data type has a comparable function e.g. `logical()`, `integer()`, `character()`.
+
+
+To hold data of different types, we'll use lists.^[Lists are vectors that are not "atomic".]
+
+```{r, eval=FALSE}
+data_list <- vector("list", length = 5)
+```
+
+## Adding data to a vector, broken down 
+
+Determine what sequence to loop over. 
+
+```{r eval=FALSE}
+for (i in 1:length(sample_sizes)) {
+
+}
+```
+
+
+## A helper function `seq_along()`
+
+`seq_along(x)` is synonymous to `1:length(x)` 
+
+where `x` is a vector.
+
+**Example**
+```{r}
+vec <- c("x", "y", "z")
+1:length(vec)
+seq_along(vec)
+```
+
+***
+```{r}
+sample_sizes <- c(5, 10, 15, 20, 25000)
+seq_along(sample_sizes)
+```
+
+(What if `sample_sizes` is accidentally a 0-length vector? See [what happens](https://r4ds.had.co.nz/iteration.html#for-loops) in R for Data Science.)
+
+
+## Adding data to a vector, broken down 
+
+```{r eval=FALSE}
+sample_sizes <- c(5, 10, 15, 20, 25000)
+sample_means <- rep(0, length(sample_sizes))
+
+for (i in seq_along(sample_sizes)) {
+
+}
+```
+
+Use `seq_along()` to be safe! 
+
+
+## Adding data to a vector, broken down {.build}
+
+```{r}
+sample_sizes <- c(5, 10, 15, 20, 25000)
+sample_means <- numeric(length(sample_sizes))
+
+for (i in seq_along(sample_sizes)) {
+  
+  sample_means[[i]] <-  mean(rnorm(sample_sizes[[i]]))
+  
+}
+
+sample_means
+```
+
+Save the mean of the sample to the ith place of the `sample_means` vector.
+
+
+## Common error.
+
+This code falls, because we do not store the output in `sample_means` in the for loop! (Compare to previous slide).
+
+```{r}
+sample_sizes <- c(5, 10, 15, 20, 25000)
+sample_means <- rep(0, length(sample_sizes))
+
+for (i in seq_along(sample_sizes)) {
+  mean(rnorm(sample_sizes[[i]]))
+}
+
+sample_means
+```
+
+Right now, we're calculating the mean, but it's not being saved anywhere.
+
+## Another example
+
+You get data stored in split over several `csv` files. 
+
+We can read the data into R and store it store it as a single data set.
+
+```{r, eval = FALSE}
+setwd("../data/loops")
+
+file_1 <- read_csv("data_1999.csv")
+file_2 <- read_csv("data_2000.csv")
+...
+file_22 <- read_csv("data_2020.csv")
+
+data <- bind_rows(file_1, file_2, ..., file_22)
+```
+
+## Aside: how to make the data
+
+The data used for this exercise is fake data which I made with a for-loop.
+Run the code bellow (*choose your own working directory*) to follow along.
+
+```{r, eval=FALSE}
+setwd('../data/loops')
+
+file_list <- paste0("data_", 1999:2020, ".csv")
+
+for (file in file_list) {
+  data <- 
+    tibble(id = 1:100,
+           employed = sample(c(0, 1, 1, 1), 
+                             100, replace = TRUE),
+             happy = sample(c(0,1), 
+                            100, replace = TRUE))
+  
+  write_csv(data, file)
+}
+```
+
+
+
+## Aside: bind_rows()?
+
+`bind_rows()` stacks two dataframe, or combines two vectors into a dataframe:
+
+```{r}
+df_1 <- tibble(col1 = 1, col2 = "A")
+df_2 <- tibble(col1 = 2:3, col2 = c("B", "C"))
+
+bind_rows(df_1, df_2)
+```
+
+## Aside: `list.files()`
+
+`?list.files()`:
+
+These functions produce a character vector of the names of files ... in the named directory.
+
+  - `pattern` ensures we only take the csv files. 
+  - It uses *regular expressions* where `*` in `*.csv$` matches any string and `.csv` ensures the string ends in `csv`.
+
+```{r}
+list.files("../data/loops", pattern = "*.csv$")
+```
+
+
+## Let's use a loop to read in the data
+
+
+
+```{r, message = FALSE}
+setwd('../data/loops')
+
+# by default, reads files in working directory
+file_list <- list.files(pattern = "*.csv$")
+
+out <- tibble()
+
+for (file in file_list) {
+  temp <- read_csv(file)
+  
+  out <- bind_rows(out, temp)
+}
+
+nrow(out)
+```
+
+
+
+## Review: Vectorized operations
+
+When possible, take advantage of the fact that R is vectorized.
+
+```{r}
+a <- 7:11
+b <- 8:12
+out <- rep(0L, 5)
+
+for (i in seq_along(a)) {
+  out[[i]] <- a[[i]] + b[[i]]
+}
+
+out
+```
+
+This is a bad example of a for loop!
+
+## The better alternative: vectorized addition
+
+```{r}
+a <- 7:11
+b <- 8:12
+out <- a + b
+
+out
+```
+
+Use vectorized operations and tidyverse functions like `mutate()` when you can.
+
+
+
+## Key points: iteration
+
+- Iteration is useful when we are repeatedly calling the same block of code or function while changing one (or two) inputs. 
+
+- If you can, use vectorized operations.
+
+- Otherwise, for loops work for iteration
+
+    - Clearly define what you will iterate over (values or indicies)
+    - Preallocate space for your output (if you can)
+    - The body of the for-loop has parametrized code based on thing your iterating over
+    - Debug as you code by testing your understanding of what the for-loop should be doing (e.g. using `print()`)
+    
+    
+    
+**Further study**: Many R coders prefer the `map()` family functions from `purrr` or base R `apply` family. See [iteration](https://r4ds.had.co.nz/iteration.html) in R for Data Science 
