@@ -1,0 +1,278 @@
+---
+title: "Functions"
+output: 
+  html_notebook:
+    toc: true
+    toc_float: true
+---
+
+## A Refresher on Functions in R
+
+You've already been using functions throughout this lab, ranging from `read_csv()` to `group_by()`. These are all functions, programs that take an input and deliver an output. In this sense, they're just like a math function, such as $f(x) = x^2$. In R, we can easily write our own functions:
+
+```{r}
+squared <- function(x){
+  x^2
+}
+```
+
+All we have to do is come up with a name, `squared`, calling the function command, telling it what input to expect, `x`. Then, our instructions go inside the curly braces—take the input, and square it. R functions will return, or give the output, of the last object called. So in this case you don't have to do anything else. Try it out by running the code below:
+
+```{r}
+squared(2)
+```
+
+Sometimes, you want to specify exactly what gets returned, in which case you can tell R by using `return()`:
+
+```{r, eval = FALSE}
+squared <- function(x){
+  return(x^2)
+}
+```
+
+There's more that goes into functions, but if there's one thing you should take away from this is that what goes inside the curly brackets is 97% the same as the code you've already been writing. The only thing you're doing by making it into a function is saving all that code in a compact form that you can reuse. If you approach things this way you'll realize there's nothing complicated about functions themselves.
+
+Functions are super helpful for code that you expect to use many times. As a guideline of sorts, if you have to copy and paste a piece of code three or more times and it's not something that you'll loop once and forget about  (you'll learn about loops in another lab), you should probably write a function for it. As you become better and better at coding, you'll amass a collection of useful functions you can reuse for other projects! 
+
+In general, trying to write code can sometimes get pretty hairy. A useful approach you can take is to break up your problem into bite sized pieces, try the components separately, and then put them together. You can also print the output of these smaller components as you go to figure out if and where the code is doing something unintended. You'll see some of this philosophy in this lab. It might feel more complicated than previous ones, but with some patience you'll get there!
+
+## Simulating Data with Monte Carlo Simulations
+
+### What is a Monte Carlo Simulation?
+
+Later in Stats I you will be asked to investigate statistical concepts using Monte Carlo simulations. In a simulation, you repeatedly: 
+
+1. Generate random samples of data using a known process (e.g. `rnorm()`).
+2. Make calculations based on the random sample.
+3. Aggregate the results.
+
+Functions and loops help us do these repetitious acts efficiently, without repeatedly writing similar code or copying and pasting.
+
+Today, we'll investigate the following property using simulations: 
+
+Statistical theory provides us a way to construct a 95% confidence interval for the expected value of a distribution. In the near future you'll learn about confidence intervals formally. For now, you need to know that if we define a 95% confidence interval, we expect the mean from a random sample to fall within the confidence interval 95 out of 100 times. In other words, we expect the sample mean to be outside of the interval 5 out of 100 times.
+
+Sometimes we won't be sure if the confidence interval (CI) we defined actually does so. For example, the accuracy of a CI will usually depend on how much data you have, and how it's distributed. Usually, the more data the better, and the closer the actual distribution to the theoretically assumed distribution, the better. Simulations allow us to test these things. We can test this by making thousands of random samples from a distribution we define and seeing how often the sample mean doesn't fall within the confidence interval. 
+
+If we only made a single random draw, we might be misled. For example, let's draw 30 numbers from a normal distribution with true mean of 0.5 and see if the observed mean appears statistically different from the true mean. 
+
+```{r sim_1}
+# Setting a seed ensures replicability
+set.seed(4)
+
+# we set our parameters
+true_mean <- 0.5
+N <- 30
+
+# We simulate and observe outcomes
+simulated_data <- rnorm(N, mean = true_mean)
+obs_mean <- mean(simulated_data)
+obs_mean
+```
+
+Wow! The observed mean is twice what we expected! Let's calculate a z-score to put that in perspective. 
+
+Recall a z-score is calculated $\frac{\bar X - \mu}{\frac{s_n}{\sqrt{N}}}$ where $\bar X$ is the observed sample mean, $\mu$ is the true mean, $s_n$ is the observed sample standard deviation and $N$ is the number of observations. 
+
+```{r result_1}
+obs_sd <- sd(simulated_data)
+zscore <- (obs_mean - true_mean) / (obs_sd / sqrt(N))
+zscore
+```
+
+We expect the observed mean of this simulated data will be within 1.96 standard deviations of $\mu$ 95 out of 100 times. This observation is 3.3 standard deviations from $\mu$. The probability of that happening by chance is very small. To be more formal about this probability, we can calculate a p-value. (Read the hint for more information about `pnorm()`). Plug in the z-score below:
+
+```{r pvalue}
+1 - pnorm(zscore)
+```
+
+**Hint:** `pnorm()` takes a z-score as the input and returns the probability of observing a value less than or equal to the z-score. So if X is distributed standard normal, `pnorm(z)` $= P(X \leq z)$. (This is the CDF! So `pnorm(.)` is $\Phi(.)$). Why do we subtract $1 -$ `pnorm(.)`?
+
+That outcome seems surprising, but we could also just have made an unusual draw. In this workshop, we want to see how often we get such extreme results. We will repeat the steps above 1000 times each, but first we'll write functions that will make this process smooth!
+
+## Writing Helper Functions to Make Our Monte Carlo Simulation 
+
+```{r}
+# You might need some tidy functions later.
+library(tidyverse)
+```
+
+We want to develop functions that automate repeated steps in our Monte Carlo. In that way, we can define a few important parameters and run the entire process without rewriting or copying and pasting code over and over again.
+
+As you saw in the motivating example, we must:
+
+1. Simulate data.
+2. Calculate sample statistics.
+3. Determine z-scores.
+4. Test whether the z-score is significant.
+5. Repeat 1-4 several times.
+
+Finally, we:
+
+6. Measure to what extent our simulations match the theory.
+
+If we do this well, we can end up with a single function `our_monte_carlo()` that takes a sample-size `N`, a `true_mean`, a significance level `alpha`, and number of iterations `B` and returns the proportion of observations that are outside the confidence interval.
+
+Particularly, we are going to write the helper functions "wrapped" by `our_monte_carlo()`. That is, we'll write the steps into their own functions, then one larger function that calls them in the right order. This is an example of what we meant by breaking complicated code into smaller chunks and tackling them one by one, then assembling it all together.
+
+Before proceeding, take a look at the function and guess what the inputs and outputs of each function will be. We'll walk you through designing them, but it helps to think through the process. 
+
+```{r, eval=FALSE}
+our_monte_carlo <- function(N, true_mean, B, alpha){
+  sample_statistics <- monte_carlo_samples(N, true_mean, B)
+  z_scores <- get_zscores(sample_statistics$mean, true_mean, sample_statistics$sd, N)
+  test_significance(z_scores, alpha) %>% mean()
+}
+```
+
+## Determine z-scores and check for significance.
+
+We'll start with step 3 and 4 from our simulation outline.
+
+To recap what you saw in the example. Under our assumptions, we can calculate a z-score, which tells us how extreme our observation is. We'll then check if it's outside of our confidence interval. 
+
+![](https://upload.wikimedia.org/wikipedia/commons/2/25/The_Normal_Distribution.svg) 
+
+In our example, the z-score was 3.3, and |3.3| > 1.96. so it's outside of our 95% confidence interval.
+
+### Determine z-scores
+
+Write a function called `get_zscores` that takes the observed mean and sd, the true mean and N as inputs and returns a z-score as an output. Name the arguments `obs_mean`, `true_mean`, `obs_sd`, and `N`.
+
+```{r get_zscores}
+
+```
+
+Test your function with an observed mean and standard deviation of 4.4 and 0.25, respectively, a true mean of 4.3, and 100 observations. What does `get_zscores()` return? Verify that you get 4.
+
+```{r}
+test <- get_zscores(obs_mean = 4.4, true_mean = 4.3, obs_sd = 0.25, N = 100) 
+test
+```
+
+The function you wrote should also work on vectorized functions. Run the following code which takes estimates of the mean and standard deviation from 5 random draws and returns their associated z-scores:
+
+```{r}
+made_up_means <- c(4.4, 4.1, 4.2, 4.4, 4.2)
+made_up_sd <- c(.25, .5, .4, 1, .4)
+made_up_zscores <- get_zscores(obs_mean = made_up_means,
+            true_mean = 4.3,
+            obs_sd = made_up_sd,
+            N = 100)
+
+made_up_zscores
+```
+
+Let's say we set the critical value at 1.96. Which observation produced is not different from 4.3 in terms of statistically significance? In other words, which observed mean and standard deviation return a |z-score| < 1.96? 
+
+### Check for Significance
+
+Once you get a z-score, we want a function to test if the z-score is above or below a significance cutoff for a particular significance level. Wait, but what is a significance level? It's the *opposite* of the confidence level—the probability that a null hypothesis is rejected when that null is actually true. In this case our null is that the means aren't statistically different. We often call it $\alpha$, and we define the confidence level as $1 - \alpha$. So for example, a confidence level of 95% implies a significance level of 5%, or 0.05. This means that if we take 1000 draws from the same distribution, we'll still conclude the means were different in 50 of those.
+
+For example, for a two-tailed z-test, the 95% confidence level cutoff is set at 1.96. We also often make reference to the significance level, $\alpha$, which is the  of the confidence level. That is, the confidence level is $1 - \alpha$, or in this case, 0.05. This is the probability of rejecting the null when it's true. It's a two-tailed test, so we check if our z-score is below the 2.5th percentile or above the 97.5th percentile. (See the diagram above). 
+
+Write a function `test_significance()` that takes `zscores` and a given `alpha` and determines if there is a significant difference at the given level. 
+
+```{r}
+
+```
+
+Run the following code, and check that your code matches the expected output:
+
+```{r}
+test_significance(zscores = 2, alpha = 0.05)
+```
+
+Should return TRUE. And:
+
+```{r}
+test_significance(zscores = c(1.9, -0.3, -3), alpha = 0.05)
+```
+
+Should return FALSE, FALSE, and TRUE.
+
+**Note** Recall `qnorm()` will take a probability level and return the cutoff, e.g. `qnorm(0.975)` returns 1.96, the critical value associated with 95% confidence or $\alpha = 0.05$. Why is 0.975 used to get the cutoff associated with 95% confidence? It's a two-tailed test, so we check if our z-score is from below the 2.5th percentile or above the 97.5th percentile. We will assume we always do a two-tailed test.
+
+**Extra hint:** For a significance level of 0.05, you know you want the calculation inside `qnorm()` to be 0.975. We also told you the significance level needs to be halved because the test is two tailed. So what extra operation do you have to do to 0.5/2 to make it equal 0.975? Now how do we generalize this expression for our function to work with any $\alpha$?
+
+## Simulate data set and find observed mean and sd
+
+We already have `rnorm()` that returns a random sample from a normal distribution with a given mean. So step 1 is built-in to R. However, it will require some finesse to calculate and store the means and standard deviations from the random samples. 
+
+### Building `monte_carlo_samples()`
+
+Recall we want `monte_carlo_samples(N, true_mean, B)` a function that produces `B` random samples from the normal distribution with mean `true_mean` of size `N`. What we're going to do is write code that draws a random sample and calculates its mean and SD. Then, we'll use a little helper that will repeat this function many times. You'll learn more about the different ways to do this repetition in our lab about loops, so for now we'll only provide what you need to write this function. Let's call this function `get_mean_and_sd_from_random_sample()`.
+
+```{r}
+
+```
+
+Verify it worked by making sure the following returns a mean of 0.511 and a standard deviation of 0.992. Remember, what guarantees that you get the same numbers from a random number generator as we did is that we're setting a seed to 5.
+
+```{r}
+set.seed(5)
+get_mean_and_sd_from_random_sample(N = 30, true_mean = 0.5)
+```
+
+**Hint:** Write a function that takes `N`, a sample size, and `true_mean`, the true mean, and returns the observed mean and standard deviation from a random sample from the normal distribution with mean = `true_mean`. (We'll keep standard deviation = 1 which is the `rnorm()` default). To return two values in a function, place the two values in a tibble, data frame, or vector. Remember, R functions return the last object that gets called inside them.
+
+Remember, this function only does what we need **once**, while we'll need it to do it `B` times. We'll rely on a useful function that takes a piece of code we give it, then runs it as many times as you tell it to. This function is called `replicate()`. Once you learn about loops, you should read up on how it actually works! It works as follows. Say we want to draw 5 numbers from a normal 3 times (i.e., N = 5, B = 3). We can do that like this:
+
+```{r}
+set.seed(5)
+replicate(n = 3, rnorm(5, 0, 1), simplify = TRUE)
+```
+
+Where every row is a number in a given draw, and every column represents a separate replication. So entry 1,1 is the first number of the first draw, and so forth. So applying this to our example, we can replicate the function we already wrote a three times to see what we get. We know every replication should yield two numbers.
+
+```{r}
+set.seed(5)
+replicate(n = 3, get_mean_and_sd_from_random_sample(N = 30, true_mean = 0.5), simplify = TRUE)
+```
+
+This looks to be about right! Again, each row is a different output value, and each column represents a separate replication. Now, there's one teeny thing. Remember that usually, we want our variables to be in columns, and each observation to be in rows. We could just flip this resulting table using the transpose command, `t()`, but I'll propose that we might as well put the data together in the shape we want manually. Set the `simplify` option to FALSE. This gives you back the results of each replication separately in a list:
+
+```{r}
+set.seed(5)
+replicate(n = 2, get_mean_and_sd_from_random_sample(N = 30, true_mean = 0.5), simplify = FALSE)
+```
+
+And we'll tell R we want these results bound together row-wise into a tibble using `bind_rows()`:
+
+```{r}
+set.seed(4)
+replicate(n = 2, get_mean_and_sd_from_random_sample(N = 30, true_mean = 0.5), simplify = FALSE) %>% 
+  bind_rows()
+```
+
+**Note:** Another reason I prefer putting things together manually is I can make sure that no weird class issues get carried over. The `t()` way can be a lot more finicky.
+
+So finally, write a function called `monte_carlo_samples` that takes a number of observations, a number of replications, and a true mean, then replicates your `get_mean_and_sd_from_random_sample()` function `B` times and outputs a tibble with that many sample means and sample standard deviations.
+
+```{r}
+
+```
+
+**Hint:** As long as you keep track of which of `monte_carlo_samples`' inputs go where in the previous code we gave you, you should be fine.
+
+## Functions, Assemble
+
+Now you have all the helper functions that are critical for our simulation. We want to simulate 1000 sets of 30 data points drawn from a normal distribution with true mean 0.5 and then see how often our random sample mean is significantly different from the true mean at a significance level of 0.05. If everything is working as expected, we should see about 5% of the random means to be statistically different.
+
+Write the function `our_monte_carlo()` that does `B` simulations of sample size `N` with a `true_mean`. It returns the fraction of means where we would reject the null hypothesis that the sample mean is statistically indistinguishable from the true mean at a level of `alpha`.
+
+```{r final_monte}
+
+```
+
+**Hint:** Recall that `test_significance` returns a binary result, so you'll have to do a little to its output to get the share of rejections.
+**Hint 2:** You can take means of logical variables just like if they were dummies.
+
+Test out your function!
+
+```{r}
+our_monte_carlo(N = 30, true_mean = 0.5, B = 1000, alpha = 0.05)
+```
+
+Note that we didn't have to set a seed to make sure everyone's code gives the right result—the whole idea is that even if the draws are random, as we do more and more `B` replications all of our results will converge to a similar coverage. Theory also tells us that when we have a large `N`, the coverage will be correct (that is, the coverage probability will be near $\alpha$). Try a smaller `N` and see what numbers you get! 
+
