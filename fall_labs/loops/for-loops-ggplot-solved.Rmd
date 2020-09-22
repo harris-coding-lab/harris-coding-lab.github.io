@@ -1,0 +1,186 @@
+---
+title: "For Loops"
+output: 
+  html_notebook:
+    toc: true
+    toc_float: true
+---
+
+```{r setup}
+library(tidyverse)
+```
+
+## Reordering For Loops
+
+To warm up, we've given you some loops in the incorrect order. Copy and paste 
+the lines around to put them in the correct order:
+
+1. 
+```{r, eval=FALSE}
+res[i] <- a[i] + b[i]
+res <- numeric(length = length(a))
+for (i in seq_along(a)) {
+}
+```
+
+2. 
+```{r, eval=FALSE}
+mutate(count = as.numeric(count))
+for (file in all_files) {
+write_csv(the_data, file = paste0("data-output/", file))
+the_data <- read_csv(file) %>%
+all_files <- list.files("data/", pattern = "*.csv", full.names = TRUE)
+}
+```
+
+3. 
+```{r, eval=FALSE}
+for (i in seq_along(df)) {
+}
+output[[i]] <- median(df[[i]])
+output <- vector("double", ncol(df))
+```
+
+4. 
+```{r, eval=FALSE}
+sample_sizes <- seq(1, 30, 1)
+estimates <- tibble(n = integer(), sample_mean = double())
+for (n in sample_sizes) {
+sample_mean <- mean(rnorm(n, mean = 0, sd = 5))
+estimates <- bind_rows(estimates, c(n = n, sample_mean = sample_mean))
+}
+```
+
+**Answers:**
+
+```{r, eval=FALSE}
+# 1
+res <- numeric(length = length(a))
+for (i in seq_along(a)) {
+  res[i] <- a[i] + b[i]
+}
+
+# 2
+all_files <- list.files("data/", pattern = "*.csv", full.names = TRUE)  
+for (file in all_files) {
+  the_data <- read_csv(file) %>%
+  mutate(count = as.numeric(count))
+  write_csv(the_data, file = paste0("data-output/", file))
+}
+
+# 3
+output <- vector("double", ncol(df)),
+for (i in seq_along(df)) {
+  output[[i]] <- median(df[[i]])
+}
+
+# 4
+sample_sizes <- seq(1, 30, 1) # These first two lines can be in any order
+estimates <- tibble(n = integer(), sample_mean = double())
+for (n in sample_sizes) {
+  sample_mean <- mean(rnorm(n, mean = 0, sd = 5))
+  estimates <- bind_rows(estimates, c(n = n, sample_mean = sample_mean))
+}
+```
+
+## Simulating the Law of Large Numbers
+
+The Law of Large Numbers says that as sample sizes increase, the mean of the sample will approach the true mean of the distribution. We are going to simulate this phenomenon!
+
+We'll start by making a vector of sample sizes from 1 to 50, to represent increasing sample sizes.
+
+Create a vector called `sample_sizes` that is made up of the numbers 1 through 50. You can use `seq()` or `:` notation.
+
+```{r vector}
+set.seed(60637)
+sample_sizes <- 1:50
+```
+
+We'll make an empty tibble to store the results of the for loop:
+
+```{r estimates}
+estimates <- tibble(n = integer(), sample_mean = double())
+```
+
+Write a loop over the `sample_sizes` you specified above. In the loop, for each sample size you will:
+
+1. Calculate the mean of a sample from the random normal distribution with mean = 0 and sd = 5.
+2. Make a named vector and the new rows to your tibble using bind_rows().
+
+```{r loop}
+set.seed(60637)
+for (n in sample_sizes) {
+  sample_mean <- mean(rnorm(n, mean = 0, sd = 5))
+  estimates <- bind_rows(estimates, c(n = n, sample_mean = sample_mean))
+}
+```
+
+We can use ggplot2 to view the results. Fill in the correct information for the data and x and y variables, so that the `n` column of the `estimates` tibble is plotted on the x-axis, while the `sample_mean` column of the `estimates` tibble is plotted on the y-axis.
+
+```{r ggplot}
+estimates %>%
+  ggplot(aes(x = n, y = sample_mean)) +
+  geom_line()
+```
+
+As the sample size (n) increases, the sample mean becomes closer to 0, or farther away from 0?
+
+**Answer:** Closer.
+
+Rerun the above code with a wider range of sample sizes. Try several different sample size combinations. What happens when you increase the sample size to 100? 500? 1000? Feel free to use the `seq()` function to generate a sensibly spaced sequence. Play around with it!
+
+**Note:** From our Monte Carlo lab, remember that no matter the size of the draw, you're still only taking one single draw for each sample size, so you might get an odd draw just by chance.
+
+```{r sampsizes}
+set.seed(60637)
+sample_sizes <- seq(10, 10000, length.out = 100)
+estimates <- tibble(n = integer(), sample_mean = double())
+
+for (n in sample_sizes) {
+  sample_mean <- mean(rnorm(n, mean = 0, sd = 5))
+  estimates <- bind_rows(estimates, c(n = n, sample_mean = sample_mean))
+}
+
+estimates %>%
+  ggplot(aes(x = n, y = sample_mean)) +
+  geom_line()
+```
+
+How does this compare to before?
+
+**Answer:** Just like before, we can see that for small samples, the mean fluctuates quite a bit. Past a certain point, larger samples seem to add little.
+
+## Extending Our Simulation
+
+Looking at your results, you might think a small sample size is sufficient for estimating a mean, but your data had a relatively small standard deviation compared to the mean. Let's run the same simulation as before with different standard deviations. 
+
+Do the following:
+
+1. Create a vector called `population_sd` of length 4 with values 1, 5, 10, and 20 (you're welcome to add larger numbers if you wish).
+2. Make an empty tibble to store the output. Compared to before, this has an extra column for the changing population standard deviations.
+3. Write a loop inside a loop over `population_sd` and then `sample_sizes`.
+4. Then, make a ggplot graph where the x and y axes are the same, but we facet (aka we create small multiples of individual graphs) on `population_sd`.
+
+```{r loopinloop}
+set.seed(60637)
+population_sd <- c(1, 5, 10, 20)
+estimates <- tibble(n = integer(), sample_mean = double(), population_sd = integer())
+
+for (sd in population_sd){
+  for (n in sample_sizes) {
+    sample_mean <- mean(rnorm(n, mean = 0, sd = sd))
+    estimates <- bind_rows(estimates, c(n = n, sample_mean = sample_mean, population_sd = sd))
+  }
+}
+
+estimates %>%
+  ggplot(aes(x = n, y = sample_mean)) +
+  geom_line() +
+  facet_wrap(~ population_sd) +
+  theme_minimal()
+```
+
+How do these estimates differ as you increase the standard deviation?
+
+**Answer:** We can see that as the standard deviation increases, the spread of our mean calculations also increases—the wider the distribution, the larger the draw we require for the sample mean to converge towards the true mean. This makes sense, because as the population standard deviation of the distribution we draw from  increases, the likelier it is we draw extreme numbers.
+
