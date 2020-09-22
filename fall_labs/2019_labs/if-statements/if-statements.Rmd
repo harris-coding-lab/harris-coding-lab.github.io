@@ -1,0 +1,319 @@
+---
+title: "If Statements"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+library(haven)
+
+tutorial_event_recorder <- function(..., data = NULL) {
+  if (!is.null(data)) {
+    if(!is.null(data$output)) {
+      output <- as.character(data$output)
+      if(nchar(output) > 150) {
+        output <- paste0(substr(output, 1, 150), "....")
+        data$output <- output
+      }
+    }
+  }
+  cat("Event - ", paste0(capture.output({dput(list(..., data = data))}), collapse = " "), "\n")
+}
+options(tutorial.event_recorder = tutorial_event_recorder)
+
+# BUG WARNING: Not sure if data read will work here. Also make sure data is in right folder.
+shed_data <- read_dta("https://github.com/harris-coding-lab/codinglab/raw/master/inst/tutorials/if-statements/www/shed_data_abridged.dta ")
+
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Warm-up: Gaining Comfort with Booleans
+
+Predict the output of the following statements:
+
+```{r boolean_expr_1, echo=TRUE, eval=FALSE}
+5 != 10
+```
+
+```{r tf_1}
+quiz(
+  question("The code will return:",
+    answer("TRUE", correct=TRUE),
+    answer("FALSE"))
+)
+```
+
+```{r boolean_expr_2, echo=TRUE, eval=FALSE}
+!is.na(NA)
+```
+
+```{r tf_2}
+quiz(
+  question("The code will return:",
+    answer("TRUE"),
+    answer("FALSE", correct=TRUE))
+)
+```
+
+```{r boolean_expr_3, echo=TRUE, eval=FALSE}
+TRUE | FALSE
+```
+
+```{r tf_3}
+quiz(
+  question("The code will return:",
+    answer("TRUE", correct=TRUE),
+    answer("FALSE"))
+)
+```
+
+
+```{r boolean_expr_4, echo=TRUE, eval=FALSE}
+4 > 3 & is.character("4 < 3")
+```
+
+```{r tf_4}
+quiz(
+  question("The code will return:",
+    answer("TRUE", correct=TRUE),
+    answer("FALSE"))
+)
+```
+
+
+```{r boolean_expr_5, echo=TRUE, eval=FALSE}
+(1 | FALSE) & (-10 <= 0)
+```
+
+```{r tf_5}
+quiz(
+  question("The code will return:",
+    answer("TRUE", correct=TRUE),
+    answer("FALSE"))
+)
+```
+
+The last one is pretty tricky. Explore the result in the following code box. 
+
+- Can you write 3 new boolean expressions in which you change each number slightly and change the result? 
+- What happens if you change the `1` to `2`?
+
+```{r boolean-playground, exercise=TRUE}
+
+```
+
+
+<div id="boolean-playground-hint">
+**Hint:** Recall that `as.numeric(FALSE)` returns 0. 
+</div>
+
+**Extension**: Write a complicated boolean expression in which you use "and", "or" and "!" and return `TRUE`.
+
+```{r boolean_playground_2, exercise=TRUE}
+
+```
+
+
+Adjust your previous expression slightly to return `FALSE` if you can. 
+```{r boolean_playground_3, exercise=TRUE}
+
+```
+
+### Vectorized booleans
+
+We have seen that we can make vectorized comparisons. For example: `c(1, 2, 3, 4, 5) > 0` returns
+the vector of `c(TRUE, TRUE, TRUE, TRUE, TRUE)`. (This is the underlying idea that makes filter() work!)
+
+What will the following code return? Predict and then test out in the code box.
+```{r, echo=TRUE, eval=FALSE}
+c(1, 2, 3, 4) == 4
+c(1, 2, 3, 4) == c(2, 3, 4, 5)
+c(TRUE, FALSE) | c(FALSE, TRUE)
+```
+
+```{r vec_bool, exercise=TRUE}
+
+```
+
+
+<div id="boolean_playground-hint">
+**Hint:** Recall that `as.numeric(FALSE)` returns 0. 
+</div>
+
+Define `our_vector <- c(1, 2, 3, 4, 5)`.  Write 3 expressions using `our_vector` that return a vector `c(FALSE, FALSE, FALSE, FALSE, FALSE)` using distinct operators for each expression.
+
+```{r vec_bool_2, exercise=TRUE}
+
+```
+
+If you combined all three expressions above with `&` what will the response be?
+
+```{r vec_bool_3, exercise=TRUE}
+
+```
+
+**Challenge**: Write an expression that returns the vector `c(FALSE, FALSE, FALSE, FALSE, FALSE)` using `truth <- c(NA, 2, -4, 4, 0.5)`.
+
+
+```{r vec-challenge, exercise=TRUE}
+
+```
+
+<div id="vec-challenge-hint">
+**Hint:** You'll need to use `is.na()` along with an `&`
+</div>
+
+## Applying Booleans to the Survey of Household Economics Dynamics
+
+
+We are going to explore the Survey of Household Economics Dynamics (SHED) by the Federal Reserve. The data file is somewhat large, so we are only providing the columns of interest for this workshop. The data for the workshop is available [here](https://github.com/harris-coding-lab/codinglab/raw/master/inst/tutorials/if-statements/www/shed_data_abridged.dta ). The original data including a code book can be found [here](https://www.federalreserve.gov/consumerscommunities/shed_data.htm).
+
+Our work will focus on the following question:
+**Do financially stable respondents have higher levels of social trust than those facing instability?**
+
+Under the hood we read the data like so:
+```{r read-data, echo=TRUE, eval=FALSE}
+shed_data <- haven::read_dta("shed_data_abridged.dta")
+```
+
+Start simple. What are the dimensions of the data? How many rows and columns?
+```{r dim, exercise=TRUE}
+
+```
+
+<div id="dim-hint">
+**Hint:** Use `dim()`. 
+</div>
+
+We cannot ask people directly if they are "financially stable" rather one survey question asks how people would pay for a unexpected $400  expense (e.g. hospital bill). There are 9 options, captured in different columns as indicator variables (1 if answer is yes, 0 if answer is no).
+
+- EF3_a: Put it on my credit card and pay it off in full at the next statement
+- EF3_b: Put it on my credit card and pay it off over time
+- EF3_c: With the money currently in my checking/savings account or with cash
+- EF3_d: Using money from a bank loan or line of credit
+- EF3_e: By borrowing from a friend or family member
+- EF3_f: Using a payday loan, deposit advance, or overdraft
+- EF3_g: By selling something
+- EF3_h: I wouldn't be able to pay for the expense right now
+- EF3_i: Other
+- EF3_Refused: Refused to answer
+
+We could argue that people who can pay for an expense shock with cash or credit which they pay off in full are financially stable. 
+
+1. Use `mutate` and `ifelse` to add an indicator variable called `financially_stable` that is TRUE if the respondent can pay in cash (`EF3_c`) or pay with a credit card which they'll pay off at the end of the month (`EF3_a`) and FALSE otherwise.
+1. Use `group_by` and `summarize` to determine the number of financially stable people in the data.
+
+```{r financially_stable, exercise=TRUE}
+
+```
+
+
+```{r financially_stable_quiz}
+quiz(
+  question("How many observations are financially stable per our definition:",
+    answer("7455"),
+    answer("3861"),
+    answer("7890", correct=TRUE),
+    answer("3426"),
+    answer("6179"),
+    answer("5137"))
+)
+```
+
+Our code assigns `FALSE` to all people who refused to answer the question. It's preferable to label them as `NA`. Adjust the `financially_stable` variable to reflect this non-availablility of the data. Name the resulting tibble `shed_with_financial_stability`.
+```{r incl-nas, exercise=TRUE, exercise.lines=8}
+shed_with_financial_stability <- 
+  shed_data %>%
+    mutate(
+      
+      
+    )
+  
+``` 
+
+<div id="incl-nas-hint">
+**Hint:** first create `financially_stable` as before, and then with a second line in the `mutate()` use an `ifelse(<BOOLEAN>, NA, financially_stable)`. The first line will create a vector of `1`'s and `0`'s, the second will keep the same `1`'s and `0`'s unless they refused to answer. If they refused to answer, their `0` will be replaced with`NA`
+</div>
+
+## Adding Trust
+
+```{r data-with-fin-stability}
+shed_with_financial_stability <- 
+  shed_data %>%
+    mutate(financially_stable = ifelse(EF3_c == 1 | EF3_a == 1, TRUE, FALSE),
+           financially_stable = ifelse(EF3_Refused == 1, NA, financially_stable))
+```
+
+
+We have quantified financial stability in our population in `shed_with_financial_stability`. Now we are ready to incorporate a measure of trust to address our research question.
+
+Variable B11 captures response to the question:
+"And now a general question about trust. On a scale from zero to ten, where zero is not at all and ten is completely, in general how much do you trust most people?"
+
+
+Let's start by finding the distribution of trust for the full population. Use the functions `group_by(...) %>% summarize(n = n())` to see the possible answers and the distribution of answers. 
+
+```{r distribution, exercise = TRUE, exercise.setup = "data-with-fin-stability", exercise.lines=5}
+
+
+```
+
+<!-- **Extension:** We have not taught the `count(...)` function, but it could replace `group_by(...) %>% summarize(n = n())` above. Try to figure it out if you are doing well with time. -->
+
+```{r quiz-refused}
+quiz(
+  question("What is the modal (most common) response?",
+    answer("7"),
+    answer("6"),
+    answer("5", correct=TRUE), 
+    answer("4")),
+  question("What do you think -1 means?",
+    answer("really don't trust people"), 
+    answer("refused to answer", correct=TRUE), 
+    answer("other"))
+)
+```
+
+1) Create a new indicator variable called `trusting` which is `TRUE` when
+a respondent responds with 6 or higher to the question. Deal with refusal as above.
+2) Use `group_by(financially_stable)` and summarize to find the proportion of trusting people by financial security group.
+
+```{r trust, exercise = TRUE, exercise.setup = "data-with-fin-stability", exercise.lines=5}
+
+```
+
+```{r quiz-trust}
+quiz(
+  question("What proportion of 'financially-stable' respondents were 'trusting'?",
+    answer("61%"), 
+    answer("51%", correct=TRUE),
+    answer("41%"),
+    answer("31%"))
+)
+```
+
+
+
+## Extension
+Our definition of financially stable could be more nuanced. Particularly,
+some of the possible responses indicate higher levels of financial instability
+such as those who require payday loans, selling things or say "I wouldn't be able to pay
+for the expense right now". Create an additional level to your financially stable variable
+and repeat the analysis. Does this effect your previous interpretation?
+
+```{r extension,  exercise = TRUE, exercise.setup = "data-with-fin-stability", exercise.lines=8}
+
+
+
+
+
+
+
+
+
+```
+
+

@@ -1,7 +1,6 @@
 ---
 title: "Lab Session 4 - Solutions"
-author: "Leandro Grespan"
-date: "8/26/2020"
+date: "9/17/2020"
 output: pdf_document
 urlcolor: blue
 ---
@@ -133,7 +132,7 @@ Download the data [here](https://github.com/harris-coding-lab/harris-coding-lab.
     traffic_stop_freq_bad
     ```
     
-    As explained in the linked stackoverflow post, the last grouping variable is peeled off after the summarise function. So, if you calculate frequencies within the summarize function, each race will be treated as a single group, and its frequency must be 1. However, if you calculate frequencies after the summerise function, the whole data will be treated as one group.
+    As explained in the linked stackoverflow post, the last grouping variable is peeled off *after* the summarise function, by default. So, if you calculate frequencies within the summarize function, the data will still be grouped by race and therefore each frequency must be 1. However, if you calculate frequencies after the summarise function, the whole data will be ungrouped and frequencies can be properly calculated.
     
 1. Now we want to go a step further than Prof. Jones.^[The analysis that follows is partially inspired by Eric Langowski, a Harris alum, who was also inspired to investigate by the existence of this data  (You may have seen Prof. Jones retweet him at the end of the thread.)] Do outcomes differ by race? In the first code block below, I provide code so you can visualize disposition by race. "Disposition" is police jargon that means the current status or final outcome of a police interaction.
 
