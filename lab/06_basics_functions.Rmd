@@ -1,0 +1,237 @@
+---
+title: "The basics: 06 functions"
+author: "Ari Anisfeld"
+date: "9/8/2020"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(dplyr.summarise.inform = FALSE)
+library(tidyverse)
+```
+
+# Questions
+
+
+## Writing functions
+
+Recall a function has the following form
+
+```{r, eval = FALSE}
+name <- function(args) {
+  # body
+  do something (probably with args)
+}
+```
+
+
+1. Write a function called `calc_quadratic` that takes an input `x` and calculates $f(x) = x^2 + 2x + 1$. For example:
+
+    ```{r, echo = FALSE}
+    calc_quadratic <- function(x) {
+      x ^ 2 + 2 * x + 1
+    }
+    ```
+    
+    ```{r}
+    calc_quadratic(5)
+    ```
+  
+    a. What are the arguments to your function? What is the body of the function?
+    a. This function is vectorized! (Since binary operators are vectorized). Show this is true by running `calc_quadratic` with an input vector that is -10 to 10. 
+
+1. You realize you want to be able to work with any quadratic. Update your functions so that it can work with any quadratic in standard form $f(x) = ax^2 + bx + c$. 
+
+    - Your new function will take arguments `x`, `a`, `b` and `c`. 
+    - Set the default arguments to `a=1`, `b=2` and `c=1`
+  
+  
+1. Write a function called `solve_quadratic` that takes arguments `a`, `b` and `c` and provides the two roots using the [quadratic formula](https://en.wikipedia.org/wiki/Quadratic_formula).
+  
+    In our outline, we suggest you:
+    - Calculate the determinant ($\sqrt{b^2 - 4ac}$) and store as an intermediate value. 
+    - Return two values by putting them in a vector. If you stored the roots as `root_1` and `root_2`, then the final line of code in the function should be `c(root_1, root_2)` or, if you prefer, `return(c(root_1, root_2))`.
+      
+    
+    ```{r, eval = FALSE}
+    # fill in the ... with appropriate code
+    solve_quadratic <- function(...){
+      
+      determinant <- ...
+      root_1 <- ...
+      root_2 <- ...
+      
+      c(root_1, root_2)
+    
+      }
+    ```
+    
+    ```{r, echo = FALSE}
+    solve_quadratic <- function(a, b, c){
+      
+      determinant <- sqrt(b ^ 2 - 4 * a * c)
+      root_1 <- (-b + determinant) / (2 * a)
+      root_2 <- (-b - determinant) / (2 * a)
+      
+      c(root_1, root_2)
+    
+      }
+    ```
+    
+    The code should work as follows:
+    
+    ```{r}
+    solve_quadratic(a = -4, b = 0, c = 1)
+    ```
+
+1. We "normalize" a variable by subtracting the mean and dividing by the standard deviation $\frac{x - \mu}{\sigma}$. Write a function called `normalize` that takes a vector as input and normalizes it.
+
+    
+    ```{r, echo = FALSE}
+    
+    # Note using the name `na.rm` is good practice, because it is
+    # consistent with other R functions and so less likely to be frustrating
+    normalize <- function(x, na.rm = FALSE) {
+      (x - mean(x, na.rm = na.rm)) / sd(x, na.rm = na.rm)
+    }
+    ```
+
+    You should get the following output.
+    ```{r}
+    normalize(1:5)
+    ```
+
+    a. What output do you get when the input vector is `0:4`? How about `-100:-96`? Why?
+    a. What happens when your input vector is c(1,2,3,4,5, NA)? Rewrite the function so the result is:^[Hint: take advantage of `mean` and  `sd` NA handling.]
+    
+        ```{r, echo = FALSE}
+        normalize(c(1,2,3,4,5, NA), na.rm = TRUE)
+        ```
+    
+    a. The `txhousing` data set is comes with `ggplot`. Use your normalize function in `mutate` to create  `normalized_annual_volume` to make the following graph.
+
+    ```{r, eval = FALSE}
+    # replace the ... with the appropriate code.
+    txhousing %>%
+      group_by(year, city) %>%
+      summarize(annual_volume = sum(volume, na.rm = TRUE)) %>%
+      group_by(year) %>%
+      mutate(...) %>%
+      ggplot(aes(x = year, y = normalized_annual_volume)) + 
+      geom_point() +
+      geom_line(aes(color = city))
+    ```
+    ```{r, echo = FALSE, message = FALSE}
+    txhousing %>%
+      group_by(year, city) %>%
+      summarize(annual_volume = sum(volume, na.rm = TRUE)) %>%
+      group_by(year) %>%
+      mutate(normalized_annual_volume = normalize(annual_volume)) %>%
+      ggplot(aes(x = year, y = normalized_annual_volume)) + 
+      geom_point() +
+      geom_line(aes(color = city))
+    ```
+
+
+
+
+# Solutions
+
+## Writing functions
+
+1. Write a function called `calc_quadratic` that takes an input `x` and calculates $f(x) = x^2 + 2x + 1$. For example:
+
+    ```{r, echo = TRUE}
+    calc_quadratic <- function(x) {
+      x ^ 2 + 2 * x + 1
+    }
+    ```
+    
+    a. What are the arguments to your function? What is the body of the function?
+      
+      **arguments are `x`; the body is `x ^ 2 + 2 * x + 1`**
+    
+    a. This function is vectorized! (Since binary operators are vectorized). Show this is true by running `calc_quadratic` with an input vector that is -10 to 10. 
+    
+    
+    ```{r}
+    calc_quadratic(-10:10)
+    ```
+
+1. You realize you want to be able to work with any quadratic. Update your functions so that it can work with any quadratic in standard form $f(x) = ax^2 + bx + c$. 
+
+    - Your new function will take arguments `x`, `a`, `b` and `c`. 
+    - Set the default arguments to `a = 1`, `b = 2` and `c = 1`
+    
+    ```{r, echo = TRUE}
+    calc_quadratic <- function(x, a = 1, b = 2, c = 1) {
+     a * x ^ 2 + b * x + c
+    }
+    
+    calc_quadratic(5)
+    ```
+  
+  
+1. Write a function called `solve_quadratic` that takes arguments `a`, `b` and `c` and provides the two roots using the [quadratic formula](https://en.wikipedia.org/wiki/Quadratic_formula).
+  
+    
+    ```{r, echo = TRUE}
+    solve_quadratic <- function(a, b, c){
+      
+      determinant <- sqrt(b ^ 2 - 4 * a * c)
+      root_1 <- (-b + determinant) / (2 * a)
+      root_2 <- (-b - determinant) / (2 * a)
+      
+      c(root_1, root_2)
+    
+      }
+    ```
+    
+    The code should work as follows:
+    
+    ```{r}
+    solve_quadratic(a = -4, b = 0, c = 1)
+    ```
+    
+    Notice, the code doesn't deal with functions with no roots. It returns `NaN`. If there is a single root (such as when a = 1, b = 0 and c = 0), it returns the same number twice. We could use `if()` statments in the function to have it explicitly deal with these issues.
+
+1. We "normalize" a variable by subtracting the mean and dividing by the standard deviation $\frac{x - \mu}{\sigma}$. Write a function called `normalize` that takes a vector as input and normalizes it.
+
+    
+    ```{r, echo = FALSE}
+    
+    # Note using the name `na.rm` is good practice, because it is
+    # consistent with other R functions and so less likely to be frustrating
+    normalize <- function(x, na.rm = FALSE) {
+      (x - mean(x, na.rm = na.rm)) / sd(x, na.rm = na.rm)
+    }
+    ```
+
+    You should get the following output.
+    ```{r}
+    normalize(1:5)
+    ```
+
+    a. What output do you get when the input vector is `0:4`? How about `-100:-96`? Why?
+    
+      **You get the same results as `1:5`. This is because when you demean all the vectors are identical.**
+    
+    a. What happens when your input vector is c(1,2,3,4,5, NA)? Rewrite the function so the result is:^[Hint: take advantage of `mean` and  `sd` NA handling.]
+    
+      **see above**
+    
+    a. The `txhousing` data set is comes with `ggplot`. Use your normalize function in `mutate` to create  `normalized_annual_volume` to make the following graph.
+
+    ```{r, echo = TRUE, eval = FALSE}
+    txhousing %>%
+      group_by(year, city) %>%
+      summarize(annual_volume = sum(volume, na.rm = TRUE)) %>%
+      group_by(year) %>%
+      mutate(normalized_annual_volume = normalize(annual_volume)) %>%
+      ggplot(aes(x = year, y = normalized_annual_volume)) + 
+      geom_point() +
+      geom_line(aes(color = city))
+    ```
