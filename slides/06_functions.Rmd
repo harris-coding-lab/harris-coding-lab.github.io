@@ -332,10 +332,10 @@ calc_sample_mean(c(1, 3, 30))
 
 ## How to deal with unvectorized functions
 
-If we don't want to change our fuction, but we want to use it to deal with vectors, then we have a couple options: Here we are going to use the function rowwise
+If we don't want to change our function, but we want to use it to deal with vectors, then we have a couple options: Here we are going to use the function rowwise
 
 ```{r}
-#creating a vector to test
+#creating a vector to test our function
 sample_tibble <- tibble(sample_sizes = c(1, 3, 10, 30))
 
 #using rowwise groups the data by row, allowing calc_sample_mean to be applied to each row in our tibble
