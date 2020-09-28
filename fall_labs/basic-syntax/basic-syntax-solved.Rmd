@@ -6,6 +6,55 @@ output:
     toc_float: true
 ---
 
+## Warmup
+
+1. The most important warm up question: do you have R and RStudio installed?
+
+2. How do you pull the documentation for a command in R?
+
+- *
+- ?
+- help()
+- documentation()
+
+**Answer:** ?
+
+3. Try to guess the output of the following code:
+
+```{r, eval=FALSE}
+a <- 3
+b <- a^2 + 1
+```
+
+**Answer:** 10
+
+4. Now try to guess again:
+
+```{r, eval=FALSE}
+a <- c(1, 2, 3)
+b <- a^2 + 1
+```
+
+**Answer:** c(2, 5, 10)
+
+5. Will this one run? If it does, what will it return? Will R complain?
+
+```{r, eval=FALSE}
+a <- c(1, 2, 3)
+b <- a^2 + c(1, 2)
+```
+
+**Answer:** It will run and return c(2, 6, 10), but R will complain because the last vector is shorter than the previous one and is not a multiple of it.
+
+6. Finally, what about this one?
+
+```{r, eval=FALSE}
+a <- c(1, 2)
+b <- a^2 + c(1, 2, 3, 4)
+```
+
+**Answer:** This one will run and return c(2, 6, 4, 8), and R will not complain because the vectors' lengths are multiples of each other—the shorter vector gets recycled for the second.
+
 ## Calculating Mean and Standard Deviation
 
 ### Calculating the Mean

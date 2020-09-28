@@ -6,33 +6,41 @@ output:
     toc_float: true
 ---
 
-## A Refresher on Functions in R
+## Warm up
 
-You've already been using functions throughout this lab, ranging from `read_csv()` to `group_by()`. These are all functions, programs that take an input and deliver an output. In this sense, they're just like a math function, such as $f(x) = x^2$. In R, we can easily write our own functions:
+1. If you write a function without an explicit `return()` call, what does R return?
 
-```{r}
-squared <- function(x){
-  x^2
+**Answer:** The last line of code in it.
+
+2. You want to write a function that takes the n-th power of the input you give it (e.g., squared, cubed) but you expect to use the squared version more often—often enough that you want to set that as your default option. How do you do that?
+
+**Answer:**
+
+```{r, eval=FALSE}
+power <- function(x, n = 2){
+  x^n
 }
 ```
 
-All we have to do is come up with a name, `squared`, calling the function command, telling it what input to expect, `x`. Then, our instructions go inside the curly braces—take the input, and square it. R functions will return, or give the output, of the last object called. So in this case you don't have to do anything else. Try it out by running the code below:
+**Note:** There's an argument (no pun intended) to be made for choosing default options that are logical, and not necessarily just convenient.
 
-```{r}
-squared(2)
-```
+3. Consider the following functions. Will this code run? If no, explain why and what do you have to fix.
 
-Sometimes, you want to specify exactly what gets returned, in which case you can tell R by using `return()`:
-
-```{r, eval = FALSE}
-squared <- function(x){
-  return(x^2)
+```{r, eval=FALSE}
+f <- function(x, n){
+  x^n
 }
+
+g <- function(y, a, n){
+  a + f(y)
+}
+
+g(y = 2, a = 1, n = 2)
 ```
 
-There's more that goes into functions, but if there's one thing you should take away from this is that what goes inside the curly brackets is 97% the same as the code you've already been writing. The only thing you're doing by making it into a function is saving all that code in a compact form that you can reuse. If you approach things this way you'll realize there's nothing complicated about functions themselves.
+**Answer:** It won't run, because even though `g()` takes an `n` for an argument, it's not being called inside of `f()`. Since there's no default value, `f()` will refuse to run without it. This is an example of being careful with writing functions, but also with writing defaults. What if we had set a default `n` for `f()` but forgotten to put it in `g()` like the above? The code would have run and we could have moved on without realizing our mistake!
 
-Functions are super helpful for code that you expect to use many times. As a guideline of sorts, if you have to copy and paste a piece of code three or more times and it's not something that you'll loop once and forget about  (you'll learn about loops in another lab), you should probably write a function for it. As you become better and better at coding, you'll amass a collection of useful functions you can reuse for other projects! 
+## Random Tips for Functions
 
 In general, trying to write code can sometimes get pretty hairy. A useful approach you can take is to break up your problem into bite sized pieces, try the components separately, and then put them together. You can also print the output of these smaller components as you go to figure out if and where the code is doing something unintended. You'll see some of this philosophy in this lab. It might feel more complicated than previous ones, but with some patience you'll get there!
 

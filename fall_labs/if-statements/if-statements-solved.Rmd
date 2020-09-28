@@ -42,41 +42,32 @@ TRUE | FALSE
 
 The last one is pretty tricky. Feel free to remove the `eval=FALSE` flag and test it out. If it's not clear, try out each part in parentheses separately first.
 
-- Can you write 3 new boolean expressions in which you change each number slightly and change the result? 
-- What happens if you change the `1` to `2`?
+**Extension:** Write a complicated boolean expression in which you use "and", "or" and "!" and return `TRUE`.
 
-```{r boolean-playground}
-
-```
-
-**Hint:** Recall that `as.numeric(FALSE)` returns 0. 
-
-**Extension**: Write a complicated boolean expression in which you use "and", "or" and "!" and return `TRUE`.
+**Answer:**
 
 ```{r boolean_playground_2}
-
+(TRUE|FALSE) & !(1 > 2)
 ```
 
 Adjust your previous expression slightly to return `FALSE` if you can. 
 
-```{r boolean_playground_3}
+**Answer:**
 
+```{r boolean_playground_3}
+(TRUE|FALSE) & (1 > 2)
 ```
 
 ### Vectorized booleans
 
-We have seen that we can make vectorized comparisons. For example: `c(1, 2, 3, 4, 5) > 0` returns
-the vector of `c(TRUE, TRUE, TRUE, TRUE, TRUE)`. (This is the underlying idea that makes filter() work!)
+We have seen that we can make vectorized comparisons. For example: `c(1, 2, 3, 4, 5) > 0` returns the vector of `c(TRUE, TRUE, TRUE, TRUE, TRUE)`. (This is the underlying idea that makes filter() work!)
 
-What will the following code return? Predict and then test out in the code box.
+What will the following code return? Predict and then test out:
+
 ```{r, eval=FALSE}
 c(1, 2, 3, 4) == 4
 c(1, 2, 3, 4) == c(2, 3, 4, 5)
 c(TRUE, FALSE) | c(FALSE, TRUE)
-```
-
-```{r vec_bool}
-
 ```
 
 Define `our_vector <- c(1, 2, 3, 4, 5)`.  Write 3 expressions using `our_vector` that return a vector `c(FALSE, FALSE, FALSE, FALSE, FALSE)` using distinct operators for each expression.
@@ -85,16 +76,20 @@ Define `our_vector <- c(1, 2, 3, 4, 5)`.  Write 3 expressions using `our_vector`
 
 ```
 
-If you combined all three expressions above with `&` what will the response be?
+If you combined all three expressions above with `&` what will the response be? Try it out:
 
 ```{r vec_bool_3}
 
 ```
 
-**Challenge**: Write an expression that returns the vector `c(FALSE, FALSE, FALSE, FALSE, FALSE)` using `truth <- c(NA, 2, -4, 4, 0.5)`.
+**Answer:** It will be `c(FALSE, FALSE, FALSE, FALSE, FALSE)`.
+
+**Extension:** Write an expression that returns the vector `c(FALSE, FALSE, FALSE, FALSE, FALSE)` using `truth <- c(NA, 2, -4, 4, 0.5)`.
 
 ```{r vec-challenge}
+truth <- c(NA, 2, -4, 4, 0.5)
 
+!is.na(truth) & truth > 5
 ```
 
 **Hint:** You'll need to use `is.na()` along with an `&`

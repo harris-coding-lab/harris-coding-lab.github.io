@@ -6,6 +6,21 @@ output:
     toc_float: true
 ---
 
+## Warm up
+
+1. Which of these are commands from `dplyr`?
+
+- mutate()
+- filter()
+- mean()
+- group_by()
+
+2. In the videos, you learned about `head()`. What if you wanted to get the tail end of your data instead?
+
+3. Imagine you have a data set, `df` with 4 variables, `county`, `year`, `income`, and `employment`. You only need the year and employment status of people whose income is below $5000. Which two `dplyr` commands do you need to do this? Can you write the code for this?
+
+4. Remember the `mean()` function from last time? What `dplyr` commands would we need if we want the average income in each county for each year? How many rows will the resulting dataset be?
+
 ## Analyzing Student Loan Debt
 
 ### Data Cleaning

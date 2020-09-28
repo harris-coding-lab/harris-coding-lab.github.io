@@ -6,6 +6,45 @@ output:
     toc_float: true
 ---
 
+## Warmup
+
+1. The most important warm up question: do you have R and RStudio installed?
+
+2. How do you pull the documentation for a command in R?
+
+- *
+- ?
+- help()
+- documentation()
+
+3. Try to guess the output of the following code:
+
+```{r, eval=FALSE}
+a <- 3
+b <- a^2 + 1
+```
+
+4. Now try to guess again:
+
+```{r, eval=FALSE}
+a <- c(1, 2, 3)
+b <- a^2 + 1
+```
+
+5. Will this one run? If it does, what will it return? Will R complain?
+
+```{r, eval=FALSE}
+a <- c(1, 2, 3)
+b <- a^2 + c(1, 2)
+```
+
+6. Finally, what about this one?
+
+```{r, eval=FALSE}
+a <- c(1, 2)
+b <- a^2 + c(1, 2, 3, 4)
+```
+
 ## Calculating Mean and Standard Deviation
 
 ### Calculating the Mean
