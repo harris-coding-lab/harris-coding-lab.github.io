@@ -114,6 +114,7 @@ FALSE + 4
 - Two "types" of breakout room:
   - Work along: larger group with more guidance from a TA. 
   - Small groups: 4 people, TAs will come in and out to answer questions. Use the help button!
+- Add "(work along)" or "(small group)" to your Zoom name so we can sort you.
 - Get as far as you can, then finish it up after class.
 - Before you leave, fill out the exit poll.
 
