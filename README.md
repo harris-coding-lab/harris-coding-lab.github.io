@@ -30,9 +30,9 @@ Accelerated coding lab meets twice in the quarter. You will either attend week 1
 |**Additional material: Visualizing data with `ggplot`**| [video](https://youtu.be/rnaWwRfrWk4 )  | [slides](slides/05_ggplot.pdf) <br> [slide code](code/05_ggplot.R)| [basic review](lab/05_basics_ggplot.pdf) | |
 
 
-### [Final Project](lab/project_description.pdf)
+### [Final Project (Regular Pace Only)](lab/project_description.pdf)
 
-Your [final project](lab/project_description.pdf) is quite simple. You will pick a data set that speaks to you and try to uncover something interesting which you will visualize in a plot. You will also compute some summary statistics that you will show in a summary table. Your TAs will review your work and provide a non-binding suggestion as to whether you are ready for the 'accelerated' Fall Coding Lab. Click on the link for details.
+Your [final project](lab/project_description.pdf) is quite simple. You will pick a data set that speaks to you and try to uncover something interesting which you will visualize in a plot. You will also compute some summary statistics that you will show in a summary table. We'll provide feedback on your submission. Click on the link for details.
 
 
 
