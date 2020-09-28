@@ -86,18 +86,22 @@ Post questions on [Piazza](https://piazza.com/class/kecymgc5x897lv)
        - "step 2" is all about `ggplot` and potentially useful.
   - They're always adding content, so we probably missed some good ones.
 
+### Instructors
+
+The instructors for this course are (see Canvas for emails):
+
+- Ari Anisfeld
+- Terence Chau
 
 ### Teaching Assistants
 
-The teaching assistants for this workshop are (see Canvas for links and emails)
+The teaching assistants for this course are:
 
-- Victor Fuentes Campos
 - Michael Gorman
-- Leandro Grespan
 - Nguyen Luong
-- Annie Phan
-- Josefina Rodriguez
-- Yalun Su
-- Emily (Jiayi) Sun
+- Alysha Rashid
+- Milan Rivas
+- Paola Riveros
 - Dominic Teo
 - Ryan Webb
+- Fanmei Xia
