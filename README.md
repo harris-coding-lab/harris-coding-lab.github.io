@@ -104,4 +104,4 @@ The teaching assistants for this course are:
 - Paola Riveros
 - Dominic Teo
 - Ryan Webb
-- Fanmei Xia
+
