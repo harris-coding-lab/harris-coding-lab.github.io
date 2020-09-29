@@ -1,7 +1,7 @@
 ---
 title: "Coding lab project"
 author: "Ari Anisfeld"
-date: "8/28/2020"
+date: "9/29/2020"
 output: pdf_document
 ---
 
@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Your final project is quite simple. You will pick a data set that speaks to you and try to uncover something interesting which you will visualize in a plot. You will also compute some summary statistics that you will show in a summary table. Your TAs will review your work and provide a non-binding suggestion as to whether you are ready for the 'accelerated' Fall Coding Lab.
 
-**Due date: September 21, 5pm** upload your Rmd and pdf to gradescope. Feel free to submit your work earlier. We will not review work that is turned in after that point.
+**Due date: At the end of week 6, November 6 at 5pm** upload your Rmd and pdf to Gradescope. Feel free to submit your work earlier. We will not review work that is turned in after that point.
 
 # Format:
 
