@@ -1,10 +1,9 @@
 ---
-title: "Functions"
-output: 
-  html_notebook:
-    toc: true
-    toc_float: true
+output:
+  pdf_document: default
+  html_document: default
 ---
+# Functions lab
 
 ## Warm up
 
@@ -48,7 +47,7 @@ Today, we'll investigate the following property using simulations:
 
 Statistical theory provides us a way to construct a 95% confidence interval for the expected value of a distribution. In the near future you'll learn about confidence intervals formally. For now, you need to know that if we define a 95% confidence interval, we expect the mean from a random sample to fall within the confidence interval 95 out of 100 times. In other words, we expect the sample mean to be outside of the interval 5 out of 100 times.
 
-Sometimes we won't be sure if the confidence interval (CI) we defined actually does so. For example, the accuracy of a CI will usually depend on how much data you have, and how it's distributed. Usually, the more data the better, and the closer the actual distribution to the theoretically assumed distribution, the better. Simulations allow us to test these things. We can test this by making thousands of random samples from a distribution we define and seeing how often the sample mean doesn't fall within the confidence interval. 
+Sometimes we won't be sure if the confidence interval (CI) we defined actually does so. For example, the  of a CI will usually depend on how much data you have, and how it's distributed. Usually, the more data the better, and the closer the actual distribution to the theoretically assumed distribution, the better. Simulations allow us to test these things. We can test this by making thousands of random samples from a distribution we define and seeing how often the sample mean doesn't fall within the confidence interval. 
 
 If we only made a single random draw, we might be misled. For example, let's draw 30 numbers from a normal distribution with true mean of 0.5 and see if the observed mean appears statistically different from the true mean. 
 
@@ -68,7 +67,7 @@ obs_mean
 
 Wow! The observed mean is twice what we expected! Let's calculate a z-score to put that in perspective. 
 
-Recall a z-score is calculated $\frac{\bar X - \mu}{\frac{s_n}{\sqrt{N}}}$ where $\bar X$ is the observed sample mean, $\mu$ is the true mean, $s_n$ is the observed sample standard deviation and $N$ is the number of observations. 
+A z-score is calculated $\frac{\bar X - \mu}{\frac{s_n}{\sqrt{N}}}$ where $\bar X$ is the sample mean, $\mu$ is the true mean, $s_n$ is the sample standard deviation and $N$ is the number of observations. 
 
 ```{r result_1}
 obs_sd <- sd(simulated_data)
@@ -100,22 +99,22 @@ As you saw in the motivating example, we must:
 1. Simulate data.
 2. Calculate sample statistics.
 3. Determine z-scores.
-4. Test whether the z-score is significant.
+4. Test whether the z-score is outside the threshold.
 5. Repeat 1-4 several times.
 
 Finally, we:
 
 6. Measure to what extent our simulations match the theory.
 
-If we do this well, we can end up with a single function `our_monte_carlo()` that takes a sample-size `N`, a `true_mean`, a significance level `alpha`, and number of iterations `B` and returns the proportion of observations that are outside the confidence interval.
+If we do this well, we can end up with a single function `do_monte_carlo()` that takes a sample-size `N`, a `true_mean`, a significance level `alpha`, and number of iterations `B` and returns the proportion of observations that are outside the confidence interval.
 
-Particularly, we are going to write the helper functions "wrapped" by `our_monte_carlo()`. That is, we'll write the steps into their own functions, then one larger function that calls them in the right order. This is an example of what we meant by breaking complicated code into smaller chunks and tackling them one by one, then assembling it all together.
+Particularly, we are going to write the helper functions "wrapped" by `do_monte_carlo()`. That is, we'll write the steps into their own functions, then one larger function that calls them in the right order. This is an example of what we meant by breaking complicated code into smaller chunks and tackling them one by one, then assembling it all together.
 
 Before proceeding, take a look at the function and guess what the inputs and outputs of each function will be. We'll walk you through designing them, but it helps to think through the process. 
 
 ```{r, eval=FALSE}
-our_monte_carlo <- function(N, true_mean, B, alpha){
-  sample_statistics <- monte_carlo_samples(N, true_mean, B)
+do_monte_carlo <- function(N, true_mean, B, alpha){
+  sample_statistics <- make_mc_sample(N, true_mean, B)
   z_scores <- get_zscores(sample_statistics$mean, true_mean, sample_statistics$sd, N)
   test_significance(z_scores, alpha) %>% mean()
 }
@@ -141,14 +140,18 @@ Write a function called `get_zscores` that takes the observed mean and sd, the t
 
 Test your function with an observed mean and standard deviation of 4.4 and 0.25, respectively, a true mean of 4.3, and 100 observations. What does `get_zscores()` return? Verify that you get 4.
 
-```{r}
+```{r, eval = FALSE}
+# before running set eval = TRUE (and delete this comment)
+
 test <- get_zscores(obs_mean = 4.4, true_mean = 4.3, obs_sd = 0.25, N = 100) 
 test
 ```
 
 The function you wrote should also work on vectorized functions. Run the following code which takes estimates of the mean and standard deviation from 5 random draws and returns their associated z-scores:
 
-```{r}
+```{r, eval = FALSE}
+# before running set eval = TRUE (and delete this comment)
+
 made_up_means <- c(4.4, 4.1, 4.2, 4.4, 4.2)
 made_up_sd <- c(.25, .5, .4, 1, .4)
 made_up_zscores <- get_zscores(obs_mean = made_up_means,
@@ -175,13 +178,15 @@ Write a function `test_significance()` that takes `zscores` and a given `alpha` 
 
 Run the following code, and check that your code matches the expected output:
 
-```{r}
+```{r, eval = FALSE}
+# before running set eval = TRUE (and delete this comment)
 test_significance(zscores = 2, alpha = 0.05)
 ```
 
 Should return TRUE. And:
 
-```{r}
+```{r, eval = FALSE}
+# before running set eval = TRUE (and delete this comment)
 test_significance(zscores = c(1.9, -0.3, -3), alpha = 0.05)
 ```
 
@@ -195,9 +200,9 @@ Should return FALSE, FALSE, and TRUE.
 
 We already have `rnorm()` that returns a random sample from a normal distribution with a given mean. So step 1 is built-in to R. However, it will require some finesse to calculate and store the means and standard deviations from the random samples. 
 
-### Building `monte_carlo_samples()`
+### Building `make_mc_sample()`
 
-Recall we want `monte_carlo_samples(N, true_mean, B)` a function that produces `B` random samples from the normal distribution with mean `true_mean` of size `N`. What we're going to do is write code that draws a random sample and calculates its mean and SD. Then, we'll use a little helper that will repeat this function many times. You'll learn more about the different ways to do this repetition in our lab about loops, so for now we'll only provide what you need to write this function. Let's call this function `get_mean_and_sd_from_random_sample()`.
+Recall we want `make_mc_sample(N, true_mean, B)` a function that produces `B` random samples from the normal distribution with mean `true_mean` of size `N`. What we're going to do is write code that draws a random sample and calculates its mean and SD. Then, we'll use a little helper that will repeat this function many times. You'll learn more about the different ways to do this repetition in our lab about loops, so for now we'll only provide what you need to write this function. Let's call this function `get_mean_and_sd_from_random_sample()`.
 
 ```{r}
 
@@ -205,7 +210,8 @@ Recall we want `monte_carlo_samples(N, true_mean, B)` a function that produces `
 
 Verify it worked by making sure the following returns a mean of 0.511 and a standard deviation of 0.992. Remember, what guarantees that you get the same numbers from a random number generator as we did is that we're setting a seed to 5.
 
-```{r}
+```{r, eval = FALSE}
+# before running set eval = TRUE (and delete this comment)
 set.seed(5)
 get_mean_and_sd_from_random_sample(N = 30, true_mean = 0.5)
 ```
@@ -214,28 +220,32 @@ get_mean_and_sd_from_random_sample(N = 30, true_mean = 0.5)
 
 Remember, this function only does what we need **once**, while we'll need it to do it `B` times. We'll rely on a useful function that takes a piece of code we give it, then runs it as many times as you tell it to. This function is called `replicate()`. Once you learn about loops, you should read up on how it actually works! It works as follows. Say we want to draw 5 numbers from a normal 3 times (i.e., N = 5, B = 3). We can do that like this:
 
-```{r}
+```{r, eval = FALSE}
+# before running set eval = TRUE (and delete this comment)
 set.seed(5)
 replicate(n = 3, rnorm(5, 0, 1), simplify = TRUE)
 ```
 
 Where every row is a number in a given draw, and every column represents a separate replication. So entry 1,1 is the first number of the first draw, and so forth. So applying this to our example, we can replicate the function we already wrote a three times to see what we get. We know every replication should yield two numbers.
 
-```{r}
+```{r, eval = FALSE}
+# before running set eval = TRUE (and delete this comment)
 set.seed(5)
 replicate(n = 3, get_mean_and_sd_from_random_sample(N = 30, true_mean = 0.5), simplify = TRUE)
 ```
 
 This looks to be about right! Again, each row is a different output value, and each column represents a separate replication. Now, there's one teeny thing. Remember that usually, we want our variables to be in columns, and each observation to be in rows. We could just flip this resulting table using the transpose command, `t()`, but I'll propose that we might as well put the data together in the shape we want manually. Set the `simplify` option to FALSE. This gives you back the results of each replication separately in a list:
 
-```{r}
+```{r, eval = FALSE}
+# before running set eval = TRUE (and delete this comment)
 set.seed(5)
 replicate(n = 2, get_mean_and_sd_from_random_sample(N = 30, true_mean = 0.5), simplify = FALSE)
 ```
 
 And we'll tell R we want these results bound together row-wise into a tibble using `bind_rows()`:
 
-```{r}
+```{r, eval = FALSE}
+# before running set eval = TRUE (and delete this comment)
 set.seed(4)
 replicate(n = 2, get_mean_and_sd_from_random_sample(N = 30, true_mean = 0.5), simplify = FALSE) %>% 
   bind_rows()
@@ -243,19 +253,19 @@ replicate(n = 2, get_mean_and_sd_from_random_sample(N = 30, true_mean = 0.5), si
 
 **Note:** Another reason I prefer putting things together manually is I can make sure that no weird class issues get carried over. The `t()` way can be a lot more finicky.
 
-So finally, write a function called `monte_carlo_samples` that takes a number of observations, a number of replications, and a true mean, then replicates your `get_mean_and_sd_from_random_sample()` function `B` times and outputs a tibble with that many sample means and sample standard deviations.
+So finally, write a function called `make_mc_sample` that takes a number of observations, a number of replications, and a true mean, then replicates your `get_mean_and_sd_from_random_sample()` function `B` times and outputs a tibble with that many sample means and sample standard deviations.
 
 ```{r}
 
 ```
 
-**Hint:** As long as you keep track of which of `monte_carlo_samples`' inputs go where in the previous code we gave you, you should be fine.
+**Hint:** As long as you keep track of which of `make_mc_sample`' inputs go where in the previous code we gave you, you should be fine.
 
 ## Functions, Assemble
 
 Now you have all the helper functions that are critical for our simulation. We want to simulate 1000 sets of 30 data points drawn from a normal distribution with true mean 0.5 and then see how often our random sample mean is significantly different from the true mean at a significance level of 0.05. If everything is working as expected, we should see about 5% of the random means to be statistically different.
 
-Write the function `our_monte_carlo()` that does `B` simulations of sample size `N` with a `true_mean`. It returns the fraction of means where we would reject the null hypothesis that the sample mean is statistically indistinguishable from the true mean at a level of `alpha`.
+Write the function `do_monte_carlo()` that does `B` simulations of sample size `N` with a `true_mean`. It returns the fraction of means where we would reject the null hypothesis that the sample mean is statistically indistinguishable from the true mean at a level of `alpha`.
 
 ```{r final_monte}
 
@@ -266,8 +276,9 @@ Write the function `our_monte_carlo()` that does `B` simulations of sample size 
 
 Test out your function!
 
-```{r}
-our_monte_carlo(N = 30, true_mean = 0.5, B = 1000, alpha = 0.05)
+```{r, eval = FALSE}
+# before running set eval = TRUE (and delete this comment)
+do_monte_carlo(N = 30, true_mean = 0.5, B = 1000, alpha = 0.05)
 ```
 
 Note that we didn't have to set a seed to make sure everyone's code gives the right result—the whole idea is that even if the draws are random, as we do more and more `B` replications all of our results will converge to a similar coverage. Theory also tells us that when we have a large `N`, the coverage will be correct (that is, the coverage probability will be near $\alpha$). Try a smaller `N` and see what numbers you get! 
