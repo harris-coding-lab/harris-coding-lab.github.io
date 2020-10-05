@@ -13,7 +13,7 @@ Accelerated coding lab meets twice in the quarter. You will either attend week 1
 
 | Class  | Videos | Slides & Code |  Problem sets | Additional Resources |
 | ---- | ----- | ----- | ----- | --- |
-|**Accelerated Class 1: Functions** | [video]( https://youtu.be/Y2SbF9JHI7Q  ) | [slides](slides/06_functions.pdf)| - [basics review](lab/06_basics_functions.pdf) <br> - [acc. lab 1](fall_labs/functions/functions.zip)| |
+|**Accelerated Class 1: Functions** | [video]( https://youtu.be/Y2SbF9JHI7Q  ) | [slides](slides/06_functions.pdf)| - [basics review](lab/06_basics_functions.pdf) <br> - [acc. lab 1](fall_labs/functions/functions.zip) <br> - [acc. lab 1 solved](fall_labs/functions/functions_solved.zip)| |
 |**Accelerated Class 2: Iteration** | [video]( https://youtu.be/0z8N8S-vz4U ) | [slides](slides/07_for_loops.pdf)| | |
 
 
