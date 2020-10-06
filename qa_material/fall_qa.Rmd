@@ -124,3 +124,55 @@ FALSE + 4
   - A histogram plot of the data you give it.
   - A history of the commands you've run.
 
+# Class 2: Reading files and `dplyr'
+
+## Course logistics:
+
+- When should we start working on the final project?
+    - Start looking for a dataset now. 
+    - Write code to read it into R and start investigating with `dplyr` verbs.
+      - Ask simple questions that can be addressed with your current tools.
+
+## Key points: Reading files
+
+- Tabular data is stored in a lot of different formats.
+  - e.g. `.csv`, `.xlsx`, `.dta`
+- Read tabular data of a given type with the proper function.
+  - e.g. for `csv`s we have `read_csv()`
+  - If you get a new type, Google "How to read xxx files into R tidyverse".
+- We need to be aware of the file path and can `setwd()`.
+- We know there are useful tools built into the `read_xxx()` functions.
+  - Though we just scratched the surface.
+  
+## Key points: Manipulating data with `dplyr()`
+
+- Choose columns with `select()`.
+- Choose rows based on a match criteria with `filter()`.
+  - We were introduced to comparison operators like  `==` and `%in%`.
+- Make new columns with `mutate()`.
+- Sort data with `arrange()` and `arrange(desc())` or `arrange(-x)`.
+- Create summary statistics with `summarize()`.
+
+## Key points: Grouped analysis with `group_by()`
+
+- *Groups* are a set of rows that belong together.
+  - `group_by()` adds information about groups without changing the "data".
+- Use `group_by()` with `summarize()` to create summary data at group-level.
+  - Use with functions that *reduce* data from a vector to a single value per group.
+  - Expected output: a table with one row per group and one column per summary statistic and one column per grouping column.
+- We can also use `group_by` to do grouped analysis with:
+  - `mutate` with window functions or to add a summary stat as column for further analysis.
+  - It also can impact `arrange` and `filter`.
+  
+# Warm up & Lab 2
+
+## Warm up & Lab 2
+
+- Solve the questions at the beginning of the lab in small (random) groups.
+- After: add "(small group)" in front of your name if you want to work in one,
+if you want to work along just stay in the main room.
+
+- Exit poll:
+
+1. What `dplyr` command allows you to create or modify variables?
+2. What `dplyr` command allows you to sort your data?
