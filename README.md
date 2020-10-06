@@ -19,6 +19,7 @@ Accelerated coding lab meets twice in the quarter. You will either attend week 1
 
 ### Fall Lab Materials: Regular pace
 
+Recap slides for all of our meetings [here](qa_material/fall_qa.pdf).
 
 | Class  | Videos | Slides & Code |  Problem sets | Additional Resources |
 | ---- | ----- | ----- | ----- | --- |
