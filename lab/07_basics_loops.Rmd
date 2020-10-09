@@ -1,0 +1,270 @@
+---
+title: "The basics: 07 loops"
+author: "Ari Anisfeld"
+date: "9/8/2020"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(dplyr.summarise.inform = FALSE)
+library(tidyverse)
+```
+
+# Questions
+
+Recall, for-loops are an iterator that help us repeat tasks while changing inputs. The most common structure for your code will look like the following code. This can be simplified if you are not storing results.
+
+```{r}
+# what are you iterating over? The vector from -10:10
+items_to_iterate_over <- c(-10:10)
+
+# pre-allocate the results
+out <- rep(0, length(items_to_iterate_over))
+
+# write the iteration statement -- 
+# we'll use indices so we can store the output easily
+for (i in seq_along(items_to_iterate_over)) {
+  
+  # do something
+  # we capture the median of three random numbers 
+  # from normal distributions various means
+  out[[i]] <- median(rnorm(n = 3, mean = items_to_iterate_over[[i]]))
+  
+}
+
+```
+
+
+## Writing for-loops
+
+1. Write a for-loop that prints the numbers `5, 10, 15, 20, 250000`.
+
+1. Write a for-loop that iterates over the indices of `x` and prints the `i`th value of `x`.   
+
+    ```{r, eval = FALSE}
+    x <- c(5, 10, 15, 20, 250000)
+    
+    # replace the ... with the relevant code
+    
+    for (i in ... ){
+      print(x[[...]])  
+    }
+    ```
+
+1. Write a for-loop that simplifies the following code so that you don't repeat yourself! Don't worry about storing the output yet. Use `print()` so that you can see the output. What happens if you don't use `print()`?
+    ```{r, eval = FALSE}
+    sd(rnorm(5)) 
+    sd(rnorm(10)) 
+    sd(rnorm(15)) 
+    sd(rnorm(20)) 
+    sd(rnorm(25000))
+    ```
+  a. adjust your for-loop to see how the `sd` changes when you use `rnorm(n, mean = 4)`
+  a. adjust your for-loop to see how the `sd` changes when you use `rnorm(n, sd = 4)`
+
+1. Now store the results of your for-loop above in a vector. Pre-allocate a vector of lenth 5 to capture the standard deviations.
+
+
+## vectorization vs for loops 
+
+Recall, vectorized functions operate on a vector item by item. It's like looping over the vector! 
+
+ The following for-loop is better written vectorized.
+
+Compare the loop version 
+
+```{r, eval = FALSE}
+names <- c("Alysha", "Fanmei", "Paola")
+
+out <- character(length(names))
+
+for (i in seq_along(names)) {
+  out[[i]] <- paste0("Welcome ", names[[i]])
+}
+```
+
+to the vectorized version
+
+```{r, eval = FALSE}
+names <- c("Alysha", "Fanmei", "Paola")
+out <- paste0("Welcome ", names)
+```
+
+The vectorized code is preferred because it is easier to write and read, and is possibly more efficient.^[In this case, I had about a 10 times speed up when I benchmarked the code, but I'm not sure if that's real.]
+
+
+1. Rewrite your first for-loop, where you printed `5, 10, 15, 20, 250000` as vectorised code
+    
+    ```{r}
+    
+    ```
+
+
+1.  Rewrite this for-loop as vectorized code:
+    
+    ```{r}
+    
+    radii <- c(0:10)
+    
+    area <- double(length(radii))
+    
+    for (i in seq_along(radii)) {
+      
+      area[[i]] <- pi * radii[[i]] ^ 2 
+      
+    }
+    ```
+
+
+1.  Rewrite this for-loop as vectorized code:
+    
+    ```{r}
+    
+    radii <- c(-1:10)
+    
+    area <- double(length(radii))
+    
+    for (i in seq_along(radii)) {
+      
+      if (radii[[i]] < 0) {
+        area[[i]] <- NaN
+      } else {
+        area[[i]] <- pi * radii[[i]] ^ 2 
+      }
+      
+    }
+    ```
+
+
+
+# Solutions
+
+## Writing for-loops
+
+1. Write a for-loop that prints the numbers `5, 10, 15, 20, 250000`.
+
+    ```{r}
+     x <- c(5, 10, 15, 20, 250000)
+      
+      # replace the ... with the relevant code
+      
+    for (number in x){
+      print(number)  
+    }
+    ```
+
+
+1. Write a for-loop that iterates over the indices of `x` and prints the `i`th value of `x`.   
+
+    ```{r}
+    x <- c(5, 10, 15, 20, 250000)
+    
+    # replace the ... with the relevant code
+    
+    for (i in seq_along(x) ){
+      print(x[[i]])  
+    }
+    ```
+
+1. Write a for-loop that simplifies the following code so that you don't repeat yourself!
+    ```{r, eval = FALSE}
+    sd(rnorm(5)) 
+    sd(rnorm(10)) 
+    sd(rnorm(15)) 
+    sd(rnorm(20)) 
+    sd(rnorm(25000))
+    ```
+  a. adjust your for-loop to see how the `sd` changes when you use `rnorm(n, mean = 4)`
+  a. adjust your for-loop to see how the `sd` changes when you use `rnorm(n, sd = 4)`
+  
+      ```{r}
+      x <- c(5, 10, 15, 20, 250000)
+      
+      # replace the ... with the relevant code
+      
+      for (i in seq_along(x) ){
+        print(sd(rnorm(x[[i]])))
+      }
+      
+      for (i in seq_along(x) ){
+         n <- x[[i]]
+        print(sd(rnorm(n, mean = 4)))
+      }
+      
+      for (i in seq_along(x) ){
+        n <- x[[i]]
+        print(sd(rnorm(n, sd = 4)))
+      }
+    
+      ```
+  
+      This might be a time to write function!
+      
+      ```{r}
+      print_sds <- function(x, mean = 0, sd = 1) {
+        for (i in seq_along(x) ){
+          # I add the next two lines for clarity
+          n <- x[[i]]
+          sample <- rnorm(n, mean = mean, sd = sd)
+          print(sd(sample))
+        }
+      }    
+      
+      print_sds(x)
+      print_sds(x, mean = 4)
+      print_sds(x, sd = 4)
+      ```
+
+
+1. Now store the results of the first for-loop you wrote above. Pre-allocate a vector of lenth 5 to capture the standard deviations.
+
+    
+    ```{r}
+    
+    x <- c(5, 10, 15, 20, 250000)
+    
+    sd_of_samples <- rep(0, length(x))
+    
+    for (i in seq_along(x) ){
+      
+      sd_of_samples[[i]] <- sd(rnorm(x[[i]]))
+    
+    }
+    
+    
+    ```
+
+
+
+## vectorization vs for loops 
+
+1. Rewrite your first for-loop, where you printed `5, 10, 15, 20, 250000` as vectorised code
+    
+    ```{r}
+    x <- c(5, 10, 15, 20, 250000)
+    print(x)
+    ```
+
+
+1.  Rewrite this for-loop as vectorized code:
+    
+    ```{r}
+    
+    radii <- c(0:10)
+    
+    area <- pi * radii ^ 2
+    ```
+
+
+1.  Rewrite this for-loop as vectorized code:
+    
+    ```{r}
+    
+    radii <- c(-1:10)
+    
+    area <- ifelse(radii >= 0, pi * radii ^ 2, NaN)
+    
+    ```
