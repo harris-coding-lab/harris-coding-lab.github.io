@@ -16,15 +16,15 @@ output:
 3. Consider the following functions. Will this code run? If no, explain why and what do you have to fix.
 
 ```{r, eval=FALSE}
-f <- function(x, n){
+f <- function(x, n=2){
   x^n
 }
 
 g <- function(y, a, n){
-  a + f(y)
+  a + f(y, n)
 }
 
-g(y = 2, a = 1, n = 2)
+g(y = 2, a = 1, n=2)
 ```
 
 ## Random Tips for Functions
@@ -126,7 +126,6 @@ We'll start with step 3 and 4 from our simulation outline.
 
 To recap what you saw in the example. Under our assumptions, we can calculate a z-score, which tells us how extreme our observation is. We'll then check if it's outside of our confidence interval. 
 
-![](https://upload.wikimedia.org/wikipedia/commons/2/25/The_Normal_Distribution.svg) 
 
 In our example, the z-score was 3.3, and |3.3| > 1.96. so it's outside of our 95% confidence interval.
 
@@ -136,11 +135,16 @@ Write a function called `get_zscores` that takes the observed mean and sd, the t
 
 ```{r get_zscores}
 
+get_zscores <- function(obs_mean, true_mean, obs_sd, N) {
+  (obs_mean - true_mean) / (obs_sd / sqrt(N))
+}
+
+
 ```
 
 Test your function with an observed mean and standard deviation of 4.4 and 0.25, respectively, a true mean of 4.3, and 100 observations. What does `get_zscores()` return? Verify that you get 4.
 
-```{r, eval = FALSE}
+```{r, eval = TRUE}
 # before running set eval = TRUE (and delete this comment)
 
 test <- get_zscores(obs_mean = 4.4, true_mean = 4.3, obs_sd = 0.25, N = 100) 

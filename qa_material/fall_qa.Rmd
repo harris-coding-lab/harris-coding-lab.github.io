@@ -176,3 +176,255 @@ if you want to work along just stay in the main room.
 
 1. What `dplyr` command allows you to create or modify variables?
 2. What `dplyr` command allows you to sort your data?
+
+# Acc Class 1 / Class 4: Functions
+
+## What's the Deal with Fall Coding Lab?
+
+Two tracks:
+
+**Accelerated**: 2 lessons
+
+- 2 lessons covering loops and functions.
+- No final project (you already did it).
+- Occurs every other week.
+  - Ideally the sections are balanced. 
+
+**Not accelerated**: 5 lessons. 
+
+- 3 lessons review summer camp material. 
+- 2 lessons covering loops and functions.
+- Final project:
+  - Find a data set that speaks to you.
+  - Try to uncover something interesting. Graph it and tab it. 
+  - We'll give you feedback.
+  
+## Logistics for Both Tracks
+
+- Instructors Ari and Terence + wonderful TAs.
+- 80 minutes per week: brief review and Q&A, then work in groups.
+- Not graded.
+- Access to TAs for coding specific problems throughout the quarter.
+  - TA office hours 30 minutes before and after lecture time.
+- [Github website](https://harris-coding-lab.github.io) with all material.
+  - We'll post solutions (eventually).
+- Use Piazza for questions.
+  - Rules of engagement: coding questions only, no Stats homework!
+  - How to ask a good question?
+  
+## Today
+
+- Review what functions are
+- Do a warm-up
+- Provide background for the lab
+- Do the lab
+
+##  Functions
+
+What are some of the key take aways you learned about functions from the video?
+
+```{r}
+do_monte_carlo <- function(N, true_mean, B, alpha){
+  sample_statistics <- monte_carlo_samples(N, true_mean, B)
+  z_scores <- get_zscores(sample_statistics$mean, 
+                          true_mean, 
+                          sample_statistics$sd, 
+                          N)
+  test_significance(z_scores, alpha) %>% mean()
+}
+
+```
+
+
+## Key points: Functions
+
+- Write functions when you want o use a set of operations repeatedly
+    - Don't Repeat Yourself (DRY)
+- Functions consist of arguments and a body and are usually assigned to a name.
+    - The arguments are things that you want to change in the code
+    - The body is what you would be repeating if you wrote sloppy code
+- Functions are for humans
+    - pick names for the function and arguments that are clear and consistent
+- Debug your code as much as you can as you write it.
+    - if you want to use your code with `mutate()` test the code with vectors
+
+
+## Warm up
+
+- Solve the questions at the beginning of the lab in small (random) groups.
+
+
+## Background for the lab
+
+```{r norm, echo = FALSE, cache = TRUE}
+
+sample <- rnorm(1e5)
+pdf_data <- with(density(sample, n = 1000), tibble(x, y))
+
+cutoff <- 1.96
+```
+
+
+## Concepts: `r/q/p/d` functions
+
+R has built-in functions for working with distributions.
+
+| | example | what it does? |
+| -- | -- | -- | 
+| r | `rnorm(n)` | generates a random sample of size n |
+| p | `pnorm(q)` | returns CDF value at q | 
+| q | `qnorm(p)` | returns inverse CDF (the quantile) for a given probability |
+| d | `dnorm(x)` | returns pdf value at x |  
+
+
+We should already be familiar with `r` functions like `rnorm()` and `runif()`.
+
+- These concepts will be taught in stats. We don't expect you to learn them here. We can help you reason through the material enough to do the coding.
+
+## What are `p` and `q`?
+
+```{r, echo = FALSE, cache = TRUE}
+
+pdf_data  %>%
+  ggplot(aes(x = x, y = y)) + 
+  geom_line() +
+  geom_ribbon(aes(ymax = y), ymin=0, fill = "red", alpha = .5, 
+              data = pdf_data %>% filter(x < cutoff)) + 
+  labs(x = "z score",  y = "likelihood",  title = "pdf of standard normal", subtitle = "area under curve is the probability of being less than a cutoff") + 
+  annotate("text", x = 0, y = .1, label = "P(x < 1.96) = .975") + 
+  scale_x_continuous(breaks = c(-1.96,  0, 1.96)) +
+  theme_minimal() 
+```
+
+
+## What are `p` and `q`?
+
+```{r cdf, echo = FALSE}
+cdf <- ecdf(sample)
+
+cdf_data <- 
+  tibble(x = sample,
+         y = cdf(sample))
+
+cdf_data %>%
+  ggplot(aes(x = x, y = y)) + 
+  geom_line() +
+  labs(x = "z score (aka q)", title = "cdf of standard normal (the integeral of the pdf)", y = "F(z) = Pr(x < z)  aka p") + 
+  geom_hline(aes(yintercept = pnorm(cutoff)), linetype = "dashed") +
+  geom_vline(aes(xintercept = cutoff), linetype = "dashed") +
+  scale_x_continuous(breaks = c(-1.96,  0, 1.96)) +
+  scale_y_continuous(breaks = c(0, .25, .5, .75, .975, 1)) + 
+  annotate("text", x = -2, y = .9, label = "plug .975 in qnorm()\nto learn cutoff" ) +
+  annotate("text", x = 1, y = .2, label = "plug 1.96 in pnorm()\nto learn P(x < q)" ) +
+  theme_minimal() 
+```
+
+## What are `p` and `q`?
+
+**`pnorm`** returns the probability we observe a value less than or equal to some value `q`.
+
+```{r}
+pnorm(1.96)
+pnorm(0)
+```
+
+**`qnorm`** returns the inverse of `pnorm`. Plug in the probability and get the cutoff.
+
+```{r}
+qnorm(.975)
+qnorm(.5)
+```
+
+
+## Monte Carlo experiments
+
+Monte Carlo is a world gambling hub. 
+
+- Gamblers know that roulette wheels are not made perfectly. 
+
+- If you watch the wheel long enough and take notes you can figure out the emprical probability
+
+![](roullette.jpg)
+
+
+## Monte Carlo experiments
+
+Statisticians use the same idea. 
+
+- If we're not sure how to calculate something exactly, we can simulate it and get the result.
+
+- Often used for difficult to compute integrals.
+
+## An example
+
+In real life experiements we usually have one sample.
+
+```{r sim_1}
+# Setting a seed ensures replicability
+set.seed(4)
+
+# we set our parameters
+true_mean <- 0.5
+N <- 30
+
+# We simulate and observe outcomes
+simulated_data <- rnorm(N, mean = true_mean)
+obs_mean <- mean(simulated_data)
+obs_mean
+```
+
+## Put that number in perspective with a z score
+
+```{r}
+obs_sd <- sd(simulated_data)
+zscore <- (obs_mean - true_mean) / (obs_sd / sqrt(N))
+zscore
+```
+
+```{r pvalue}
+1 - pnorm(zscore)
+```
+
+
+## Our monte carlo experiment
+
+Show that the sample mean from a sample drawn from a normal distribution falls outside the 95 percent confidence region 5 percent of the time.
+
+```{r, echo = FALSE, cache = TRUE}
+
+pdf_data  %>%
+  ggplot(aes(x = x, y = y)) + 
+  geom_line() +
+  geom_ribbon(aes(ymax = y), ymin=0, fill = "red", alpha = .5, 
+              data = pdf_data %>% filter(abs(x) < cutoff)) + 
+  labs(x = "z score", y = "likelihood") + 
+  annotate("text", x = 0, y = .1, label = "P(-1.96 < x < 1.96) = .95") + 
+  scale_x_continuous(breaks = c(-1.96,  0, 1.96)) +
+  theme_minimal() 
+```
+
+## How to do a Monte Carlo Simulation
+
+1. Generate random samples of data using a known process (e.g. `rnorm()`).
+2. Make calculations based on the random sample.
+3. Aggregate the results.
+
+```{r}
+do_monte_carlo <- function(N, true_mean, B, alpha){
+  sample_statistics <- make_mc_samples(N, true_mean, B)
+  z_scores <- get_zscores(sample_statistics$mean, true_mean, sample_statistics$sd, N)
+  test_significance(z_scores, alpha) %>% mean()
+}
+
+```
+
+
+## Lab 4
+
+- Two "types" of breakout room:
+  - Work along: larger group with more guidance from a TA. 
+  - Small groups: 4 people, TAs will come in and out to answer questions. Use the help button!
+- Add "(work along)" or "(small group)" to your Zoom name so we can sort you.
+- Get as far as you can, then finish it up after class.
+- Before you leave, fill out the exit poll.
+

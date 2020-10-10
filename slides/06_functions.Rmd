@@ -4,8 +4,6 @@ author: "Ari Anisfeld"
 date: "Fall 2020"
 output: 
   beamer_presentation:
-    fig_width: 3.5
-    fig_height: 2
     includes:
       in_header: header_page_n.tex
 ---
@@ -431,6 +429,133 @@ Error in rnorm(sample_size, mean = our_mean, sd = our_sd) :
 
 # Additional material
 
+## Probability distributions
+
+R has built-in functions for working with distributions.
+
+| | example | what it does? |
+| -- | -- | -- | 
+| r | `rnorm(n)` | generates a random sample of size n | 
+| p | `pnorm(q)` | returns CDF value at q | 
+| q | `qnorm(p)` | returns inverse CDF (the quantile) for a given probability |
+| d | `dnorm(x)` | returns pdf value at x | 
+
+Probability distributions you are familiar with are likely built-in to R.
+
+For example, the binomial distribution has `dbinom()`, `pbinom()`, `qbinom()`, `rbinom()`. The t distribution has `dt()`, `pt()`, `qt()`, `rt()`, etc.
+
+
+Read [this tutorial](https://thomasleeper.com/Rcourse/Tutorials/distributions.html) for more examples.
+
+
+
+## We should be familar with `r` functions
+
+- `rnorm()`: random sampling
+
+```{r}
+rnorm(1)
+rnorm(5)
+rnorm(30)
+```
+
+
+## What are `p` and `q`?
+
+**`pnorm`** returns the probability we observe a value less than or equal to some value `q`.
+
+```{r}
+pnorm(1.96)
+pnorm(0)
+```
+
+**`qnorm`** returns the inverse of `pnorm`. Plug in the probability and get the cutoff.
+
+```{r}
+qnorm(.975)
+qnorm(.5)
+```
+
+This might be easier understood with pictures!
+
+## What are `p` and `q`?
+
+```{r, echo = FALSE, cache = TRUE}
+
+sample <- rnorm(1e5)
+pdf_data <- with(density(sample, n = 1000), tibble(x, y))
+
+cutoff <- 1.96
+
+pdf_data  %>%
+  ggplot(aes(x = x, y = y)) + 
+  geom_line() +
+  geom_ribbon(aes(ymax = y), ymin=0, fill = "red", alpha = .5, 
+              data = pdf_data %>% filter(x < cutoff)) + 
+  labs(x = "z score",  y = "likelihood",  title = "pdf of standard normal", subtitle = "area under curve is the probability of being less than a cutoff") + 
+  annotate("text", x = 0, y = .1, label = "P(x < 1.96) = .975") + 
+  scale_x_continuous(breaks = c(-1.96,  0, 1.96)) +
+  theme_minimal() 
+```
+
+
+## What are `p` and `q`?
+
+```{r cdf, echo = FALSE}
+cdf <- ecdf(sample)
+
+cdf_data <- 
+  tibble(x = sample,
+         y = cdf(sample))
+
+cdf_data %>%
+  ggplot(aes(x = x, y = y)) + 
+  geom_line() +
+  labs(x = "z score (aka q)", title = "cdf of standard normal (the integeral of the pdf)", y = "F(z) = Pr(x < z)  aka p") + 
+  geom_hline(aes(yintercept = pnorm(cutoff)), linetype = "dashed") +
+  geom_vline(aes(xintercept = cutoff), linetype = "dashed") +
+  scale_x_continuous(breaks = c(-1.96,  0, 1.96)) +
+  scale_y_continuous(breaks = c(0, .25, .5, .75, .975, 1)) + 
+  annotate("text", x = -2, y = .9, label = "plug .975 in qnorm()\nto learn cutoff" ) +
+  annotate("text", x = 1, y = .2, label = "plug 1.96 in pnorm()\nto learn P(x < q)" ) +
+  theme_minimal() 
+```
+
+
+## What is d?
+
+- `dnorm()`: density function, the PDF evaluated at X. 
+
+```{r}
+dnorm(0)
+dnorm(1)
+dnorm(-1)
+```
+
+## What is d?
+
+`dnorm` gives the height of the distribution function. Sometimes this is called a likelihood.
+
+```{r, echo = FALSE}
+
+
+std_normal <-
+  pdf_data %>%
+  ggplot(aes(x = x, y = y)) + 
+  geom_line() +
+  theme_minimal() + 
+  labs(x = "z score",  y = "likelihood",  title = "pdf of standard normal", subtitle = "d functions give height of pdf") + 
+  scale_x_continuous(breaks = c(-1.96,  0, 1.96)) +
+  annotate("text", x = 2.1, y = .241 + .04, label = "dnorm(1) = .24") + 
+  geom_point(x = 1, y = .24, color = "blue") 
+
+std_normal
+```
+
+
+
+
+
 
 ## Functions in functions
 
@@ -479,69 +604,3 @@ summarize_sample(sample_size = 10,
 ```
 
 `calc_sample_mean()` is now probably the wrong name for this function - we should call it `summarize_sample()` or something like that.
-
-## Detour: probability distributions
-
-R has built-in functions for working with distributions.
-
-| | example | what it does? |
-| -- | -- | -- | 
-| d | `dnorm(x)` | returns pdf value at x |  
-| p | `pnorm(q)` | returns CDF value at q | 
-| q | `qnorm(p)` | returns inverse CDF (the quantile) for a given probability |
-| r | `rnorm(n)` | generates a random sample of size n |
-
-Probability distributions you are familiar with are likely built-in to R.
-
-For example, the binomial distribution has `dbinom()`, `pbinom()`, `qbinom()`, `rbinom()`. The t distribution has `dt()`, `pt()`, `qt()`, `rt()`, etc.
-
-
-Read [this tutorial](https://thomasleeper.com/Rcourse/Tutorials/distributions.html) for more information.
-
-## Detour: probability distributions
-
-- `dnorm()`: density function, the PDF evaluated at X. 
-
-```{r}
-dnorm(0)
-dnorm(1)
-dnorm(-1)
-```
-
-## Detour: probability distributions
-
-<img src="images/05_pdf.png" width="600px" />
-
-## Detour: probability distributions
-
-- `pnorm()`: cumulative distribution function, the CDF evaluated at X.
-
-```{r}
-pnorm(0)
-pnorm(1)
-pnorm(-1)
-```
-
-## Detour: probability distributions
-
-<img src="images/05_cdf.png" width="600px" />
-
-## Detour: probability distributions
-
-- `qnorm()`: quantile function, the inverse CDF evaluated at a quantile.
-
-```{r}
-qnorm(c(0.05, 0.95))
-qnorm(c(0.025, 0.975))
-pnorm(qnorm(c(0.025, 0.975)))
-```
-
-## Detour: probability distributions
-
-- `rnorm()`: random sampling
-
-```{r}
-rnorm(1)
-rnorm(5)
-rnorm(30)
-```
