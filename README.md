@@ -14,7 +14,7 @@ Accelerated coding lab meets twice in the quarter. You will either attend week 1
 | Class  | Videos | Slides & Code |  Problem sets | Additional Resources |
 | ---- | ----- | ----- | ----- | --- |
 |**Accelerated Class 1: Functions** | [video]( https://youtu.be/Y2SbF9JHI7Q  ) | [slides](slides/06_functions.pdf)| - [basics review](lab/06_basics_functions.pdf) <br> - [acc. lab 1](fall_labs/functions/functions.zip) <br> - [acc. lab 1 solved](fall_labs/functions/functions_solved.zip)| |
-|**Accelerated Class 2: Iteration** | [video]( https://youtu.be/0z8N8S-vz4U ) | [slides](slides/07_for_loops.pdf)| | |
+|**Accelerated Class 2: Iteration** | [video]( https://youtu.be/0z8N8S-vz4U ) | [slides](slides/07_for_loops.pdf)|- [basics review](lab/07_basics_loops.pdf) <br> - [acc lab 2](fall_labs/loops/for-loops-ggplot.zip)  | |
 
 
 ### Fall Lab Materials: Regular pace
@@ -27,7 +27,7 @@ Recap slides for all of our meetings [here](qa_material/fall_qa.pdf).
 |**Class 2: Reading data files and manipulating data with `dplyr`** | [video 1: reading data](https://youtu.be/WwoMJODwFOQ)  <br> [video 2: manipulating data with `dplyr`](https://youtu.be/o1a-9-RvNc4) <br> [video 3: grouped analysis](https://youtu.be/9EQ9WB90VPw)  | - [slides: reading data](slides/01a_reading-data.pdf) <br> - [slide code: reading data](code/01a_reading-data.R) <br> - [slides: manipulating data with `dplyr`](slides/01b_dplyr-manipulating-data.pdf) <br>  - [slide code: manipulating data with `dplyr`](code/01b_manipulating-data-dplyr.R)  <br>  - [slides: grouped analysis](slides/04_grouped-data.pdf) <br> -[slide code: grouped analysis](code/04_grouped-data.R)| - [basics review (dataquest)](https://app.dataquest.io/m/336/working-with-data-frames/) <br> - [lab 2](fall_labs/reading-files/reading-files.zip) <br> - [lab 2 solved](fall_labs/reading-files/reading-files-solved.zip) | [FED data from slides](data/SCE-Public-LM-Quarterly-Microdata.xlsx) (you can download to follow along) <br>[texas data from slides](data/texas_housing_data.csv) <br> [drug cartel data from slide](https://dataverse.harvard.edu/file.xhtml?persistentId=doi:10.7910/DVN/VIXNNE/XH5ZQU&version=1.0) (you'll need to download the `dta` from Dataverse)|
 |**Class 3: If Statements** | [video](https://www.youtube.com/watch?v=HKC7RTpNt60) | [slides](slides/03_if-statements.pdf) <br> [slide code](code/03_if-statements.R) | - [basic review](lab/03_basics_if_else.pdf) <br> - [lab 3](fall_labs/if-statements/if-statements.zip)|  | 
 |**Class 4: Functions** | [video]( https://youtu.be/Y2SbF9JHI7Q  ) | [slides](slides/06_functions.pdf)| - [basics review](lab/06_basics_functions.pdf) <br> - [lab 4](fall_labs/functions/functions.zip)| |
-|**Class 5: Iteration** | [video]( https://youtu.be/0z8N8S-vz4U ) | [slides](slides/07_for_loops.pdf)| - [lab 5](fall_labs/loops/for-loops-ggplot.zip)| |
+|**Class 5: Iteration** | [video]( https://youtu.be/0z8N8S-vz4U ) | [slides](slides/07_for_loops.pdf)| - [basics review](lab/07_basics_loops.pdf) <br> - [lab 5](fall_labs/loops/for-loops-ggplot.zip)| |
 |**Additional material: Visualizing data with `ggplot`**| [video](https://youtu.be/rnaWwRfrWk4 )  | [slides](slides/05_ggplot.pdf) <br> [slide code](code/05_ggplot.R)| [basic review](lab/05_basics_ggplot.pdf) | |
 
 
