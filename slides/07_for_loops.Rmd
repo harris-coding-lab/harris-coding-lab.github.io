@@ -251,7 +251,7 @@ data <- bind_rows(file_1, file_2, ..., file_22)
 ## Aside: how to make the data
 
 The data used for this exercise is fake data which I made with a for-loop.
-Run the code bellow (*choose your own working directory*) to follow along.
+Run the code below (*choose your own working directory*) to follow along.
 
 ```{r, eval=FALSE}
 setwd('../data/loops')
@@ -296,10 +296,24 @@ These functions produce a character vector of the names of files ... in the name
 list.files("../data/loops", pattern = "*.csv$")
 ```
 
-
 ## Let's use a loop to read in the data
 
+```{r, eval=FALSE}
+file_names <- list.files(pattern = "*.csv$")
 
+output <- vector("list", length(file_names))
+
+for (i in seq_along(file_names)) {
+  output[[i]] <- read_csv(file_names[[i]]) %>%
+                    mutate(year = str_extract(file_names[[i]], "[0-9]{4}"))
+}
+
+data <- bind_rows(output)
+View(data)
+```
+
+
+## Let's use a loop to read in the data...an alternative
 
 ```{r, message = FALSE}
 setwd('../data/loops')
