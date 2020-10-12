@@ -177,6 +177,60 @@ if you want to work along just stay in the main room.
 1. What `dplyr` command allows you to create or modify variables?
 2. What `dplyr` command allows you to sort your data?
 
+# Class 3: Control Flow
+
+## Key points: control flow with `if ()` and `ifelse ()`
+
+- Review how logical operators (i.e. `!`, `|`, `&`) and comparison operators work.
+  - If this all still seems confusing a refresher in propositional logic will seriously pay off!
+- Use `if ()`, `else`, and `else if ()` to control when and how an action is completed.
+  - Can use shorthand for conditions: `if (thing_thats_true)` is equivalent to `if (thing_thats_true == TRUE)`.
+- `ifelse()` as a vectorized, `NA` friendly alternative. 
+- Use `ifelse()` with `mutate()` to create new columns contingently.
+
+## Two more things (1/2): `case_when()`
+
+- `case_when()` allows you to chain many conditions and outputs:
+  
+```{r, eval=FALSE}
+case_when(condition_1 ~ value_1,
+          condition_2 ~ value_2,
+          condition_3 ~ value_3,
+          TRUE ~ value_4)
+```
+  
+Somewhat equivalent to:
+
+```{r, eval=FALSE}
+ifelse(condition_1, value_1, 
+       ifelse(condition_2, value_2, 
+              ifelse(condition_3, value_3, value_4)))
+```
+
+## Two more things (2/2): `NA`
+
+- How to think about logicals and `NA`? If the answer is ambiguous $\rightarrow$ `NA`. If the answer isn't $\rightarrow$ not `NA`.
+
+```{r}
+TRUE | NA
+```
+
+```{r}
+FALSE & NA
+```
+
+# Warm up & Lab 3
+
+## Warm up & Lab 3
+
+- This warm up is a little longer. Aim to get up to the "Vectorized booleans" part!
+- After: add "(small group)" in front of your name if you want to work in one.
+
+- Exit poll:
+
+1. What is `FALSE | NA`?
+2. What is `TRUE & NA`?
+
 # Acc Class 1 / Class 4: Functions
 
 ## What's the Deal with Fall Coding Lab?
