@@ -233,46 +233,6 @@ FALSE & NA
 
 # Acc Class 1 / Class 4: Functions
 
-## What's the Deal with Fall Coding Lab?
-
-Two tracks:
-
-**Accelerated**: 2 lessons
-
-- 2 lessons covering loops and functions.
-- No final project (you already did it).
-- Occurs every other week.
-  - Ideally the sections are balanced. 
-
-**Not accelerated**: 5 lessons. 
-
-- 3 lessons review summer camp material. 
-- 2 lessons covering loops and functions.
-- Final project:
-  - Find a data set that speaks to you.
-  - Try to uncover something interesting. Graph it and tab it. 
-  - We'll give you feedback.
-  
-## Logistics for Both Tracks
-
-- Instructors Ari and Terence + wonderful TAs.
-- 80 minutes per week: brief review and Q&A, then work in groups.
-- Not graded.
-- Access to TAs for coding specific problems throughout the quarter.
-  - TA office hours 30 minutes before and after lecture time.
-- [Github website](https://harris-coding-lab.github.io) with all material.
-  - We'll post solutions (eventually).
-- Use Piazza for questions.
-  - Rules of engagement: coding questions only, no Stats homework!
-  - How to ask a good question?
-  
-## Today
-
-- Review what functions are
-- Do a warm-up
-- Provide background for the lab
-- Do the lab
-
 ##  Functions
 
 What are some of the key take aways you learned about functions from the video?
@@ -481,4 +441,104 @@ do_monte_carlo <- function(N, true_mean, B, alpha){
 - Add "(work along)" or "(small group)" to your Zoom name so we can sort you.
 - Get as far as you can, then finish it up after class.
 - Before you leave, fill out the exit poll.
+
+
+## Acc Class 2
+
+##  For loops
+
+
+What are some of the key take aways you learned about for-loops from the video?
+
+```{r}
+x <- -10:10
+y <- integer(length = length(x))
+
+for (z in seq_along(x)) {
+  
+  y[z] <- x[z] ^ 2 + x[z] + 1
+  
+}
+```
+
+
+
+## Key points: for-loops
+
+- Iteration is useful when we are repeatedly calling the same block of code or function while changing one (or two) inputs. 
+
+- If you can, use vectorized operations.
+
+- Otherwise, for loops work for iteration
+
+    - Clearly define what you will iterate over (values or indicies)
+    - Preallocate space for your output (if you can)
+    - The body of the for-loop has parametrized code based on thing your iterating over
+    - Debug as you code by testing your understanding of what the for-loop should be doing (e.g. using `print()`)
+
+
+## For loops
+\footnotesize
+Compare and contrast the two code blocks
+
+```{r}
+x <- -10:10
+y <- integer(length = length(x))
+
+for (z in seq_along(x)) {
+  y[z] <- x[z]^2 + x[z] + 1
+}
+```
+
+and
+
+```{r}
+x <- -10:10
+y <- c()
+
+for (item in x) {
+  y <- c(y, item^2 + item + 1)
+}
+```
+
+Is there a better way to write this code?
+
+# Warm-up & Lab 5 
+
+## Warm-up
+
+- Solve the questions at the beginning of the lab in small (random) groups.
+- After: add "(small group)" in front of your name if you want to work in one,
+
+if you want to work along just stay in the main room.
+
+## lab 5
+
+In this lab you'll simulate the law of large numbers in action. Afterwards, you should be able to explain what this graph is telling you!
+
+```{r, echo = FALSE}
+set.seed(60615)
+population_sd <- c(1, 5, 10, 20)
+sample_sizes <- seq(10, 1000, length.out =100)
+estimates <- tibble(n = integer(), sample_mean = double(), population_sd = integer())
+
+for (sd in population_sd){
+  for (n in sample_sizes) {
+    sample_mean <- mean(rnorm(n, mean = 0, sd = sd))
+    estimates <- bind_rows(estimates, c(n = n, sample_mean = sample_mean, population_sd = sd))
+  }
+}
+
+estimates %>%
+  ggplot(aes(x = n, y = sample_mean)) +
+  geom_line() +
+  facet_wrap(~ population_sd) +
+  theme_minimal()
+```
+
+
+
+
+
+
 
