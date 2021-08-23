@@ -1,5 +1,5 @@
 ---
-title: "Lab Session 0: Intro to R, RStudio and Tidyverse"
+title: "Pre-work: Intro to R, RStudio and Tidyverse"
 author: "Ari Anisfeld"
 date: "8/26/2020"
 output: pdf_document
@@ -11,15 +11,15 @@ library("tidyverse")
 ```
 
 
-We expect you to watch the `class 0` material, [here](harris-coding-lab.github.io) prior to lab and have:
+The *purpose* of the pre-work is two-fold. First, we want you to make sure you have R installed and running before day 1. Second, we want you to start playing with code as soon as possible. Experimenting and tinkering with code is how you hone these skills!
 
-1. Installed R from <https://www.r-project.org>
-1. Installed Rstudio from <http://www.rstudio.com>
+Make sure you *watch the intro videos* [intro part 1](https://youtu.be/2_6LRKBe28A) and [intro part 2](https://youtu.be/2_6LRKBe28A) so you have context.
 
-If you find yourself in lab without R installed, you can use google colab [colab.fan/r )](colab.fan/r) to run R in a notebook environment. You'll lose some of the RStudio functionality, but it'll work. 
-
+We *included a text file* with the code from this tutorial called *`00_lab_intro_to_R_and_tidyverse.R`*.  If you copy and paste from this pdf, the syntax sometimes gets messed up and the code will not work. We have solutions available as well which you can check if you get stuck--but try to avoid them.
 
 ## Installation completion
+
+If you have not yet, install R and R Studio. We have instructions on how to do so [here](https://docs.google.com/document/d/1605JCpH3sV8lBG2x-PsxIQcB9rh3qY5zglfRnUbf43A/).
 
 1. If you have not yet, run the following code to install the `tidyverse`.
 
@@ -42,26 +42,24 @@ If you find yourself in lab without R installed, you can use google colab [colab
     ```
 
 
-4. Run the following code to make sure you have installed successfully. Then, assign the resulting dataframe to the name `big_storms`.
+4. Run the following code to make sure you have installed successfully. Then, assign the resulting tibble to the name `big_storms` using `<-`.
 
     ```{r, eval = FALSE}
     # storms is a dataset that comes with the tidyverse
     # use View(storms) to see the full dataset
-
     storms %>%
       group_by(name, year) %>%
       filter(max(category) == 5)
     ```
 
 
-5. This code makes the map seen below. If you run it you will get an error that says your code is missing a required package. Use the error to figure out what package is missing, install it and then reproduce the map on your computer. [This package is not essential, so if you're using a lot of time (> 3 min) trying to install it. It's okay to move on or try on google colab.]
+5. This code makes the map seen below. If you run it you will get an error that says your code is missing a required package. Use the error to figure out what package is missing, install it and then reproduce the map on your computer. [This package is not essential, so if you're using a lot of time (> 5 min) trying to install it. It's okay to move on.]
 
 ```{r, eval= FALSE}
   ggplot(aes(x = long, y = lat, color = name), data = big_storms) +
         geom_path() + 
         borders("world") + 
         coord_quickmap(xlim = c(-130, -60), ylim = c(20, 50))
-    
 ```
 
 
@@ -76,34 +74,43 @@ If you find yourself in lab without R installed, you can use google colab [colab
     
 ```
 
-6. The map is nice, but we cannot see where the storm baths begin. Play with the code to expand our view to capture the full path.
+6. The map is nice, but we cannot see where the storm paths begin. Adjust the code to expand our view to capture the full path.
+
 
 
 ## Processing and analyzing data, an example:
 
-Now you'll see an abridged version of the data exploration I undertook to make the racial disparities of covid-19 plot discussed in lecture. 
+Now you'll see an abridged version of the data exploration I undertook to make the racial disparities of Covid-19 plot discussed in lecture. 
 
-The idea is to preview code we'll see in coding lab and get you tinkering. 
+As mentioned before, the code below is in the file `00_lab_intro_to_R_and_tidyverse.R`. (This code has syntax that copy-paste will mess up!)   '
 
-Copy and paste the following code to download and load data from CDC. It's a large enough file that it might take a minute to run. Note the original names of the variables `diff` and `perc_diff`. This code mainly does some pre-processing of the data for you.
+Run the code to download and preprocess the data. The data will take a few minute to download since it is large-ish.
 
 ```{r, cache = TRUE, message = FALSE}
+# Stuff after a # is a comment and will not affect what the code does.
+
 covid_data <- 
+  # reads data directly from CDC website
   read_csv(paste0("https://data.cdc.gov/api/views/qfhf-uhaa/rows.csv?",
                   "accessType=DOWNLOAD&bom=true&format=true%20target="), 
            col_types = cols(Suppress = col_character())) %>%
+  # change column names from human readable to more code friendly
+  # and create a new column (called diff) based on older ones
     mutate(week = `Week Ending Date`,
            race_ethnicity = `Race/Ethnicity`,
            n_deaths = `Number of Deaths`,
            diff = `Difference from 2015-2019 to 2020`,
+           #  notice that diff + expected deaths = n_deaths
            expected_deaths = n_deaths - diff,
            perc_diff = `Percent Difference from 2015-2019 to 2020`,
            year = MMWRYear,
-           week_no = MMWRWeek,
+           week_no = MMWRWeek + ifelse(year == "2021", 1, 0),
            jurisdiction = Jurisdiction,
            state = `State Abbreviation`
            )  %>%
-    filter(`Time Period` == "2020", Outcome == "All Cause", Type != "Unweighted") %>%
+    # filter ROWs of data to make it more manageable
+    filter(`Time Period` %in% c("2020", "2021"), Outcome == "All Cause", Type != "Unweighted") %>%
+    # select COLUMNS of data to make it more manageable
     select(jurisdiction, state, week, year, week_no, 
            race_ethnicity, n_deaths, expected_deaths, diff, perc_diff)
 ```
@@ -118,10 +125,9 @@ Analysis is easier with data that is "tidy", by which we mean
 
 `storms` is tidy and the unit of observation is storm-time which is captured by the columns `name`, `year`, `month`, `day` and `hour`.
 
-Is `covid_data` tidy? What is the unit of observation for each row?
+`covid_data` is tidy. What is the unit of observation for each row? Look at the column
 
-2. R has a built in function to summarize each column called  `summary()`. Try calling the function. Your data goes in the first position in the parenthesis.  It's not the prettiest, but it gives you some information with little code.  Look at `n_deaths`. What information are you getting from `summary()`. Does anything surprise you?
-
+2. R has a built in function to summarize each column called  `summary()`. Try calling the function by typing `summary(covid_data)`. Your data goes in the first position in the parenthesis.  It's not the prettiest, but it gives you some information with little code.  Look at `n_deaths`. What information are you getting from `summary()`. 
 
 3.  In `summary()`, you saw that the Max values are quite high compared to the third quartile. That's worthy of investigation. Run the following code and explain why we have some super large values in our data set.
 
@@ -130,7 +136,7 @@ covid_data %>%
   filter(n_deaths > 10000) 
 ```
 
-4. Ah, that's actually quite useful. We have US data already aggregated for us. Let's start by aggregating the data so we have a single number for each `race_ethnicity`. Use the `<-` to assign the results to the name `us_deaths_by_race`.
+4. Ah, that's actually quite useful. We have US data already aggregated for us. Let's start by aggregating the data so we have a single number for each `race_ethnicity`. Use the `<-` to assign the results of the code to the name `us_deaths_by_race`. (The code is available in the .R file.)
 
 ```{r, eval = FALSE}
 covid_data %>%
@@ -138,7 +144,7 @@ covid_data %>%
   group_by(race_ethnicity) %>%
   summarize(expected_deaths = sum(expected_deaths, na.rm = TRUE),
             total_additional_deaths = sum(diff, na.rm = TRUE),
-            percent_diff = 100 * total_additional_deaths / expected_deaths
+            percent_diff = round(100 * total_additional_deaths / expected_deaths)
             ) 
 ```
 
@@ -150,12 +156,12 @@ us_deaths_by_race %>%
   geom_col() +
 labs(x = "Percent above expected death count",
      y = "",
-     title = "Racial disparities of Covid-19 (USA, 2020)" )
+     title = "Racial disparities of Covid-19 (USA)" )
 ```
 
 6. Remove the `+ labs()` function from the above code. Describe what `labs()` does. What is the default plotting behavior?
 
-7. Remake the graph but for the state of IL. You should be able to do this by changing the above code in two places.
+7. Remake the graph but for the state of IL. You should be able to do this by changing the above code slightly.
 
 ```{r, echo = FALSE, eval = FALSE}
 covid_data %>%
@@ -169,7 +175,7 @@ covid_data %>%
   geom_col() +
 labs(x = "Percent above expected death count", 
      y = "", 
-     title = "Racial disparities of Covid-19 (Illinois, 2020)" )
+     title = "Racial disparities of Covid-19 (Illinois)" )
 ```
 
 
@@ -178,18 +184,16 @@ labs(x = "Percent above expected death count",
 ```{r}
 covid_data %>%
   filter(state == "US") %>%
-  # filter(race_ethnicity %in% 
+  filter(race_ethnicity != "Other") %>% 
   # c("Hispanic", "Non-Hispanic White", "Non-Hispanic Black", "Non-Hispanic Asian")) %>%
   ggplot(aes(x = week_no, y = perc_diff, color = race_ethnicity)) +
   geom_line()  +
 labs(y = "Percent above expected death count", 
      x = "week since January 1, 2020", 
-     title = "Racial disparities of Covid-19 (USA, 2020)", 
+     title = "Racial disparities of Covid-19 (USA)", 
      color = "" )
 ```
 
-9. Notice that groups with smaller populations have noisier time-series. The unfortunately-named "Other" time series is saw toothed, while the "Non-Hispanic White" line is much smoother. Remove the `#` from the code above and run it again. `#` is used for "comments" in R. R ignores code that comes after `#` until a new line is started.
+9. Notice that groups with smaller populations have noisier time-series. The unfortunately-named "Other" time series is sawtoothed, while the "Non-Hispanic White" line is relatively smooth. Remove the `#` from the code above and run it again. `#` is used for "comments" in R. R ignores code that comes after `#` until a new line is started.
 
-10. Finally, you might notice that it looks like there's a suspicuous drop off in our "Percent above expected death count" after week 30. Let's investigate. Is this because there actually fewer deaths? Change the `y` value from `perc_diff` to a different column in your data set to graph death counts.
-
-11. With a little investigation you discover that the CDC updates these counts over time and the last 6 weeks are likely to increase substantially. Add this line `filter(week_no < 30) %>%` to your code to cutoff the data sooner.
+10. Finally, you might notice that it looks like there's a suspicious drop off in our "Percent above expected death count" after week 80. With a little investigation you discover that the CDC updates these counts over time and the last 6 weeks are likely to increase substantially. Add this line `filter(week_no < 80) %>%` to your code in an appropriate place (i.e. before making the plot!) to remove the misleading data.

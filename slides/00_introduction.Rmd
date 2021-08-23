@@ -57,19 +57,22 @@ I wanted to understand racial disparities of Covid-19.
 ```{r, eval = TRUE, echo = FALSE}
 covid_data %>%
   mutate(week = lubridate::mdy(week)) %>%
+  filter(state %in% c("IL")) %>%
   filter(race_ethnicity %in% c("Hispanic", "Non-Hispanic White", "Non-Hispanic Black", "Non-Hispanic Asian")) %>%
-  filter(time_period == "2020", MMWRWeek <= 30) %>%
-  group_by(race_ethnicity, week ) %>%
+  filter(time_period %in% c("2020","2021"),
+         ) %>%
+  group_by(race_ethnicity, week ) %>% 
   summarize(actual_deaths = sum(deaths, na.rm  = TRUE),
             diff_deaths = sum(diff, na.rm = TRUE),
+            # recall diff is the difference between actual and expected deaths
             expected_deaths = actual_deaths - diff_deaths,
-            perc_above_expected = 100 * diff_deaths / expected_deaths) %>%
+            perc_above_expected = 100 * diff_deaths / expected_deaths) %>% 
   ggplot(aes(x = week, color = race_ethnicity)) +
     geom_line(aes(y = perc_above_expected)) + 
   theme_minimal() + 
   labs(y = "Percent of deaths above expected deaths\n(weekly mean 2015-2019 for given week)", 
        x = "", 
-       title = "Racial disparities of Covid-19, United States 2020" ,
+       title = "Racial disparities of Covid-19, IL" ,
        subtitle = "Data source: CDC",
        color = "") +
   theme(legend.position = "bottom")
@@ -84,15 +87,17 @@ Foundations:
 1. Vectors and data types
 1. If statements
 1. Analyzing data with groups
-1. Basic graph making (summer only)
-1. Loops  (in fall)
-1. Functions (in fall)
+1. Loops
+1. Functions
+1. Graphing with `ggplot` (Extra lesson)
+
+*Fall Coding Lab condenses material into 5 lessons*
 
 In stats 1 and other courses, you will build off of these lessons:
 
 - extend your capabilities with the functions we teach you
 - introduce statistics functions
-- introduce new packages etc. based on needs
+- introduce new packages and tools based on needs
 
 ## Learning philosophy
 
