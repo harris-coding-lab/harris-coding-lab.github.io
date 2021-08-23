@@ -1,6 +1,6 @@
 ---
 title: "Pre-work: Intro to R, RStudio and Tidyverse"
-author: "Ari Anisfeld"
+author: "Solutions"
 date: "8/23/2021"
 output: pdf_document
 ---
@@ -17,8 +17,6 @@ Make sure you *watch the intro videos* [intro part 1](https://youtu.be/2_6LRKBe2
 
 We *included a text file* with the code from this tutorial called *`00_lab_intro_to_R_and_tidyverse.R`*.  If you copy and paste from this pdf, the syntax sometimes gets messed up and the code will not work. We have solutions available as well which you can check if you get stuck--but try to avoid them.
 
-Note: some of the problems just require you to run code and think about the output, while others ask you to manipulate code or answer questions.
-
 ## Installation completion
 
 If you have not yet, install R and R Studio. We have instructions on how to do so [here](https://docs.google.com/document/d/1605JCpH3sV8lBG2x-PsxIQcB9rh3qY5zglfRnUbf43A/).
@@ -31,13 +29,15 @@ If you have not yet, install R and R Studio. We have instructions on how to do s
 
 2. This code returns an error. Why? Fix it and install the packages. We'll see what they're for in the next lecture
 
+  *We need to use strings (quotes) to install packages.*
+
     ```{r, eval = FALSE}
-    install.packages(haven)
-    install.packages(readxl)
+    install.packages("haven")
+    install.packages("readxl")
     ```
 
 
-3. In order to have access to `tidyverse` functions, you need to load the library. Run the following code.
+3. In order to have access to `tidyverse` functions, you need to load the library.
 
     ```{r, eval = FALSE}
     library("tidyverse")
@@ -46,39 +46,28 @@ If you have not yet, install R and R Studio. We have instructions on how to do s
 
 4. Run the following code to make sure you have installed successfully. Then, assign the resulting tibble to the name `big_storms` using `<-`.
 
-    ```{r, eval = FALSE}
+    ```{r, eval = TRUE}
     # storms is a dataset that comes with the tidyverse
     # use View(storms) to see the full dataset
+    big_storms <-
     storms %>%
       group_by(name, year) %>%
       filter(max(category) == 5)
     ```
 
 
-5. This code makes the map seen below. If you run it you will get a message that says your code is missing a required package. R 4.1 will ask you to install the package. Say yes. [This package is not essential, if the package fails to install make a note of what error messages you get and then move on.]
+5. This code makes the map seen below. If you run it you will get a message that says your code is missing a required package. R 4.1 will ask you to install the package. Say yes. [This package is not essential, so if you're using a lot of time (> 5 min) trying to install it. It's okay to move on.]
 
-```{r, eval= FALSE}
-  ggplot(aes(x = long, y = lat, color = name), data = big_storms) +
-        geom_path() + 
-        borders("world") + 
-        coord_quickmap(xlim = c(-130, -60), ylim = c(20, 50))
-```
-
-
-```{r, echo = FALSE}
-    storms %>%
-      group_by(name, year) %>%
-      filter(max(category) == 5) %>%
-  ggplot(aes(x = long, y = lat, color = name)) +
-        geom_path() + 
-        borders("world") + 
-        coord_quickmap(xlim = c(-130, -60), ylim = c(20, 50))
-    
-```
+  *If you don't let R install the package for you. You need to run install.packages("maps")* 
 
 6. The map is nice, but we cannot see where the storm paths begin. Adjust the code to expand our view to capture the full path.
 
-
+```{r, eval= TRUE}
+  ggplot(aes(x = long, y = lat, color = name), data = big_storms) +
+        geom_path() + 
+        borders("world") + 
+        coord_quickmap(xlim = c(-130, -20), ylim = c(10, 50))
+```
 
 ## Processing and analyzing data, an example:
 
@@ -125,11 +114,14 @@ Analysis is easier with data that is "tidy", by which we mean
 - each row is an observation 
 - each columns is a variable. 
 
-`storms` is tidy and the unit of observation is storm-time which is captured by the columns `name`, `year`, `month`, `day` and `hour`.
+`covid_data` is tidy. What is the unit of observation for each row?
 
-`covid_data` is tidy. What is the unit of observation for each row? (I.e. Look at the column headers and try to determine the smallest set of columns that uniquely identify a row.)
+
+  *Observations in `covid_data` are uniquely determined by `state`, `week`, `race_ethnicity`. We could swap out `jurisdiction` for `state` and `week_no` for `week`*
 
 2. R has a built in function to summarize each column called  `summary()`. Try calling the function by typing `summary(covid_data)`. Your data goes in the first position in the parenthesis.  It's not the prettiest, but it gives you some information with little code.  Look at `n_deaths`. What information are you getting from `summary()`. 
+
+  *We see the minimum and maximum values, the value of the first, second (median) and third quartiles along with the mean and number of NAs.*
 
 3.  In `summary()`, you saw that the Max values are quite high compared to the third quartile. That's worthy of investigation. Run the following code and explain why we have some super large values in our data set.
 
@@ -141,6 +133,7 @@ covid_data %>%
 4. Ah, that's actually quite useful. We have US data already aggregated for us. Let's start by aggregating the data so we have a single number for each `race_ethnicity`. Use the `<-` to assign the results of the code to the name `us_deaths_by_race`. (The code is available in the .R file.)
 
 ```{r, eval = FALSE}
+us_deaths_by_race <- 
 covid_data %>%
   filter(state == "US") %>%
   group_by(race_ethnicity) %>%
@@ -163,10 +156,13 @@ labs(x = "Percent above expected death count",
 
 6. Remove the `+ labs()` function from the above code. Describe what `labs()` does. What is the default plotting behavior?
 
+  *labs() allows you to customize labels on the graph. If we don't customize, R uses column names as labels for axes and there is no title.*
+
 7. Remake the graph but for the state of IL. You should be able to do this by changing the above code slightly.
 
-```{r, echo = FALSE, eval = FALSE}
+```{r}
 covid_data %>%
+  # Filter the state
   filter(state == "IL") %>%
   group_by(race_ethnicity) %>%
   summarize(expected_deaths = sum(expected_deaths, na.rm = TRUE),
@@ -177,17 +173,27 @@ covid_data %>%
   geom_col() +
 labs(x = "Percent above expected death count", 
      y = "", 
+     # Make sure to adjust the title
      title = "Racial disparities of Covid-19 (Illinois)" )
 ```
 
 
 8. Seeing this graph, I thought to myself. I can tell a better story and understand the data better if I included the time series element. This would allow us to see how the disparities change over time.
+  
+  *see 10*
+
+9. Notice that groups with smaller populations have noisier time-series. The unfortunately-named "Other" time series is sawtoothed, while the "Non-Hispanic White" line is relatively smooth. Remove the `#` from the code above and run it again. `#` is used for "comments" in R. R ignores code that comes after `#` until a new line is started.
+
+  *see 10*
+
+10. Finally, you might notice that it looks like there's a suspicious drop off in our "Percent above expected death count" after week 80. With a little investigation you discover that the CDC updates these counts over time and the last 6 weeks are likely to increase substantially. Add this line `filter(week_no < 80) %>%` to your code in an appropriate place (i.e. before making the plot!) to remove the misleading data.
 
 ```{r}
 covid_data %>%
   filter(state == "US") %>%
-  # filter(race_ethnicity %in%
-  # c("Hispanic", "Non-Hispanic White", "Non-Hispanic Black", "Non-Hispanic Asian")) %>%
+  filter(week_no < 80) %>%
+  filter(race_ethnicity %in%
+   c("Hispanic", "Non-Hispanic White", "Non-Hispanic Black", "Non-Hispanic Asian")) %>%
   ggplot(aes(x = week_no, y = perc_diff, color = race_ethnicity)) +
   geom_line()  +
 labs(y = "Percent above expected death count", 
@@ -196,6 +202,18 @@ labs(y = "Percent above expected death count",
      color = "" )
 ```
 
-9. Notice that groups with smaller populations have noisier time-series. The unfortunately-named "Other" time series is sawtoothed, while the "Non-Hispanic White" line is relatively smooth. Remove the `#` from the code above and run it again. `#` is used for "comments" in R. R ignores code that comes after `#` until a new line is started.
+  *you could combine all the filter statements together too! I think this is more readable*
 
-10. Finally, you might notice that it looks like there's a suspicious drop off in our "Percent above expected death count" after week 80. With a little investigation you discover that the CDC updates these counts over time and the last 6 weeks are likely to increase substantially. Add this line `filter(week_no < 80) %>%` to your code in an appropriate place (i.e. before making the plot!) to remove the misleading data.
+```{r}
+covid_data %>%
+  filter(state == "US", 
+         week_no < 80, 
+         race_ethnicity %in% c("Hispanic", "Non-Hispanic White",
+                               "Non-Hispanic Black", "Non-Hispanic Asian")) %>%
+  ggplot(aes(x = week_no, y = perc_diff, color = race_ethnicity)) +
+  geom_line()  +
+labs(y = "Percent above expected death count", 
+     x = "week since January 1, 2020", 
+     title = "Racial disparities of Covid-19 (USA)", 
+     color = "" )
+```

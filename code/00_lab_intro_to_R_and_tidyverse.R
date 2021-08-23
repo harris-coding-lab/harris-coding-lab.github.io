@@ -20,9 +20,10 @@ ggplot(aes(x = long, y = lat, color = name), data = big_storms) +
 # Part 2: Processing and analyzing data, an example: 
 
 # PATIENCE it will take a few minutes to download the data. 
-covid_data <-
+covid_data <- 
   # reads data directly from CDC website
-  read_csv("https://data.cdc.gov/api/views/qfhf-uhaa/rows.csv?accessType=DOWNLOAD&bom=true&format=true%20target=",
+  read_csv(paste0("https://data.cdc.gov/api/views/qfhf-uhaa/rows.csv?",
+                  "accessType=DOWNLOAD&bom=true&format=true%20target="), 
            col_types = cols(Suppress = col_character())) %>%
   # change column names from human readable to more code friendly
   # and create a new column (called diff) based on older ones
@@ -34,7 +35,7 @@ covid_data <-
          expected_deaths = n_deaths - diff,
          perc_diff = `Percent Difference from 2015-2019 to 2020`,
          year = MMWRYear,
-         week_no = MMWRWeek + ifelse(year == "2021", 1, 0),
+         week_no = MMWRWeek + ifelse(year == "2021", 52, 0),
          jurisdiction = Jurisdiction,
          state = `State Abbreviation`
   )  %>%
@@ -43,7 +44,6 @@ covid_data <-
   # select COLUMNS of data to make it more manageable
   select(jurisdiction, state, week, year, week_no, 
          race_ethnicity, n_deaths, expected_deaths, diff, perc_diff)
-
 
 # 4. Use the `<-` to assign the results of the code to the name `us_deaths_by_race`. (The code is available in the .R file.)
 covid_data %>%
@@ -67,7 +67,7 @@ us_deaths_by_race %>%
 # 8
 covid_data %>%
   filter(state == "US") %>%
-  filter(race_ethnicity != "Other") %>% 
+  # filter(race_ethnicity %in%
   # c("Hispanic", "Non-Hispanic White", "Non-Hispanic Black", "Non-Hispanic Asian")) %>%
   ggplot(aes(x = week_no, y = perc_diff, color = race_ethnicity)) +
   geom_line()  +

@@ -1,7 +1,7 @@
 ---
-title: "Math camp coding self-assessment"
+title: "Coding self-assessment"
 author: "Ari Anisfeld"
-date: "6/13/2020"
+date: "4/23/2021"
 output:
   pdf_document: default
   html_document: default
@@ -14,16 +14,17 @@ library(readxl)
 ```
 
 
-As part of the statistics curriculum, you will be asked to analyze data using the programming language R. R is an open source language that is widely used by data analysts. 
+As part of the statistics curriculum, you will be asked to analyze data using the programming language R. R is an open source language that is widely used by data analysts and data scientists. In coding camp and coding lab, we provide an introduction to R coding focused on data analysis. 
 
-This is a self-assessment. If you feel comfortable completing this assignment by yourself (with the help of google), then you are free to skip the summer coding camp. In summer coding camp, we provide an introduction to R coding focused on data analysis. In fall coding lab, we repeat some of the data analysis material and also introduce using R for programming.
+This is a self-assessment. If you feel comfortable completing this assignment by yourself (with the help of Google), then you are free to skip the coding camp and coding lab. Otherwise, you can use this to pick the right track for you. 
 
-# Task 1:
+# Task 1:^[Copying and pasting from the pdf will create issues in syntax--particularly it messes up the type of quotes used. We provide a file with this code in a text file. Alternatively you can re-type the code or copy and paste and then fix syntax issues.]
 
 1. Install R and Rstudio.
 1. Install the package `readxl` and `tidyverse`. 
 1. Adjust the following code block to read in the provided data set,  
 `incarceration_counts_and_rates_by_type_over_time.xlsx`
+
 
     ```{r echo = FALSE, include=FALSE}
     incarceration_data <- read_xlsx("../data/incarceration_counts_and_rates_by_type_over_time.xlsx", 
@@ -132,7 +133,6 @@ We leave the data behind and test skills.
 
 
 # Task 6:
-These questions reflect skills covered in the fall coding lab and not during summer coding camp. 
 
 1. For loops: Take `numbers <- rep(seq(-9, 10, 1), 10)`. Using a for-loop, save the square of each number in a new vector called `numbers_squared`.
 
