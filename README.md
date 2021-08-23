@@ -10,8 +10,8 @@ This website (harris-coding-lab.github.io) contains the content for the Harris S
 
 - Watch videos for Class 1.
 
-### Materials
 
+### Materials
 Links to materials for each week's workshop will be posted here as provided. For each class, watch the video. Then, go to lab and attempt the lab
 
 | Class  | Videos | Slides & Code |  Problem sets | Additional Resources |
