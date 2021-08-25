@@ -73,7 +73,7 @@ The instructors for the Accelerated course is (see Canvas for emails):
 
 The teaching assistants for this course are:
 
-- Qiwen Li
+- Qiwei Lin 
 - Thomas Whamond
 - Jay Zaleski
 
