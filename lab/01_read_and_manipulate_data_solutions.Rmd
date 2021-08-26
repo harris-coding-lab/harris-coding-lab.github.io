@@ -11,9 +11,25 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
+library(readxl)
+library(haven)
 ```
 
-We expect you to watch the `class 1` material, [here](harris-coding-lab.github.io) prior to lab. If you find yourself in lab without R installed, please ask one of your partners to share screen and work together though the problem set.
+## Working with data and scripts (To be covered during Q&A session)
+
+In this section you will have set-up a directory structure for coding lab and started a script that reads in your data.
+
+```{r, eval = FALSE}
+library(tidyverse)
+library(readxl)
+
+# you should set working directory here to your data folder
+# as instructed.
+setwd(...your_dir...)
+
+wid_data <- read_xlsx("world_wealth_inequality.xlsx")
+```
+
 
 ##  Warm-up 
 
@@ -40,45 +56,46 @@ Could not find function "read_dta" since the "read_dta" function is from the 'ha
   
 3. In general, once you have successfully used `install.packages(pkg)` for a "pkg", you won't need to do it again. Install `haven` and `readxl` using the console.
 
-4. In your script, load `haven` and `readxl`. Notice that if you had to restart R right now. You could reproduce the entire warm-up by running the script. We strive for reproducibility by keeping the code we want organized in scripts or `Rmd`s.
-
-*Solution:*
-
-```{r, eval = TRUE}
-library(haven)
-library(readxl)
-rm(list = ls())
-```
+4. In your script, load `haven`. Notice that if you had to restart R right now. You could reproduce the entire warm-up by running the script. We strive for reproducibility by keeping the code we want organized in scripts or `Rmd`s.
 
 5. It's good practice when starting a new project to clear your R environment. This helps you make sure you are not relying on data or functions you wrote in another project. After you `library()` statements add the following code `rm(list = ls())`. 
 
-6. `rm()` is short for remove. Find the examples in `?rm` and run them in the console.
-
-## Working with data and scripts
-
-1. Do you have a folder on your computer for coding lab material?  If not, create one and make sure you know the path to the folder.
-
-2. It helps to use a consistent file structure (what files and folders are where). We will need to put our code and our data somewhere.^[Eventually you'll worry about output and supporting documentation] If you already have a system that works, great. For coding lab, we recommend creating a `problem_set` folder inside your coding lab folder. 
-
-3. Save your script in the `problem_set` folder. From now on, when you start a script or `Rmd` save it there.
-
-4. Make folder called `data` inside the `problem_set` folder. 
-
-5. Add a line to your script where you `setwd()` to the `data` folder.
-
-*Solution:*
+*Solution:*  Now your script looks like:
 
 ```{r, eval = FALSE}
-setwd("~/Desktop/problem_set/data")
+library(tidyverse)
+library(readxl)
+library(haven)
+rm(list = ls())
+
+# you should set working directory here to your data folder
+# as instructed.
+setwd(...your_dir...)
+
+wid_data_raw <- 
+    read_xlsx("world_wealth_inequality.xlsx", 
+              col_names = c("country", "indicator", "percentile", "year", "value")) %>% 
+  separate(indicator, sep =  "[\\r]?\\n", into = c("row_tag", "type", "notes")) 
 ```
 
-6. Download the data [here](https://github.com/harris-coding-lab/harris-coding-lab.github.io/raw/master/data/world_wealth_inequality.xlsx) and put the data in your `data` folder. The data source is the World Inequality Database where you can find data about the distribution of income and wealth in several contries over time. See [wid.world](wid.world) for more information.
-    
-7. If you followed the set-up from above, you should be able to run the following code with no error.
 
-    ```{r, eval = FALSE}
-    wid_data <- read_xlsx('world_wealth_inequality.xlsx')
-    ```
+
+6. `rm()` is short for remove. Find the examples in `?rm` and run them in the console.
+
+```{r}
+#run 
+
+tmp <- 1:4
+## work with tmp  and cleanup
+rm(tmp)
+
+## Not run: 
+## remove (almost) everything in the working environment.
+## You will get no warning, so don't do this unless you are really sure.
+rm(list = ls())
+
+```
+
 
 ## Examining `wid_data
     
@@ -86,12 +103,11 @@ setwd("~/Desktop/problem_set/data")
 
 2. We don't have columns headers. The World Inequality Database says the "structure" of the download is as shown in the image below.
 
-
-So we can create our own header in `read_xlsx`. Calling the read_xlsx function using `readxl::read_xlsx()` ensures that we use the read_xlsx() function from the readxl package. 
+So we can create our own header in `read_xlsx`.
 
 ```{r, eval = FALSE}
 wid_data_raw <- 
-  readxl::read_xlsx("world_wealth_inequality.xlsx", 
+  read_xlsx("world_wealth_inequality.xlsx", 
                     col_names = c("country", "indicator", "percentile", "year", "value")) 
 
 
@@ -101,13 +117,13 @@ Now when we look at the second column. It's a mess. We can seperate it based on 
     
 ```{r, eval = FALSE}
 wid_data_raw <- 
-  readxl::read_xlsx("world_wealth_inequality.xlsx", 
+  read_xlsx("world_wealth_inequality.xlsx", 
                     col_names = c("country", "indicator", "percentile", "year", "value")) %>% 
   separate(indicator, sep = "\\n", into = c("row_tag", "type", "notes")) 
 ```
 ```{r, include = FALSE}
   wid_data_raw <- 
-      readxl::read_xlsx("../data/world_wealth_inequality.xlsx", 
+      read_xlsx("../data/world_wealth_inequality.xlsx", 
                         col_names = c("country", "indicator", "percentile", "year", "value")) %>%
       separate(indicator, sep = "\\n", into = c("row_tag", "type", "notes")) 
 ```
@@ -138,7 +154,7 @@ french_data <- wid_data %>%
   filter(type == "Net personal wealth", country == "France")
 ```
 
-Note: When refering to words in the data, make sure they are in quotes "France", "Net personal wealth". When referring to columns, do not use quotes. We'll talk about data types in the next lecture.
+Note: When referring to words in the data, make sure they are in quotes "France", "Net personal wealth". When referring to columns, do not use quotes. We'll talk about data types in the next lecture.
 
 
 ```{r, eval = TRUE, warning=FALSE}
@@ -147,13 +163,13 @@ french_data %>%
     geom_line() 
 ```
 
-Now we're getting somewhere! The plot shows the proportion of national wealth owned by different segements of French society overtime. For example in 2000, the top 1 percent owned roughly 28 percent of the wealth, while the bottom 50 percent owned abouy 7 percent. 
+Now we're getting somewhere! The plot shows the proportion of national wealth owned by different segments of French society overtime. For example in 2000, the top 1 percent owned roughly 28 percent of the wealth, while the bottom 50 percent owned about 7 percent. 
 
 3. Explain the gaps in the plot. Using `filter()`, look at `french_data` in the years between 1960 and 1970. Does what you see line up with what you guessed by looking at the graph?
 
 *Solutions:*
 
-After filtring the `french_data` to between 1960 and 1970, we can see that there are missing values in the `value` column thus explaining the gaps in the plot
+After filtering the `french_data` to between 1960 and 1970, we can see that there are missing values in the `value` column thus explaining the gaps in the plot
 
 ```{r, eval = FALSE}
 french_data %>% 

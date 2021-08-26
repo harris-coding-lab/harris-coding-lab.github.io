@@ -14,14 +14,40 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 ```
 
-We expect you to watch the `class 1` material, [here](harris-coding-lab.github.io) prior to lab. If you find yourself in lab without R installed, try using RStudio cloud [https://rstudio.cloud/]( https://rstudio.cloud/).^[Sign up for the free tier which should be sufficient for camp. You will have to install packages.]
+We expect you to watch the `class 1` material, [here](harris-coding-lab.github.io) prior to lab.
 
 In this lab we'll use two data sets. You can download them in advance [here](https://github.com/harris-coding-lab/harris-coding-lab.github.io/raw/master/data/world_wealth_inequality.xlsx) and [here](https://github.com/harris-coding-lab/harris-coding-lab.github.io/raw/master/data/midwest.dta).
 
 
-##  Warm-up 
+## Working with data and scripts (To be covered during Q&A session)
 
-1. Create a new R script and add code to load the `tidyverse`. 
+1. Do you have a folder on your computer for coding lab material?  If not, create one and make sure you know the path to the folder.
+
+1. It helps to use a consistent file structure (what files and folders are where). We will need to put our code and our data somewhere.^[Eventually you'll worry about output and supporting documentation] If you already have a system that works, great. For coding lab, we recommend creating a `problem_set` folder inside your coding lab folder. 
+
+1. Save your script in the `problem_set` folder. From now on, when you start a script or `Rmd` save it there.
+
+1. Make folder called `data` inside the `problem_set` folder. 
+
+1. Create a new R script 
+
+1. Add code to load the `tidyverse`. 
+
+1. Add a line to your script where you `setwd()` to the `data` folder.
+
+1. If you haven't yet, download the first data set [here](https://github.com/harris-coding-lab/harris-coding-lab.github.io/raw/master/data/world_wealth_inequality.xlsx) and put the data in your `data` folder. The data source is the World Inequality Database where you can find data about the distribution of income and wealth in several contries over time. Outside of lab time, check out [wid.world](wid.world) for more information.
+
+1. Finally, we are using data in an excel format. We need the package `readxl` to process data of this type. In the console, run `install.packages("readxl")`.
+    
+1. If you followed the set-up from above, you should be able to run the following code with no error.
+
+    ```{r, eval = FALSE}
+    wid_data <- read_xlsx("world_wealth_inequality.xlsx")
+    ```
+    
+
+
+##  Warm-up (Lab 1)
 
 1. Your stats 1 partner comes to you and says they can't get data to load after restarting R. 
 You see the code:
@@ -38,34 +64,15 @@ You see the code:
   
     Note: If they say the code worked before, it's likely they had loaded `haven` in the console or perhaps in an earlier script. R packages will stay attached as long as the R session is live.
   
-1. In general, once you have successfully used `install.packages(pkg)` for a "pkg", you won't need to do it again. Install `haven` and `readxl` using the console.
+1. In general, once you have successfully used `install.packages(pkg)` for a "pkg", you won't need to do it again. Install `haven` using the console.
 
-1. In your script, load `haven` and `readxl`. Notice that if you had to restart R right now. You could reproduce the entire warm-up by running the script. We strive for reproducibility by keeping the code we want organized in scripts or `Rmd`s.
+1. In your script, load `haven` . Notice that if you had to restart R right now. You could reproduce the entire warm-up by running the script. We strive for reproducibility by keeping the code we want organized in scripts or `Rmd`s.
 
 1. It's good practice when starting a new project to clear your R environment. This helps you make sure you are not relying on data or functions you wrote in another project. After you `library()` statements add the following code `rm(list = ls())`. 
 
 1. `rm()` is short for remove. Find the examples in `?rm` and run them in the console.
 
-## Working with data and scripts
 
-1. Do you have a folder on your computer for coding lab material?  If not, create one and make sure you know the path to the folder.
-
-1. It helps to use a consistent file structure (what files and folders are where). We will need to put our code and our data somewhere.^[Eventually you'll worry about output and supporting documentation] If you already have a system that works, great. For coding lab, we recommend creating a `problem_set` folder inside your coding lab folder. 
-
-1. Save your script in the `problem_set` folder. From now on, when you start a script or `Rmd` save it there.
-
-1. Make folder called `data` inside the `problem_set` folder. 
-
-1. Add a line to your script where you `setwd()` to the `data` folder.
-
-1. If you haven't yet, download the first data set [here](https://github.com/harris-coding-lab/harris-coding-lab.github.io/raw/master/data/world_wealth_inequality.xlsx) and put the data in your `data` folder. The data source is the World Inequality Database where you can find data about the distribution of income and wealth in several contries over time. Outside of lab time, check out [wid.world](wid.world) for more information.
-    
-1. If you followed the set-up from above, you should be able to run the following code with no error.
-
-    ```{r, eval = FALSE}
-    wid_data <- read_xlsx("world_wealth_inequality.xlsx")
-    ```
-    
 ## Examining `wid_data
 
 1. Look at the data. What is the main problem here? 
@@ -77,30 +84,30 @@ knitr::include_graphics("images/01_data_structure.jpeg")
 ```
 
 
-
-So we can create our own header in `read_xlsx`. Calling the read_xlsx function using `readxl::read_xlsx()` ensures that we use the read_xlsx() function from the readxl package. 
+So we can create our own header in `read_xlsx`. 
 
 ```{r, eval = FALSE}
 wid_data_raw <- 
-  readxl::read_xlsx("world_wealth_inequality.xlsx", 
+  read_xlsx("world_wealth_inequality.xlsx", 
                     col_names = c("country", "indicator", "percentile", "year", "value")) 
 
 
 ```
 
-Now when we look at the second column. It's a mess. We can seperate it based on where the `\n` are and then deal with the data later. Don't worry about this code right now.
+Now when we look at the second column. It's a mess. We can separate it based on where the `\n` (or on some Windows computers where `\r\n`) are and then deal with the data later.
     
 ```{r, eval = FALSE}
 wid_data_raw <- 
-  readxl::read_xlsx("world_wealth_inequality.xlsx", 
-                    col_names = c("country", "indicator", "percentile", "year", "value")) %>% 
-  separate(indicator, sep = "\\n", into = c("row_tag", "type", "notes")) 
+    read_xlsx("world_wealth_inequality.xlsx", 
+              col_names = c("country", "indicator", "percentile", "year", "value")) %>% 
+  separate(indicator, sep =  "[\\r]?\\n", into = c("row_tag", "type", "notes")) 
 ```
+
 ```{r, include = FALSE}
   wid_data_raw <- 
       readxl::read_xlsx("../data/world_wealth_inequality.xlsx", 
                         col_names = c("country", "indicator", "percentile", "year", "value")) %>%
-      separate(indicator, sep = "\\n", into = c("row_tag", "type", "notes")) 
+      separate(indicator, sep = "[\\r]?\\n", into = c("row_tag", "type", "notes")) 
 ```
 
 NOTE: We want a clean reproducible script so you should just have one block of code reading the data: that last one. The other code were building blocks. If you want to keep "extra" code temporarily in your script you can use `#` to comment out the code. 
@@ -125,7 +132,7 @@ french_data <- wid_data %>%
 
 ```
 
-Note: When refering to words in the data, make sure they are in quotes "France", "Net personal wealth". When referring to columns, do not use quotes. We'll talk about data types in the next lecture.
+Note: When referring to words in the data, make sure they are in quotes "France", "Net personal wealth". When referring to columns, do not use quotes. We'll talk about data types in the next lecture.
 
 
 ```{r, echo = FALSE, eval = FALSE}
@@ -139,7 +146,7 @@ french_data %>%
     geom_line() 
 ```
 
-Now we're getting somewhere! The plot shows the proportion of national wealth owned by different segements of French society overtime. For example in 2000, the top 1 percent owned roughly 28 percent of the wealth, while the bottom 50 percent owned abouy 7 percent. 
+Now we're getting somewhere! The plot shows the proportion of national wealth owned by different segments of French society overtime. For example in 2000, the top 1 percent owned roughly 28 percent of the wealth, while the bottom 50 percent owned about 7 percent. 
 
 1. Explain the gaps in the plot. Using `filter()`, look at `french_data` in the years between 1960 and 1970. Does what you see line up with what you guessed by looking at the graph?
 
@@ -147,9 +154,10 @@ Now we're getting somewhere! The plot shows the proportion of national wealth ow
 
 1. Now following the same steps, explore data from the "Russian Federation". 
 
-1. The data for "Russian Federation" does not start in 1900, but our y-axis does. That's because we have a bunch of `NA`s. Let's filter out the `NA`s and remake the plot. You cannot test for `NA` using `==` (Try: `NA == NA`). Instead we have a function called `is.na()`. (Try: `is.na(NA)` and `!is.na(NA)`).
+1. The data for "Russian Federation" does not start in 1900, but our y-axis does. That's because we have a bunch of `NA`s. Let's filter out the `NA`s and remake the plot. You cannot test for `NA` using `==`. Run: `NA == NA`, we see the result is `NA`, but we need `TRUE` or `FALSE` to know what to filter!
+Instead we have a function called `is.na()`. (Try: `is.na(NA)` and `!is.na(NA)`).
 
-1. Use two `dplyr` verbs to figure out what year the bottom 50 percent held the least wealth. First, choose the rows that cover the bottom 50 percent and then sort the data in descending order using `arrange()`.^[Hint: Look at the examples in `?arrange`].
+1. Use two `dplyr` verbs to figure out what year the bottom 50 percent held the least wealth. First, choose the rows that cover the bottom 50 percent and then sort the data in descending order using `arrange()`.^[Hint: Look at the examples in `?arrange` or at your notes].
 
 ```{r, eval = FALSE}
 # replace ... with relevant code
