@@ -10,13 +10,15 @@ This website (harris-coding-lab.github.io) contains the content for the Harris S
 
 - Watch videos for Class 1.
 
+Note: the lab material for future classes is "under review" and will be updated prior to camp.
+
 
 ### Materials
 Links to materials for each week's workshop will be posted here as provided. For each class, watch the video. Then, go to lab and attempt the lab
 
 | Class  | Videos | Slides & Code |  Problem sets | Additional Resources |
 | ---- | ----- | ----- | ----- | --- |
-|**Pre-work: Why R?**| [video part 1: why R?](https://youtu.be/2_6LRKBe28A) (~ 10 min) <br> [video part 2: a quick introduction to R, Rstudio and `tidyverse`](https://youtu.be/PvrUfHWzyII) (~ 14 min) | [slides](slides/00_introduction.pdf) <br> [slide code](code/00_introduction.R) | [lab 0](lab/00_lab_intro_to_R_and_tidyverse.pdf) <br> [lab code!](code/00_lab_intro_to_R_and_tidyverse.R) <br> [solutions](lab/00_lab_intro_to_R_and_tidyverse_solutions.pdf)||
+|**Pre-work: Why R?**| [video part 1: why R?](https://youtu.be/2_6LRKBe28A) (~ 10 min) <br> [video part 2: a quick introduction to R, Rstudio and `tidyverse`](https://youtu.be/PvrUfHWzyII) (~ 14 min) | [slides](slides/00_introduction.pdf) <br> [slide code](code/00_introduction.R) | [lab 0](lab/00_lab_intro_to_R_and_tidyverse.pdf) <br> [lab code!](code/00_lab_intro_to_R_and_tidyverse.R) <br> [solutions](lab/00_lab_intro_to_R_and_tidyverse_solutions.pdf)| Note: Make sure to download the lab code! |
 |**Class 1: Reading data files and manipulating data with `dplyr`** | [video 1: reading data](https://youtu.be/WwoMJODwFOQ) (~ 10 min) <br> [video 2: manipulating data with `dplyr`](https://youtu.be/o1a-9-RvNc4) (~ 18 min) |- [slides: reading data](slides/01a_reading-data.pdf) <br> - [slides: manipulating data with `dplyr`](slides/01b_dplyr-manipulating-data.pdf) <br> - [slide code: reading data](code/01a_reading-data.R)  <br>  - [slide code: manipulating data with `dplyr`](code/01b_manipulating-data-dplyr.R) | [lab 1](lab/01_read_and_manipulate_data.pdf) <br> [solutions](lab/01_read_and_manipulate_data_solutions.pdf)| [FED data from slides](data/SCE-Public-LM-Quarterly-Microdata.xlsx) (you can download to follow along) <br>[texas data from slides](data/texas_housing_data.csv) <br> [drug cartel data from slide](https://dataverse.harvard.edu/file.xhtml?persistentId=doi:10.7910/DVN/VIXNNE/XH5ZQU&version=1.0) (you'll need to download the `dta` from Dataverse)|
 |**Class 2: Vectors and Data Types**|[video](https://youtu.be/0MIeGk_xwiQ) (~ 22 min)| [slides](slides/02_vectors-and-data-types.pdf) <br> [slide code](code/02_vectors-and-data-types.R) | [lab 2](lab/02_vectors_and_dtypes.pdf) <br> [basics review](lab/02_basics_vectors_and_datatypes.pdf) <br> [solutions](lab/02_vectors_and_dtypes_solutions.pdf) | [lab code](lab/02_vectors_and_dtypes.R) |
 |**Class 3: If Statements** | [video](https://www.youtube.com/watch?v=HKC7RTpNt60) (~ 20 min) | [slides](slides/03_if-statements.pdf) <br> [slide code](code/03_if-statements.R) | [lab 3](lab/03_if_statements.pdf) <br> [basic review](lab/03_basics_if_else.pdf) <br> [solutions](lab/03_if_statements_solution.pdf)| [lab code](lab/03_if_statements.R) |
@@ -71,7 +73,7 @@ The instructors for the Accelerated course is (see Canvas for emails):
 
 The teaching assistants for this course are:
 
-- Qiwen Li
+- Qiwei Lin 
 - Thomas Whamond
 - Jay Zaleski
 
