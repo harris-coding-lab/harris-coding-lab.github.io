@@ -1,7 +1,7 @@
 ---
 title: "Lab Session 4: Read and manipulate data"
 author: "Ari Anisfeld"
-date: "8/26/2020"
+date: "8/29/2021"
 output: pdf_document
 urlcolor: blue
 ---
@@ -33,18 +33,18 @@ include_tweet("https://twitter.com/nomadj1s/status/1294390352904966151")
 Follow the [tweet thread](https://twitter.com/nomadj1s/status/1294390352904966151) and you'll see that Prof. Damon Jones, of Harris, gets that data and does some analysis. In this lab, you're going to follow his lead and dig into traffic stop data from the University of Chicago Police Department, one of the largest private police forces in the world.
 
 
-Download the data [here](https://github.com/harris-coding-lab/harris-coding-lab.github.io/raw/master/data/data_traffic.csv). You can save the file directly from your browser using ctrl + s or cmd + s. Alternatively, you can read the csv directly from the internet like we saw in lab 0. Using the link https://github.com/harris-coding-lab/harris-coding-lab.github.io/raw/master/data/data_traffic.csv
+Download the data [here](https://github.com/harris-coding-lab/harris-coding-lab.github.io/raw/master/data/data_traffic.csv). You can save the file directly from your browser using ctrl + s or cmd + s. Alternatively, you can read the csv directly from the internet like we saw in lab 0 using the link https://github.com/harris-coding-lab/harris-coding-lab.github.io/raw/master/data/data_traffic.csv
 
 
 # Warm-up
 
-1. Open a new `Rmd` and save it in your coding lab folder. If you have not yet, move your data file to your preferred data location. 
+1. Open a new `Rmd` and save it in your coding lab folder; if you downloaded the data, move your data file to your preferred data location. 
 
 1. In your `Rmd`, write code to load your packages. If you load packages in the console, you will get an error when you knit because knitting starts a fresh R session.
 
 1. Load `data_traffic.csv` and assign it to the name `traffic_data`. This data was scrapped from the UCPD website and partially cleaned by Prof. Jones. 
 
-1. Recall that `group_by()` operates silently. How can you tell `grouped_data` different from `traffic_data`?
+1. Recall that `group_by()` operates silently. Below I create a new data frame called grouped_data. 
 
     ```{r}
     grouped_data <- 
@@ -52,8 +52,10 @@ Download the data [here](https://github.com/harris-coding-lab/harris-coding-lab.
         group_by(Race, Gender)
     ```
     
+    a. How can you tell `grouped_data` is different from `traffic_data`?
     a. How many groups (Race-Gender pairs) are in the data? (This information should be available without writing additional code!)
-    a. Before running the code. Predict the dimensions (number of rows by number of columns) of the tibbles created by `traffic_data %>% summarize(n = n())` and `grouped_data %>% summarize(n = n())`. Now check you intuition by running the code.
+    a. Without running the code, predict the dimensions (number of rows by number of columns) of the tibbles created by `traffic_data %>% summarize(n = n())` and `grouped_data %>% summarize(n = n())`. 
+    a. Now check you intuition by running the code.
     
 1. Use `group_by()` and `summarize()` to recreate the following table.
     ```{r, echo = FALSE}
@@ -62,6 +64,7 @@ Download the data [here](https://github.com/harris-coding-lab/harris-coding-lab.
       summarize(n = n())
     
     ```
+
 1. Use `count()` to produce the same table.
 
 ## Moving beyond counts
@@ -84,7 +87,7 @@ Download the data [here](https://github.com/harris-coding-lab/harris-coding-lab.
     traffic_stop_freq_bad
     ```
  
-1. Now we want to go a step further than Prof. Jones.^[The analysis that follows is partially inspired by Eric Langowski, a Harris alum, who was also inspired to investigate by the existence of this data  (You may have seen Prof. Jones retweet him at the end of the thread.)] Do outcomes differ by race? In the first code block below, I provide code so you can visualize disposition by race. "Disposition" is police jargon that means the current status or final outcome of a police interaction.
+1. Now we want to go a step further.^[The analysis that follows is partially inspired by Eric Langowski, a Harris alum, who was also inspired to investigate by the existence of this data  (You may have seen Prof. Jones retweet him at the end of the thread.)] Do outcomes differ by race? In the first code block below, I provide code so you can visualize disposition by race. "Disposition" is police jargon that means the current status or final outcome of a police interaction.
 
     ```{r}
     citation_strings <- c("citation issued", "citations issued", "citation  issued" )
@@ -130,7 +133,7 @@ Download the data [here](https://github.com/harris-coding-lab/harris-coding-lab.
 By default, the bar graph is stacked. Look at the resulting graph and discuss the pros and cons of this plot with your group.
 
 
-1. I decided I would focus on citations only and added the `filter(n > 5, Disposition == "citation")` to the code.^[Notice that I get the data exactly how I wanted it using `dplyr` verbs and then try to make the graph.] What is the impact of filtering based on `n > 5`? Would you make the same choice? This question doesn't have a "right" answer. You should try different options and reflect.
+1. I decided I would focus on citations only and added the `filter(n > 5, Disposition == "citation")` to the code.^[Notice that I get the data exactly how I want it using `dplyr` verbs and then try to make the graph.] What is the impact of filtering based on `n > 5`? Would you make the same choice? This question doesn't have a "right" answer. You should try different options and reflect.
 
     <!-- The case against: 
         - We throw away information. 
@@ -173,7 +176,7 @@ When we explored the World Inequality Database data in lab 1, we mimicked groupe
         # You will like have to adjust the file path
         readxl::read_xlsx("../data/world_wealth_inequality.xlsx", 
                           col_names = c("country", "indicator", "percentile", "year", "value")) %>%
-        separate(indicator, sep = "\\n", into = c("row_tag", "type", "notes")) 
+        separate(indicator, sep = "[\\r]?\\n", into = c("row_tag", "type", "notes")) 
   
     wid_data <- wid_data_raw %>% 
                   select(-row_tag) %>%
