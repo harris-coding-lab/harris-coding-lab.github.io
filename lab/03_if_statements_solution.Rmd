@@ -1,7 +1,7 @@
 ---
 title: 'Lesson 3: Control flow with `if` and `ifelse`'
 author: "Suggested Solutions"
-date: "9/10/2020"
+date: "08/31/2021"
 output: pdf_document
 ---
 
@@ -9,65 +9,8 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(haven)
-mrc_data <- read_dta("data/mrc_table10.dta")
-```
-
-
-We expect you to watch the `class 3` material, [here](harris-coding-lab.github.io) prior to lab. Download the data before lab.
-
-
-## Data:
-
-For this lab, we will use data from Opportunity Insights: https://opportunityinsights.org/data/ 
-
-1. Download the Stata file and Readme for "College Level Characteristics from the IPEDS Database and the College Scorecard".
-
-
-## Intro to `Rmd`s
-
-1. Create an `Rmd` file. (In RStudio's menu `File > New File > R Markdown`). Name the document and select PDF. These settings can be changed later.
-2. Save the `Rmd` in your coding lab folder as `lab_3.Rmd`. 
-3. New `Rmd`s comes with some example code. Read the document and then knit to pdf by clicking the knit button. If `pdf` doesn't work, try `html`. 
-  
-      ![](images/01_knit.jpeg){width=30%}
-      
-      Pay attention to the syntax and ask your group or TA about anything you don't understand. `Rmd`s start with meta information which provides instructions to `knitr` on how to knit. After that, there's a normal code chunk which runs, but you won't see because they of the `include=FALSE` bit at start of the code chunk. 
-      
-      ![](images/01_top_of_rmd.jpeg){width=40%}
-    
-    Keep the part shown in the image above and erase the rest of the code and text in the document. This is how we start our own `Rmd` code.
-
-4. Make a new code chunk by pressing Ctrl + Alt + I ( Cmd + Option + I on macOS).^[You can also type three tick marks with `{r}` and then another three tick marks. ] Then, add code to load the `tidyverse` in that chunk.
-
-5. `Rmd`s keep track of their own working directories. Try `getwd()` in your `Rmd`^[By which, I mean in a code chunk in your `Rmd`.] and then run it again in the console. You should notice that `R` in the console uses your default working directory. On the other hand, the `lab_3.Rmd` knows which folder it is in and uses that folder as the working directory! 
-
-6. If you didn't already, put the data you downloaded in your preferred data location. 
-
-If you followed the set-up from above, you should be able to read the data in your `Rmd` with no error. 
-
-
-We provide three options dependening on how you have structured your folders. Option 1 is the easiest for a first time user. Keep the data in the same folder as the Rmd. Option 2 and 3 are what you're more likely to see in a professional environment.^[We did a poll among the TAs about their preferred directory structure. We were split between Option 2, Option 3, and a feeling like the choice was "Too personal" to make a cohort wide ]
-
-<!-- Note to Reviewer ... This might be too much ... what do you think?-->
-
-```{r, eval = FALSE}
-library(haven)
-# Option 1:
-# data is in the same folder as Rmd
-mrc_data <- read_dta("mrc_table10.dta")
-
-# Option 2:
-# data is in a data folder inside the folder with the Rmd 
-mrc_data <- read_dta("data/mrc_table10.dta")
-
-# Option 3:
-# data is in a data folder that is at the same level 
-# as the folder with the Rmd.
 mrc_data <- read_dta("../data/mrc_table10.dta")
 ```
-
-Once you got the data to load with code in the Rmd. Try the same code in the console. It will throw an error. Briefly discuss why with your group.
-
 
 
 ## Warm-up: Conditional statements and `ifelse`:
