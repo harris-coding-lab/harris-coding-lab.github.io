@@ -1,0 +1,294 @@
+---
+title: 'The basics: 01 dplyr'
+author: "Ari Anisfeld"
+date: "8/28/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+Basics are practice to help you get a handle on skills that you saw in the video.
+
+# Questions
+
+We will not have basics for reading files. Instead we will use a dataset built into the tidyverse called `msleep` which  provides information about mammals sleeping habits. 
+
+```{r}
+glimpse(msleep)
+```
+
+If you enter `?msleep` in the console, you'll find some definitions of the columns. And learn that sleep times and weights were taken from V. M. Savage and G. B. West. A quantitative, theoretical framework for understanding mammalian sleep. Proceedings of the National Academy of Sciences, 104 (3):1051-1056, 2007.
+
+
+## Using `arrange()` to sort data
+
+Arrange sorts data. It takes data in the first position (so you can pipe data to it easily) and columns in the next position. The following code orders data by the animal's name in alphabetical order.
+
+```{r, eval = FALSE}
+msleep %>%
+  arrange(name)
+```
+
+To get data in descending order, we write:
+
+```{r, eval = FALSE}
+msleep %>%
+  arrange(desc(name))
+```
+
+
+
+1. Use arrange to sort the data by `sleep_total`. This shows use the mammals that sleep the fewest hours. Giraffe's must drink a lot of coffee.
+
+
+1. We can sort by multiple columns. Compare the output of the following code. How does `arrange()` handle multiple columns?
+    
+
+    ```{r, eval = FALSE}
+    msleep %>%
+      arrange(name, vore)
+    
+    msleep %>%
+      arrange(vore, name)
+    ```
+
+
+1.  What is the largest animal by `bodywt` in our data?
+
+
+## Using `select()` to pick columns
+
+We often want to subset our data to include certain columns. This is where `select()` comes in:
+
+    ```{r, eval = FALSE}
+    msleep %>%
+      select(name, genus)
+    ```
+
+The code restricts our data to `name` and `genus`. We will introduce helper functions to use with `select()` throughout the course.
+
+1. Write code to select the the columns `name` along with the three columns about sleep.
+
+
+## Using `mutate()` to create new columns.
+
+`mutate()` is used to add columns with new variables to the dataset. For example, here I create a new variable called `sleep_pecent` that shows what percent of the 24-hour day the mammal sleeps. I provide code with `select()` that helps you check that your work makes sense.
+
+    ```{r, eval = FALSE}
+    msleep %>%
+      mutate(sleep_percent = sleep_total / 24) %>%
+      select(name, sleep_total, sleep_percent)
+    ```
+
+
+1. Create a new variable called `sleep_nonrem` that shows the number of hours the mammal sleeps that are not in REM. 
+
+1. Create a column called `class` which is `Mammalia` for each of our mammals. (We might want to do this if we were going to join this data with data from other classes of animals such as birds `Aves`). 
+
+
+## Using `mutate()` to create multiple new columns.
+
+  `mutate()` allows you create multiple columns simultaneously and even use the new variables within the `mutate()` call. Run the code to save the output to the name `msleep_with_percents` which we'll use later.
+
+    ```{r, eval = FALSE}
+    msleep_with_percents <- 
+      msleep %>%
+        mutate(sleep_percent = sleep_total / 24,
+               awake_percent = 1 - sleep_percent)
+    ```
+
+
+1. Create a new variable called `percent_brain` which is the percent of body weight taken up by the brain. In the same mutate call, create a variable called `big_brain` that is TRUE if the brain takes up more than 1 percent of mass^[Hint: This is achieved using `>`.]
+
+
+##  Using `filter()` to filter data by rows
+
+`filter()` subsets rows in the data (first position) that matches criteria.
+
+    ```{r, eval = FALSE}
+    msleep %>%
+      filter(conservation == "domesticated")
+    ```
+
+  `filter()` relies on comparison operators such as `==` (equals), `!=` (not equal to), `>` (greater than), `>=` (greater than or equal to) and so forth.
+
+
+1. Use `filter()` to restrict the data set to carnivores. (hint: `vore == "carni"`). You should find 19 carnivores.
+
+1. Find the five mammals that are `awake` less than or equal to 6 hours per day!
+
+1. You could combine the two filters above to find that the Thick-tailed opposum is the one carnivore that sleeps more than 3/4 of the day. In particular, `msleep %>% filter(vore == "carni", awake <= 6)`. Can you find all non-carnivores that sleep less than 6 hours per day?
+
+
+## Using `summarize()` to summarize your data
+
+`summarize()` summarizes data. For example, if we want to know the average number of hours the mammals in our data sleep we can write:
+
+    ```{r, eval = FALSE}
+    msleep %>%
+      summarize(sleep_avg = mean(sleep_total))
+    ```
+
+As with our other functions, we can do many summaries at a time as seen here, where we calculate the median (`median()`) along with the mean.
+
+
+    ```{r, eval = FALSE}
+    msleep %>%
+      summarize(sleep_avg = mean(sleep_total),
+                sleep_median = median(sleep_total))
+    ```
+
+ For now, we'll summarize the entire data set, but we'll see in a few lessons that we can group our data by sub-groups (e.g. `vore`-types) and get summary statistics for each group.^[For the curious, the code looks almost identical except we add `group_by(vore) %>%` before `summarize()` like so: `msleep %>% group_by(vore) %>% summarize(sleep_avg = mean(sleep_total))`]
+ 
+ 1. Above you created `msleep_with_percents`. Use that data and create a summary of `sleep_percent` that includes with mean, median, standard deviation (`sd()`). 
+ 
+
+
+
+## Solutions
+
+
+## Using `arrange()` to sort data
+
+1. Use arrange to sort the data by `sleep_total`. This shows use the mammals that sleep the fewest hours. Giraffe's must drink a lot of coffee.
+
+    ```{r}
+    msleep %>%
+      arrange(sleep_total)
+  
+    ```
+    
+
+1. We can sort by multiple columns. Compare the output of the following code. How does `arrange()` handle multiple columns?
+      
+    **First R sorts by the first column, then R sorts the second column within the first columns "groups". Which we see in the second example. First, it sorts the data by `vore`-type and then within `vore`-type it alphabetizes by `name`.**
+
+      
+
+    ```{r, eval = FALSE}
+    msleep %>%
+      arrange(name, vore)
+    
+    msleep %>%
+      arrange(vore, name)
+    ```
+
+
+1.  What is the largest animal by `bodywt` in our data?
+
+    **The African elephant**
+
+    ```{r, eval = FALSE}
+    msleep %>%
+      arrange(desc(bodywt))
+```
+  
+
+
+## Using `select()` to pick columns
+
+1. Write code to select the the columns `name` along with the three columns about sleep.
+
+
+    ```{r, eval = FALSE}
+    msleep %>%
+      select(name, sleep_total, sleep_rem, sleep_cycle)
+    
+    # advanced users might use a tidyselect helper
+    msleep %>%
+      select(name, starts_with("sleep"))
+    ```
+
+
+
+## Using `mutate()` to create new columns.
+
+
+1. Create a new variable called `sleep_nonrem` that shows the number of hours the mammal sleeps that are not in REM. 
+
+  
+    ```{r, eval = FALSE}
+    msleep %>%
+      mutate(sleep_nonrem = sleep_total - sleep_rem) %>%
+      select(name, sleep_total, sleep_rem, sleep_nonrem)
+    ```
+
+
+1. Create a column called `class` which is `Mammalia` for each of our mammals. (We might want to do this if we were going to join this data with data from other classes of animals such as birds `Aves`). 
+
+
+    ```{r, eval = FALSE}
+    msleep %>%
+      mutate(class = "Mammalia") 
+    ```
+
+
+
+## Using `mutate()` to create multiple new columns.
+
+ 
+1. Create a new variable called `percent_brain` which is the percent of body weight taken up by the brain. In the same mutate call, create a variable called `big_brain` that is TRUE if the brain takes up more than 1 percent of mass^[Hint: This is achieved using `>`.]
+
+
+    ```{r,eval = FALSE}
+    msleep %>%
+      mutate(percent_brain = brainwt/bodywt,
+             big_brain = percent_brain > .01)
+    ```
+
+
+
+##  Using `filter()` to filter data by rows
+
+1. Use `filter()` to restrict the data set to carnivores. (hint: `vore == "carni"`). You should find 19 carnivores.
+
+
+    ```{r, eval = FALSE}
+    msleep %>%
+      filter(vore == "carni")
+    ```
+    
+
+1. Find the five mammals that are `awake` less than or equal to 6 hours per day!
+
+    ```{r, eval = FALSE}
+    msleep %>%
+      filter(awake <= 6)
+    ```
+
+
+1. You could combine the two filters above to find that the Thick-tailed opposum is the one carnivore that sleeps more than 3/4 of the day. In particular, `msleep %>% filter(vore == "carni", awake <= 6)`. Can you find all non-carnivores that sleep less than 6 hours per day?
+
+    ```{r, eval = FALSE}
+    msleep %>%
+      filter(sleep_total < 6, vore != "carni")
+    ```
+
+
+
+## Using `summarize()` to summarize your data
+
+ 1. Above you created `msleep_with_percents`. Use that data and create a summary of `sleep_percent` that includes with mean, median, standard deviation (`sd()`). 
+
+
+
+    ```{r, eval = FALSE}
+    msleep_with_percents <- 
+      msleep %>%
+        mutate(sleep_percent = sleep_total / 24,
+               awake_percent = 1 - sleep_percent)
+    
+    msleep_with_percents %>%
+      summarize(sleep_pct_avg = mean(sleep_percent),
+                sleep_pct_median = median(sleep_percent),
+                sleep_pct_sd= sd(sleep_percent))
+    ```
+ 
+
+
+

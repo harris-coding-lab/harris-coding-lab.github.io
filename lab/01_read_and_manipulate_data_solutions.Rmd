@@ -264,7 +264,7 @@ russian_data %>%
 
 *Solution:*
 
-```{r, eval = TRUE}
+```{r, eval = FALSE}
 midwest <- read_dta('midwest.dta')
 ```
 

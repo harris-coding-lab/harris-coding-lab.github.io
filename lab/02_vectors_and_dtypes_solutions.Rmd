@@ -123,7 +123,7 @@ If we want to have independent draws from our sampling vector, we say `replace =
 
 1. Run the following code and get an error.
   
-    a. Interpret the error, i.e. explain  
+    a. Interpret the error 
     **Solution: ** We get an error because this code is taking samples without replacement. After 6 draws, there are no more numbers to sample from.
     a. Adjust the code so that you simulate 100 independent die rolls.  
     **Solution:**
@@ -304,7 +304,7 @@ We are going to calculate the mean, variance and standard deviation of the distr
       labs(fill = "df", x = "sample")
     ```
 
-1. David and Rohen told me that when we add two independent `chi sq` distributions with degrees of freedom $df_1$ and $df_2$ the result is a `chi sq` with df $= df_1 + df_2$. I'm not sure whether or not they're right. Adjust the graph code to provide visual evidence for or against their claim. (*There's an easy way to mess this up that is difficult to explain until after lesson 4 - pay special attention to the values that you use for your "df" column. Ask your TA to check your result for you.*)  
+<!--1. David and Rohen told me that when we add two independent `chi sq` distributions with degrees of freedom $df_1$ and $df_2$ the result is a `chi sq` with df $= df_1 + df_2$. I'm not sure whether or not they're right. Adjust the graph code to provide visual evidence for or against their claim. (*There's an easy way to mess this up that is difficult to explain until after lesson 4 - pay special attention to the values that you use for your "df" column. Ask your TA to check your result for you.*)  
     **Solution:** It seems as though their claim is correct!
     ```{r}
     chi_sq_sample_comparison <-
@@ -317,7 +317,7 @@ We are going to calculate the mean, variance and standard deviation of the distr
       labs(fill = "df", x = "sample")
     ```
     
-
+-->
     
     
     

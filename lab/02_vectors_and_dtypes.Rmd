@@ -13,11 +13,12 @@ library(tidyverse)
 ```
 
 
-We expect you to review the `class 2` material, [here](harris-coding-lab.github.io) prior to lab. If you find yourself in lab without R installed, try using RStudio cloud: https://rstudio.cloud/.^[Sign up for the free tier which should be sufficient for camp. You will have to install packages.] 
+We expect you to review the `class 2` material, [here](harris-coding-lab.github.io) prior to lab. 
+
 
 # Warm-up: Vector creation. 
 
-1. Create a new R script and add code to load the tidyverse.
+1. Create an R script or Rmd to capture your work. Load the `tidyverse` libraries.
 
 1. In the lecture, we covered `c()`, `:`, `rep()`, `seq()`, `rnorm()`, `runif()` among other ways to create vectors. Use each of these functions once as you create the vectors required below.
 
@@ -28,7 +29,7 @@ We expect you to review the `class 2` material, [here](harris-coding-lab.github.
     e. Create a numeric vector with 1e4 draws^[This is scientific notation. Try `1e4 - 1 + 1` in the console.] from a standard `norm`al distribution.
     f. Create an integer vector with the numbers 0, 2, 4, ... 20.
 
-1. Run this code and explain why we get an error.
+1. Run this code and explain why we get an error. (Make sure you did question 1.d above first!)
 
     ```{r, eval = FALSE}
     # make sure you followed direction in part d above.
@@ -42,7 +43,7 @@ We expect you to review the `class 2` material, [here](harris-coding-lab.github.
     ```
     a. We gave collapse the argument " " i.e. a character string that is a blank space. Try a different character string. 
     
-1. Try these lines of code using `paste0` (or it's `tidyverse` synonym `str_c`)^[`tidyverse` synonyms are usually preferrable since they have fewer quirky behaviors. For example, try `str_c(c("bob", NA, "maya"), "@gmail.com")` vs `paste0(c("bob", NA, "maya"), "@gmail.com")`] .
+1. Try these lines of code using `paste0` (or it's `tidyverse` synonym `str_c`)^[`tidyverse` synonyms are often preferable since they have ironed out quirky behaviors. For example, try `str_c(c("bob", NA, "maya"), "@gmail.com")` vs `paste0(c("bob", NA, "maya"), "@gmail.com")`] .
 
     ```{r, eval = FALSE}
     paste0(angelou_quote, ".com")   
@@ -63,7 +64,7 @@ We expect you to review the `class 2` material, [here](harris-coding-lab.github.
 
 ## Is the coin fair?
 
-In this exercise, we will calculate the mean of a vector of random numbers. To get started, we'll generate some fake data using built-in random^[Techinically, "pseudo-random", but who's asking.] sampling functions. Let's start by flipping coins. 
+In this exercise, we will calculate the mean of a vector of random numbers. To get started, we'll generate some fake data using built-in random^[Technically, "pseudo-random", but who's asking.] sampling functions. Let's start by flipping coins. 
 
 ```{r} 
 (coin_flips <- sample(c("Heads", "Tails"), 10, replace = TRUE))
@@ -76,9 +77,9 @@ In this exercise, we will calculate the mean of a vector of random numbers. To g
 
 If we want to have independent draws from our sampling vector, we say `replace = TRUE`. By default `replace` is `FALSE`.
 
-1. Run the following code and get an error.
+1. We hope the following code will give us 100 independent die rolls (i.e. random numbers between 1 and 6), but we get an error. Run the code to reproduce the error.
   
-    a. Interpret the error, i.e. explain 
+    a. Interpret the error. I.e. why does the code fail?
     a. Adjust the code so that you simulate 100 independent die rolls. 
 
     ```{r, eval = FALSE}
@@ -197,9 +198,6 @@ We are going to calculate the mean, variance and standard deviation of the distr
 1. How many rows are in the tibble? Explain how the code that defines `x` and the code that defines `df` make vectors that are the right length.
 
 1. Temporarily delete `each =` (keep `1e5`). Explain why the resulting graph looks the way it does. Make sure you put `each = ` back.
-
-1. David and Rohen told me that when we add two independent `chi sq` distributions with degrees of freedom $df_1$ and $df_2$ the result is a `chi sq` with df $= df_1 + df_2$. I'm not sure whether or not they're right. Adjust the graph code to provide visual evidence for or against their claim. (*There's an easy way to mess this up that is difficult to explain until after lesson 4 - pay special attention to the values that you use for your "df" column. Ask your TA to check your result for you.*)
-    
     
     
     

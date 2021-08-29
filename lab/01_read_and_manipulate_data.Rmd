@@ -184,7 +184,7 @@ russian_data %>% filter(percentile == "p90p100") %>% filter(between(year, 1995, 
 
 1. Now we'll use midwestern demographic data which is [at this link](https://github.com/harris-coding-lab/harris-coding-lab.github.io/raw/master/data/midwest.dta). The dataset includes county level data for a single year. We call data this type of data "cross-sectional" since it gives a point-in-time cross-section of the counties of the midwest. (The world inequality data is "timeseries" data).
 
-1. Save `midwest.dta` in your data folder and load it into R.^[Hint: `read_dta()`]
+1. Save `midwest.dta` in your data folder and load it into R with the name `midwest`.^[Hint: `read_dta()`]
 
 1. Run the following code to get a sense of what the data looks like:
 
