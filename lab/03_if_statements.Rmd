@@ -23,7 +23,7 @@ For this lab, we will use data from Opportunity Insights: https://opportunityins
 1. Download the Stata file and Readme for "College Level Characteristics from the IPEDS Database and the College Scorecard".
 
 
-## Intro to `Rmd`s
+## Intro to `Rmd`s (R Markdown documents).
 
 1. Before getting started, run the following code in the console. This gives R the necessary tools to make pdfs from your `Rmd`s. 
 
@@ -32,10 +32,11 @@ For this lab, we will use data from Opportunity Insights: https://opportunityins
     tinytex::install_tinytex()
     ```
 
+  Note: You never want to include include code that installs packages or use `View()` in a code chunk that is evaluated in an Rmd. When knitting you will get an error or worse create unusual behavior without an error.
 
 1. Create an `Rmd` file. (In RStudio's menu `File > New File > R Markdown`). Name the document and select PDF. These settings can be changed later.
 1. Save the `Rmd` in your coding lab folder as `lab_3.Rmd`. 
-1. New `Rmd`s comes with some example code. Read the document and then knit to pdf by clicking the knit button. If `pdf` doesn't work, try `html`. 
+1. New `Rmd`s come with some example code. Read the document and then knit to pdf by clicking the knit button. If `pdf` doesn't work, try `html`. 
   
       ![](images/01_knit.jpeg)
       
@@ -47,9 +48,9 @@ For this lab, we will use data from Opportunity Insights: https://opportunityins
 
 1. Make a new code chunk by pressing Ctrl + Alt + I ( Cmd + Option + I on macOS).^[You can also type three tick marks with `{r}` and then another three tick marks. ] Then, add code to load the `tidyverse` in that chunk. 
 
-1. `Rmd`s keep track of their own working directories. Try `getwd()` in your `Rmd`^[By which, I mean in a code chunk in your `Rmd`.] and then run it again in the console. You should notice that `R` in the console uses your default working directory. On the other hand, the `lab_3.Rmd` knows which folder it is in and uses that folder as the working directory! 
+1. `Rmd`s keep track of their own working directories. Try `getwd()` in a code chunk in your `Rmd` and then run it again in the console. You should notice that `R` in the console uses your default working directory. On the other hand, the `lab_3.Rmd` knows which folder it is in and uses that folder as the working directory! 
 
-1. If you didn't already, put the data you downloaded in your preferred data location. 
+1. If you didn't already, put the opportunity insights data you downloaded in your preferred data location. 
 
 If you followed the set-up from above, you should be able to read the data in your `Rmd` with no error. 
 
@@ -61,20 +62,37 @@ We provide three options dependening on how you have structured your folders. Op
 library(haven)
 # Option 1:
 # data is in the same folder as Rmd
+#
+# project_folder/
+#     - lab_3.Rmd
+#     - mrc_table10.dta
 mrc_data <- read_dta("mrc_table10.dta")
 
 # Option 2:
 # data is in a data folder inside the folder with the Rmd 
+#
+# project_folder/
+#     - lab_3.Rmd
+#     - data/
+#       - mrc_table10.dta
+
+
 mrc_data <- read_dta("data/mrc_table10.dta")
+
+
 
 # Option 3:
 # data is in a data folder that is at the same level 
 # as the folder with the Rmd.
+#
+# project_folder/
+#   - data/
+#       - mrc_table10.dta
+#   - code/
+#       - lab_3.Rmd
+
 mrc_data <- read_dta("../data/mrc_table10.dta")
 ```
-
-Once you got the data to load with code in the Rmd. Try the same code in the console. It will throw an error. Briefly discuss why with your group.
-
 
 
 ## Warm-up: Conditional statements and `ifelse`:
@@ -103,7 +121,7 @@ Once you got the data to load with code in the Rmd. Try the same code in the con
   
 **True and NA**
   
-h. There are a few times when `NA` are not contangious. Run the code and think about how this relates to your findings above.
+h. There are a few times when `NA` are not contagious. Run the code and think about how this relates to your findings above.
       
     ```{r, eval = FALSE}
     TRUE & NA    
@@ -150,13 +168,13 @@ h. There are a few times when `NA` are not contangious. Run the code and think a
     a. `ifelse` is often used to collapse tiers. Redefine `tier_name` so that "Nonselective four-year public" and "Nonselective four-year private not-for-profit" are grouped together as "Nonselective four-year (public and private)".^[Hint: The code will be very similar to the previous problem.]
     
 
-1. As you can see, there are 1466 colleges missing average SAT scores. Sometimes we want to replace `NA`s with a value. For example, linear regressions will drop any row with `NA`s, and we might not want that.^[I believe you'll discuss missing data problems in stats I.] 
+1. As you can see below, there are 1466 colleges missing average SAT scores. Sometimes we want to replace `NA`s with a value. For example, linear regressions will drop any row with `NA`s, and we might not want that.^[I believe you'll discuss missing data problems in stats I.] 
 
     ```{r}
     mrc_data %>%
       summarise(missing_sat_2013 = sum(is.na(sat_avg_2013)))
     ```
-To avoid dropping rows, sometimes people replace the `NA` with the mean and add a new column that is an indicator of missingness. Using `mutate()` and `ifelse()`, fill `NA` in `sat_avg_2013` with the average SAT score of the other colleges and create a column called `missing_sat_avg_2013` that is 1 if `NA` and 0 otherwise.^[Hint: First, make the indicator column.  Hint 2: When replacing `NA`  in the example, I used the following code to find the mean `mean(fake_data, na.rm = TRUE)`.]
+To avoid dropping rows, sometimes people replace the `NA` with the mean and add a new column that is an indicator of missingness. Using `mutate()` and `ifelse()`, fill `NA` in `sat_avg_2013` with the average SAT score of the other colleges and create a column called `missing_sat_avg_2013` that is 1 if `NA` and 0 otherwise.^[Hint: First, make the indicator column.  Hint 2: When replacing `NA`  in the example, I used the following code to find the mean `mean(column, na.rm = TRUE)`.]
 
 Here's a small example of what we expect. Try reproducing this example and then applying your code to `mrc_data`.
 
@@ -187,14 +205,14 @@ This part is admittedly silly! Imagine the situation: It's 2014 and a group of h
 
 Here are the rules. They want to go to school where their test scores are within 100 points of the school average SAT score. To match their preferences, use the most recent data. You will need a few tools.
 
-1. First, in order to understand what a column contains you can use `distinct()`^[from `dplyr`. The codebook is also useful.]. For example, say you are trying to figure out how to identify "ivy plus" schools (or what that specifically means). Using `names()` you see their is a columns called  `tier_name`.
+1. First, in order to understand what a column contains you can use `distinct()`^[from `dplyr`. The codebook is also useful.]. For example, say you are trying to figure out how to identify "ivy plus" schools (or what that specifically means). Notice that there is a columns called  `tier_name`, then run the code:
 
     ```{r}
     mrc_data %>% distinct(tier_name)    
     ```
     We see there are 12 tiers and one is "Ivy Plus"! Note the capitalization.
     
-1. Second, we're going to have to find schools that match ranges of SAT scores. Welcome `between()`.^[from `dplyr`] 
+1. Second, we're going to have to find schools that match ranges of SAT scores. We can use the `between()` function from `dplyr`.
 
   
     ```{r, eval = FALSE}
@@ -209,13 +227,13 @@ Here are the rules. They want to go to school where their test scores are within
     ```{r, eval = FALSE}
     # This is pseudo code 
     mrc_data %>%
-      mutate(abdul_choices = ifelse(CONDITIONS, yes, no),
-             stephens_choices = ifelse(CONDITIONS, yes, no),
+      mutate(abdul_choices = ifelse(CONDITIONS, "yes", "no"),
+             stephens_choices = ifelse(CONDITIONS, "yes", "no"),
              ...) %>%
-      filter(abdul_choices == yes, stephens_choices == yes, ...)
+      filter(abdul_choices == "yes", stephens_choices == "yes", ...)
     ```
 
-    We can avoid the extra `== yes` by making `abdul_choices` a logical vector. In other words, write code like so:
+    We can avoid the extra `== "yes"` by making `abdul_choices` a logical vector. In other words, write code like so:
     
     ```{r, eval = FALSE}
     # This is pseudo code 
