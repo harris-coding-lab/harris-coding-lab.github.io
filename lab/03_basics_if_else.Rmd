@@ -5,6 +5,7 @@ date: "9/8/2020"
 output:
   pdf_document: default
   html_document: default
+urlcolor: blue
 ---
 
 ```{r setup, include=FALSE}
@@ -73,6 +74,7 @@ We use `if()` when working on "statistical programming" (ie. when not working wi
 1. Add an `else if()` block to the code above that says try again if the dice add up to 6 or 8.
 
 
+Want to improve this tutorial? Report any suggestions/bugs/improvements on [here](mailto:anisfeld@uchicago.edu)! We’re interested in learning from you how we can make this tutorial better.
 
 
 ## Solution 

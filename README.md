@@ -6,11 +6,11 @@ This website (harris-coding-lab.github.io) contains the content for the Harris S
 
 - We ask that Coding Lab attendees have the latest stable versions of - [R](https://cloud.r-project.org/) and [RStudio](https://rstudio.com/products/rstudio/download/#download) pre-installed on their local machine. We have instructions for Mac and Windows users in this [google doc](https://docs.google.com/document/d/1605JCpH3sV8lBG2x-PsxIQcB9rh3qY5zglfRnUbf43A/). We can help you if your stuck, and you can email the amazing staff of Harris IT at hsit-servicedesk@uchicago.edu as well.
 
-- Complete the "Pre-work". Watch the intro videos and complete the lab. (see below for links.)
+- Complete the "Pre-work". Watch the intro videos and complete the lab 0. (see below for links.)
 
 - Watch videos for Class 1.
 
-Note: the lab material for future classes is "under review" and will be updated prior to camp.
+Note: the lab material is subject to change.
 
 
 ### Materials
@@ -34,7 +34,7 @@ Your [final project](lab/project_description.pdf) is quite simple. You will pick
 
 ### Questions
 
-Please send questions via the [Q and A google form](https://forms.gle/HwfVEsw2qJ9wq4Rh7) 12 hours prior to Q and A sessions. We will address your questions either in lectures with Ari, in TA sessions or in written form.
+Please send questions via the [Q and A google form](https://forms.gle/HwfVEsw2qJ9wq4Rh7) at least 1 hour prior to Q and A sessions. We will address your questions either in lectures with Ari, in TA sessions or in written form.
 
 
 ### Additional Resources

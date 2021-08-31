@@ -219,5 +219,5 @@ russian_data %>% filter(percentile == "p90p100") %>% filter(between(year, 1995, 
 
 1. Note that together population density and population can give you information about the area (geographic size) of a location.  What's the total area of Illinois? You probably have no idea what the units are though. If you google, you'll find that it doesn't align perfectly with online sources. Given the units don't align with other sources, can this data still be useful?
 
-
+Want to improve this tutorial? Report any suggestions/bugs/improvements on [here](mailto:anisfeld@uchicago.edu)! We’re interested in learning from you how we can make this tutorial better.
 

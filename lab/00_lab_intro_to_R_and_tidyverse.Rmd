@@ -2,6 +2,7 @@
 title: "Pre-work: Intro to R, RStudio and Tidyverse"
 author: "Ari Anisfeld"
 date: "8/23/2021"
+urlcolor: blue
 output: pdf_document
 ---
 
@@ -199,3 +200,7 @@ labs(y = "Percent above expected death count",
 9. Notice that groups with smaller populations have noisier time-series. The unfortunately-named "Other" time series is sawtoothed, while the "Non-Hispanic White" line is relatively smooth. Remove the `#` from the code above and run it again. `#` is used for "comments" in R. R ignores code that comes after `#` until a new line is started.
 
 10. Finally, you might notice that it looks like there's a suspicious drop off in our "Percent above expected death count" after week 80. With a little investigation you discover that the CDC updates these counts over time and the last 6 weeks are likely to increase substantially. Add this line `filter(week_no < 80) %>%` to your code in an appropriate place (i.e. before making the plot!) to remove the misleading data.
+
+
+
+Want to improve this tutorial? Report any suggestions/bugs/improvements on [here](mailto:anisfeld@uchicago.edu)! We’re interested in learning from you how we can make this tutorial better.

@@ -2,6 +2,7 @@
 title: "The basics: 04 grouped analysis"
 author: "Ari Anisfeld"
 date: "9/8/2020"
+urlcolor: blue
 output:
   pdf_document: default
   html_document: default
@@ -89,6 +90,8 @@ library(tidyverse)
       count(state, inmetro)
     ```
 
+
+Want to improve this tutorial? Report any suggestions/bugs/improvements on [here](mailto:anisfeld@uchicago.edu)! We’re interested in learning from you how we can make this tutorial better.
 
 # Solutions
 

@@ -5,6 +5,7 @@ date: "8/31/2020"
 output: 
   pdf_document:
     number_sections: true
+urlcolor: blue
 ---
 
 ```{r setup, include=FALSE}
@@ -200,4 +201,4 @@ We are going to calculate the mean, variance and standard deviation of the distr
 1. Temporarily delete `each =` (keep `1e5`). Explain why the resulting graph looks the way it does. Make sure you put `each = ` back.
     
     
-    
+Want to improve this tutorial? Report any suggestions/bugs/improvements on [here](mailto:anisfeld@uchicago.edu)! We’re interested in learning from you how we can make this tutorial better.

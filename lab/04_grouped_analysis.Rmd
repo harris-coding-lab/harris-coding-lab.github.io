@@ -251,4 +251,4 @@ When we explored the World Inequality Database data in lab 1, we mimicked groupe
         geom_col(position = "dodge2") + 
         facet_wrap(~time_period)
     ```
-
+Want to improve this tutorial? Report any suggestions/bugs/improvements on [here](mailto:anisfeld@uchicago.edu)! We’re interested in learning from you how we can make this tutorial better.

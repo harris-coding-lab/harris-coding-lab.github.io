@@ -3,6 +3,7 @@ title: 'Lesson 3: Control flow with `if` and `ifelse`'
 author: "Ari Anisfeld"
 date: "8/31/2021"
 output: pdf_document
+urlcolor: blue
 ---
 
 ```{r setup, include=FALSE}
@@ -302,3 +303,4 @@ View(bff_super_awesome_college_list)
 1. **Challenge** Create a "Five friends college ranking". A college is ranked 1 if it is acceptable to all 5 friends. 2 if it is acceptable to any 4 friends and so on.^[3 if it is acceptable to 3 friends. 4 if acceptable to 2 friends and 5 if acceptable to 1 friend] Colleges that are not acceptable to any friend should be marked "Unranked".
 
 
+Want to improve this tutorial? Report any suggestions/bugs/improvements on [here](mailto:anisfeld@uchicago.edu)! We’re interested in learning from you how we can make this tutorial better.

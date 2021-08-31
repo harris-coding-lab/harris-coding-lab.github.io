@@ -2,6 +2,7 @@
 title: "The basics: 07 loops"
 author: "Ari Anisfeld"
 date: "9/8/2020"
+urlcolor: blue
 output:
   pdf_document: default
   html_document: default
@@ -138,7 +139,7 @@ The vectorized code is preferred because it is easier to write and read, and is 
     }
     ```
 
-
+Want to improve this tutorial? Report any suggestions/bugs/improvements on [here](mailto:anisfeld@uchicago.edu)! We’re interested in learning from you how we can make this tutorial better.
 
 # Solutions
 
