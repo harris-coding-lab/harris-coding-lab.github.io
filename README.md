@@ -34,7 +34,7 @@ Your [final project](lab/project_description.pdf) is quite simple. You will pick
 
 ### Questions
 
-
+Please send questions via the [Q and A google form](https://forms.gle/HwfVEsw2qJ9wq4Rh7) 12 hours prior to Q and A sessions. We will address your questions either in lectures with Ari, in TA sessions or in written form.
 
 
 ### Additional Resources
