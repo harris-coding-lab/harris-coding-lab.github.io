@@ -17,37 +17,14 @@ mrc_data <- read_dta("../data/mrc_table10.dta")
 We expect you to watch the `class 3` material, [here](harris-coding-lab.github.io) prior to lab. Download the data before lab.
 
 
+
 ## Data:
 
 For this lab, we will use data from Opportunity Insights: https://opportunityinsights.org/data/ 
 
 1. Download the Stata file and Readme for "College Level Characteristics from the IPEDS Database and the College Scorecard".
 
-
-## Intro to `Rmd`s (R Markdown documents).
-
-1. Before getting started, run the following code in the console. This gives R the necessary tools to make pdfs from your `Rmd`s. 
-
-    ```{r, eval = FALSE}
-    install.packages("tinytex")
-    tinytex::install_tinytex()
-    ```
-
-  Note: You never want to include include code that installs packages or use `View()` in a code chunk that is evaluated in an Rmd. When knitting you will get an error or worse create unusual behavior without an error.
-
-1. Create an `Rmd` file. (In RStudio's menu `File > New File > R Markdown`). Name the document and select PDF. These settings can be changed later.
-1. Save the `Rmd` in your coding lab folder as `lab_3.Rmd`. 
-1. New `Rmd`s come with some example code. Read the document and then knit to pdf by clicking the knit button. If `pdf` doesn't work, try `html`. 
-  
-      ![](images/01_knit.jpeg)
-      
-      Pay attention to the syntax and ask your group or TA about anything you don't understand. `Rmd`s start with meta information which provides instructions to `knitr` on how to knit. After that, there's a normal code chunk which runs, but you won't see because they of the `include=FALSE` bit at start of the code chunk. 
-      
-      ![](images/01_top_of_rmd.jpeg)
-    
-    Keep the part shown in the image above and erase the rest of the code and text in the document. This is how we start our own `Rmd` code.
-
-1. Make a new code chunk by pressing Ctrl + Alt + I ( Cmd + Option + I on macOS).^[You can also type three tick marks with `{r}` and then another three tick marks. ] Then, add code to load the `tidyverse` in that chunk. 
+## Rmd's and working directories (To be covered by TAs during lab)
 
 1. `Rmd`s keep track of their own working directories. Try `getwd()` in a code chunk in your `Rmd` and then run it again in the console. You should notice that `R` in the console uses your default working directory. On the other hand, the `lab_3.Rmd` knows which folder it is in and uses that folder as the working directory! 
 
@@ -57,7 +34,6 @@ If you followed the set-up from above, you should be able to read the data in yo
 
 We provide three options dependening on how you have structured your folders. Option 1 is the easiest for a first time user. Keep the data in the same folder as the Rmd. Option 2 and 3 are what you're more likely to see in a professional environment.^[We did a poll among the TAs about their preferred directory structure. We were split between Option 2, Option 3, and a feeling like the choice was "Too personal" to make a cohort wide ]
 
-<!-- Note to Reviewer ... This might be too much ... what do you think?-->
 
 ```{r, eval = FALSE}
 library(haven)
@@ -94,6 +70,7 @@ mrc_data <- read_dta("data/mrc_table10.dta")
 
 mrc_data <- read_dta("../data/mrc_table10.dta")
 ```
+
 
 
 ## Warm-up: Conditional statements and `ifelse`:
@@ -148,7 +125,6 @@ h. There are a few times when `NA` are not contagious. Run the code and think ab
     ```
 
 ## Common uses of `ifelse`
-
 
 1. Run the following code and you will see the distinct `tier_names` available in the dataset. 
 

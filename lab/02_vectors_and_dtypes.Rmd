@@ -16,6 +16,34 @@ library(tidyverse)
 
 We expect you to review the `class 2` material, [here](harris-coding-lab.github.io) prior to lab. 
 
+# Introduction to Rmds
+
+
+## Intro to `Rmd`s (R Markdown documents). (To be covered during QA)
+
+1. Before getting started, run the following code in the console. This gives R the necessary tools to make pdfs from your `Rmd`s. 
+
+    ```{r, eval = FALSE}
+    install.packages("tinytex")
+    tinytex::install_tinytex()
+    ```
+
+  Note: You never want to include include code that installs packages or use `View()` in a code chunk that is evaluated in an Rmd. When knitting you will get an error or worse create unusual behavior without an error.
+
+1. Create an `Rmd` file. (In RStudio's menu `File > New File > R Markdown`). Name the document and select PDF. These settings can be changed later.
+1. Save the `Rmd` in your coding lab folder as `lab_3.Rmd`. 
+1. New `Rmd`s come with some example code. Read the document and then knit to pdf by clicking the knit button. If `pdf` doesn't work, try `html`. 
+  
+      ![](images/01_knit.jpeg)
+      
+      Pay attention to the syntax and ask your group or TA about anything you don't understand. `Rmd`s start with meta information which provides instructions to `knitr` on how to knit. After that, there's a normal code chunk which runs, but you won't see because they of the `include=FALSE` bit at start of the code chunk. 
+      
+      ![](images/01_top_of_rmd.jpeg)
+    
+    Keep the part shown in the image above and erase the rest of the code and text in the document. This is how we start our own `Rmd` code.
+
+1. Make a new code chunk by pressing Ctrl + Alt + I ( Cmd + Option + I on macOS).^[You can also type three tick marks with `{r}` and then another three tick marks. ] Then, add code to load the `tidyverse` in that chunk. 
+
 
 # Warm-up: Vector creation. 
 
