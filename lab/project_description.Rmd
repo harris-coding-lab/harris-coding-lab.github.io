@@ -1,7 +1,7 @@
 ---
 title: "Coding lab project"
 author: "Ari Anisfeld"
-date: "9/29/2020"
+date: "8/30/2021"
 output: pdf_document
 ---
 
@@ -10,31 +10,33 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-Your final project is quite simple. You will pick a data set that speaks to you and try to uncover something interesting which you will visualize in a plot. You will also compute some summary statistics that you will show in a summary table. Your TAs will review your work and provide a non-binding suggestion as to whether you are ready for the 'accelerated' Fall Coding Lab.
+Your final project is quite simple. You will pick a data set that speaks to you and try to uncover something interesting which you will visualize in a plot. You will also compute some summary statistics that you will show in a summary table. Your TAs will review your work.
 
-**Due date: At the end of week 6, November 6 at 5pm** upload your Rmd and pdf to Gradescope. Feel free to submit your work earlier. We will not review work that is turned in after that point.
+**Suggested due date: September 17, 5pm** upload your Rmd and pdf to Gradescope. Feel free to submit your work earlier. **Extended due date: September 24, 5pm**  We will not review work that is turned in after that point.
 
 # Format:
 
-You will turn in a knitted pdf^[Occasionally students have technical issues knitting to pdfs because of some missing dependency or latex. If that's the case for you, try knitting to html instead.] that has the following sections.
+You will turn in a knitted pdf that has the following sections.
 - `graph` in which you load your data set and provide the minimal code that produces your graph. 
 - `table` in which you create and print a summary table with minimal code.
 - `appendix` (optional) in which you share code you used during data exploration, e.g. extensions of your main plot, other plots you attempted on your search for your main plot.
 
 I have provided a sample project at the end of this document.
 
-You are welcome to use google and stackoverflow as you procede. Please cite your sources if you borrow a solution from stackoverflow or someone's blog. To cite, just add a comment with the url. See, the last code line of the sample project where I used stackoverflow to figure out how to reformat my legend. 
+You are welcome to use google and stackoverflow as you procede. Please cite your sources if you borrow code from stackoverflow or someone's blog. To cite, just add a comment with the url. See, the last code line of the sample project where I used stackoverflow to figure out how to reformat my legend.
 
-Your TAs will review how to use Rmds with you. But here are some quick tips. 
+We will review how to use Rmds with you. But here are some quick tips. 
 
 - You make a new section in Rmd using `# section title`. 
 - When you read in you data, we do not want to see messages or warnings. To avoid this start the code block where you read the data with the following `{r, message = FALSE, warning = FALSE}`.  
 - If you have a line of code that is too long, it will be cutoff. Most R code can be split across two lines.
-- Knit early and often (this is how you test if the Rmd is working how you think it is).
+- Knit early and often! This is how you know if the Rmd is working how you think it is.
+- To make your table look nice, you can use `knitr::kable(your_data)`. (See example below).
+
 
 # Datasets:
 
-Below is a list of suitable data sources. You are welcome to and encouraged to find a data source not on this list that speaks to your policy interests. Many of these data sources have a wide range of data sets. Pick one that comes in tabular format with several variables that are interesting^[By which I mean there's variation.]. I recommend that once you pick a data source that is sufficient work with that so you have ample time to focus on your R skills.
+Below is a list of suitable data sources. You are welcome to and encouraged to find a data source not on this list that speaks to your policy interests. Many of these data sources have a wide range of data sets. Pick one that comes in tabular format with several variables that are interesting^[By which I mean there's variation.]. I recommend that once you pick a data source that is sufficient stick with it, so you have ample time to focus on your R skills.
 
 \pagebreak
 ```{r, echo = FALSE, message=FALSE, warning=FALSE}
