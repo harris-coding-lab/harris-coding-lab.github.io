@@ -1,7 +1,7 @@
 ---
 title: 'Lab Session 1: Read and manipulate data'
 author: "Ari Anisfeld"
-date: "8/26/2020"
+date: "8/26/2021"
 output:
   pdf_document: default
   html_document:
@@ -21,29 +21,53 @@ In this lab we'll use two data sets. You can download them in advance [here](htt
 
 ## Working with data and scripts (To be covered during Q&A session)
 
-1. Do you have a folder on your computer for coding lab material?  If not, create one and make sure you know the path to the folder.
+We recommend a file structure for coding lab. If you have your own preferred way of organizing code feel free to follow it.
 
-1. It helps to use a consistent file structure (what files and folders are where). We will need to put our code and our data somewhere.^[Eventually you'll worry about output and supporting documentation] If you already have a system that works, great. For coding lab, we recommend creating a `problem_set` folder inside your coding lab folder. 
+### Setting up working directory and coding environment
+  
+1. Do you have a folder on your computer for coding lab material?  
+If not, create one and make sure you know the path to the folder.
 
-1. Save your script in the `problem_set` folder. From now on, when you start a script or `Rmd` save it there.
+2. We recommend creating a `problem_set` folder inside your coding lab folder.
 
-1. Make folder called `data` inside the `problem_set` folder. 
-
-1. Create a new R script 
-
-1. Add code to load the `tidyverse`. 
-
-1. Add a line to your script where you `setwd()` to the `data` folder.
-
-1. If you haven't yet, download the first data set [here](https://github.com/harris-coding-lab/harris-coding-lab.github.io/raw/master/data/world_wealth_inequality.xlsx) and put the data in your `data` folder. The data source is the World Inequality Database where you can find data about the distribution of income and wealth in several contries over time. Outside of lab time, check out [wid.world](wid.world) for more information.
-
-1. Finally, we are using data in an excel format. We need the package `readxl` to process data of this type. In the console, run `install.packages("readxl")`.
+3. Make folder called `data` inside the `problem_set` folder. 
     
-1. If you followed the set-up from above, you should be able to run the following code with no error.
+
+### Putting your files in place
+
+4. Create a new R script. Save your script in the `problem_set` folder. From now on, when you start a script or `Rmd` save it there.
+
+5. Download the first data set [here](https://github.com/harris-coding-lab/harris-coding-lab.github.io/raw/master/data/world_wealth_inequality.xlsx) and put the data in your `data` folder.^[The data source is the World Inequality Database where you can find data about the distribution of income and wealth in several contries over time. Outside of lab time, check out [wid.world](wid.world) for more information.]
+    
+### Tell R where to find files
+
+- Local paths are like addresses on your computer.  Use `getwd()` to see how your computer 
+- In lab0 we downloaded data form a URL which is an address on the internet.^[Fun fact: `read_xlsx()` cannot download and open data from the internet. I googled "Error: `path` does not exist: downloading xlsx from github" and found this on [github](https://github.com/tidyverse/readxl/issues/609#issuecomment-597318030)]
+  
+    ```{r, eval = FALSE}
+    # compare url
+    covid_data <- read_csv("https://data.cdc.gov/api/views/qfhf-uhaa/rows.csv?") 
+    # compare path
+    wid_data <- 
+      read_xlsx(
+        "~/coding-lab/harris-coding-lab.github.io/data/world_wealth_inequality.xlsx"
+      )
+    ```
+  6. Add a line to your script where you `setwd()` to the `data` folder.
+    
+
+### Working with the files
+
+7. Finally, we are using data in an excel format. We need the package `readxl` to process data of this type. In the console, run `install.packages("readxl")`.
+
+8. Add code to load the `tidyverse`.    
+
+9. If you followed the set-up from above, you should be able to run the following code with no error.
 
     ```{r, eval = FALSE}
     wid_data <- read_xlsx("world_wealth_inequality.xlsx")
     ```
+  
     
 
 
@@ -211,13 +235,12 @@ russian_data %>% filter(percentile == "p90p100") %>% filter(between(year, 1995, 
     midwest_pop <- midwest %>% select(county, state, ...)
     ```
 
-1. From `midwest_pop` calculate the area of each county.^[Notice that `popdensity` = $\frac{poptotal}{area}$] What's the largest county in the midwest? How about in Illinois?
+1. From `midwest_pop` calculate the area of each county. Notice that `popdensity` = $\frac{poptotal}{area}$.^[in `midwest` there's an `area` variable, but we want you to create your own using the information in `midwest_pop`.] What's the largest county in the midwest? How about in Illinois?
 
 1. From `midwest_pop` calculate percentage adults for each county. What county in the midwest has the highest proportion of adults? What's county in the midwest has the lowest proportion of adults?
 
 1. How many people live in Michigan?
 
-1. Note that together population density and population can give you information about the area (geographic size) of a location.  What's the total area of Illinois? You probably have no idea what the units are though. If you google, you'll find that it doesn't align perfectly with online sources. Given the units don't align with other sources, can this data still be useful?
 
 Want to improve this tutorial? Report any suggestions/bugs/improvements on [here](mailto:anisfeld@uchicago.edu)! We’re interested in learning from you how we can make this tutorial better.
 
