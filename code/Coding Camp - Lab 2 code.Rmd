@@ -13,7 +13,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Intro to Rmds (R Markdown documents). (To be covered during QA)
 1. Before getting started, run the following code in the console. This gives R the necessary tools to make pdfs from your Rmds
 
-```{r}
+```{r, eval = FALSE}
+# Notice "eval = FALSE"
 install.packages("tinytex")
 tinytex::install_tinytex()
 ```
@@ -39,6 +40,11 @@ c. Create a character vector with the letter “x” repeated 1980 times.
 d. Create a character vector of length 5 with the items “Nothing” “works” “unless” “you” “do”. Call this vector `angelou_quote` using `<-`.
 e. Create a numeric vector with 1e4 draws (this is scientific notation. Try `1e4 - 1 + 1` in the console) from a standard `normal` distribution.
 f. Create an integer vector with the numbers 0, 2, 4, . . . 20.
+
+```{r}
+
+
+```
 
 3. Run this code and explain why we get an error. (Make sure you did question 1.d above first!)
 
