@@ -1,0 +1,264 @@
+---
+title: 'Lesson 3: Control flow with `if` and `ifelse`'
+author: "Ari Anisfeld"
+date: "8/31/2021"
+output: pdf_document
+urlcolor: blue
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(haven)
+```
+
+## Data:
+
+For this lab, we will use data from Opportunity Insights: https://opportunityinsights.org/data/ 
+
+1. Download the Stata file and Readme for "College Level Characteristics from the IPEDS Database and the College Scorecard".
+
+## Rmd's and working directories (To be covered by TAs during lab)
+
+1. `Rmd`s keep track of their own working directories. Try `getwd()` in a code chunk in your `Rmd` and then run it again in the console. You should notice that `R` in the console uses your default working directory. On the other hand, the `lab_3.Rmd` knows which folder it is in and uses that folder as the working directory! 
+
+2. If you didn't already, put the opportunity insights data you downloaded in your preferred data location. 
+
+If you followed the set-up from above, you should be able to read the data in your `Rmd` with no error. 
+
+We provide three options dependening on how you have structured your folders. Option 1 is the easiest for a first time user. Keep the data in the same folder as the Rmd. Option 2 and 3 are what you're more likely to see in a professional environment.^[We did a poll among the TAs about their preferred directory structure. We were split between Option 2, Option 3, and a feeling like the choice was "Too personal" to make a cohort wide ]
+
+
+```{r}
+# Option 1:
+# data is in the same folder as Rmd
+#
+# project_folder/
+#     - lab_3.Rmd
+#     - mrc_table10.dta
+mrc_data <- read_dta("mrc_table10.dta")
+
+# Option 2:
+# data is in a data folder inside the folder with the Rmd 
+#
+# project_folder/
+#     - lab_3.Rmd
+#     - data/
+#       - mrc_table10.dta
+
+
+mrc_data <- read_dta("data/mrc_table10.dta")
+
+
+
+# Option 3:
+# data is in a data folder that is at the same level 
+# as the folder with the Rmd.
+#
+# project_folder/
+#   - data/
+#       - mrc_table10.dta
+#   - code/
+#       - lab_3.Rmd
+
+mrc_data <- read_dta("../data/mrc_table10.dta")
+```
+
+
+
+## Warm-up: Conditional statements and `ifelse`:
+
+1. Without running the code, predict what the output will be. Then, see if you were right by running the code in the console.
+
+  **True or False**
+
+  a. `TRUE | FALSE`
+  a. `TRUE | (FALSE & FALSE)`
+  a. `TRUE | (10 < 4)`
+  a. `TRUE | (10 < 4 & )`
+  a. `TRUE | (4 > pi & 3 < pi & exp(1) >= 3 & 1e6 < 2^30)`
+  a. `4 > 2 | 2 > 4`
+  a. What rule do these problems demonstrate?
+  
+  **True and False**
+
+  a. `TRUE & FALSE`
+  a. `TRUE & (FALSE & FALSE)`
+  a. `TRUE & (10 < 4)`
+  a. `TRUE & (10 < 4 & )`
+  a. `TRUE & (4 > pi & 3 < pi & exp(1) >= 3 & 1e6 < 2^30)`
+  a. `4 > 2 & 2 > 4`
+  a. What rule do these problems demonstrate?
+  
+**True and NA**
+  
+h. There are a few times when `NA` are not contagious. Run the code and think about how this relates to your findings above.
+      
+```{r}
+TRUE & NA    
+FALSE & NA    
+TRUE | NA    
+FALSE | NA    
+```
+
+
+2. Without running the code, predict what the output will be. Then, see if you were right by running the code in the console.
+
+```{r}
+ifelse(TRUE, "yes", "no")
+ifelse(FALSE, "yes", "no")
+ifelse(c(TRUE, FALSE, TRUE, FALSE), "yes", "no")
+ifelse(c(TRUE & FALSE, 
+         FALSE | TRUE, 
+         TRUE | TRUE, 
+         FALSE & FALSE), 
+       "yes", "no")
+ifelse(c(NA, TRUE, FALSE), "yes", "no")
+ifelse(c(NA, NA, TRUE, FALSE), "yes", "no")
+```
+
+## Common uses of `ifelse`
+
+1. Run the following code and you will see the distinct `tier_names` available in the dataset. 
+
+```{r}
+mrc_data %>% distinct(tier_name)
+```
+
+
+    a. `ifelse` can be used to adjust entries in the `tier_name` column. Change "Two-year (public and private not-for-profit)"
+        to "Two-year (public and private)".^[Hint: In the first position, put a condition testing if `tier_name` matches the string. If it does, we replace the string with "Two-year (public and private)", otherwise keep the same data.] 
+        
+```{r}
+# Fill in the ... with the appropriate code
+mrc_data %>%
+  mutate(tier_name = ifelse(... , ..., tier_name))
+```
+    
+    a. `ifelse` is often used to collapse tiers. Redefine `tier_name` so that "Nonselective four-year public" and "Nonselective four-year private not-for-profit" are grouped together as "Nonselective four-year (public and private)".^[Hint: The code will be very similar to the previous problem.]
+  
+```{r}
+# write your solution here
+```
+
+
+2. As you can see below, there are 1466 colleges missing average SAT scores. Sometimes we want to replace `NA`s with a value. For example, linear regressions will drop any row with `NA`s, and we might not want that.^[I believe you'll discuss missing data problems in stats I.] 
+
+```{r}
+mrc_data %>%
+  summarise(missing_sat_2013 = sum(is.na(sat_avg_2013)))
+```
+
+To avoid dropping rows, sometimes people replace the `NA` with the mean and add a new column that is an indicator of missingness. Using `mutate()` and `ifelse()`, fill `NA` in `sat_avg_2013` with the average SAT score of the other colleges and create a column called `missing_sat_avg_2013` that is 1 if `NA` and 0 otherwise.^[Hint: First, make the indicator column.  Hint 2: When replacing `NA`  in the example, I used the following code to find the mean `mean(column, na.rm = TRUE)`.]
+
+Here's a small example of what we expect. Try reproducing this example and then applying your code to `mrc_data`.
+
+```{r}
+before <- tibble(fake_data = c(1, 2, NA))
+# write your codes below
+after <- NULL
+```
+
+##  Extension: College choice:
+
+This part is admittedly silly! Imagine the situation: It's 2014 and a group of high school friends want to go to college together. They need to find a college that meets all their preferences. Your job is to find the perfect college.
+
+| Name | SAT Score | Preferences|
+| --- | --- | ------ | 
+| A-plus Abdul | 1430 | Either ivy plus tier or a flagship school |
+| Snooty Stephen | 1450 | not a public school |
+| Nourishing Nancy | 1590 | school in the midwest so she can be near her grandma |
+| Radical Rei | 1490 | strong social studies (as measured by the percentage of students majoring in social studies  > 30 percent) | 
+| Cost-conscious Casey | 1600 | wants a public school in CA or a school where students from homes in the bottom 20th percentile of incomes pay less than 10000 per year|
+
+Here are the rules. They want to go to school where their test scores are within 100 points of the school average SAT score. To match their preferences, use the most recent data. You will need a few tools.
+
+1. First, in order to understand what a column contains you can use `distinct()`^[from `dplyr`. The codebook is also useful.]. For example, say you are trying to figure out how to identify "ivy plus" schools (or what that specifically means). Notice that there is a columns called  `tier_name`, then run the code:
+
+```{r}
+mrc_data %>% distinct(tier_name)    
+```
+    We see there are 12 tiers and one is "Ivy Plus"! Note the capitalization.
+    
+2. Second, we're going to have to find schools that match ranges of SAT scores. We can use the `between()` function from `dplyr`.
+
+```{r}
+mrc_data %>% filter(1330 <= sat_avg_2013, sat_avg_2013 <= 1530)
+mrc_data %>% filter(between(sat_avg_2013, 1330, 1530))
+```
+
+    a. Figure out whether `between()` use `<` or `<=`? 
+
+3. The final thing is a concept. You're probably about to write code that looks like the following pseudo code.^[pseudo code is a term for fake code that captures the logic of some coding idea without being actual code.]
+
+```{r}
+# This is pseudo code 
+mrc_data %>%
+  mutate(abdul_choices = ifelse(CONDITIONS, "yes", "no"),
+         stephens_choices = ifelse(CONDITIONS, "yes", "no"),
+         ...) %>%
+  filter(abdul_choices == "yes", stephens_choices == "yes", ...)
+```
+
+    We can avoid the extra `== "yes"` by making `abdul_choices` a logical vector. In other words, write code like so:
+    
+```{r}
+# This is pseudo code 
+mrc_data %>%
+  mutate(abdul_choices = ifelse(CONDITIONS, TRUE, FALSE),
+         stephens_choices = ifelse(CONDITIONS, TRUE, FALSE),
+         ...) %>%
+  filter(abdul_choices, stephens_choices, ...)
+```
+
+
+    a. Test out the concept with a simple example.^[For example, try it with Abdul's only condition being Ivy Plus.] 
+
+
+4. Now you're ready to find the college for the five friends.
+
+```{r}
+# fill in the  ... with appropriate code
+
+# We'll give this a name so we can use it later.
+bff_super_awesome_college_list <- 
+mrc %>%
+  mutate(abdul_choices = ifelse(between(sat_avg_2013, 1330, 1530) & 
+                                (tier_name == "Ivy Plus" | ... ), 
+                                TRUE, FALSE),
+         sam_choices = ifelse(..., ..., ...), 
+         nancy_choices = ifelse(..., ..., ...),
+         rei_choices = ifelse(..., ..., ...),
+         casey_choices = ifelse(..., ..., ...)
+         ) 
+  
+
+bff_super_awesome_college_list %>%
+  filter(abdul_choices, sam_choices, nancy_choices, 
+         rei_choices, casey_choices)
+```
+
+  a. What school(s) are acceptable to all five 
+  b. How many school(s) are available to any of the five. Adjust `filter` statement slightly.^[Hint: Think about the warm-up you did for this lab]
+
+```{r}
+
+```
+
+
+5. The five friends have `NA` in their choice sets. Do the the school list change if we replace all the `NA`s with `TRUE`? Without coding, argue why the list will not change if we replace the `NA`s with `FALSE`.
+
+
+```{r}
+
+```
+
+
+1. **Challenge** Create a "Five friends college ranking". A college is ranked 1 if it is acceptable to all 5 friends. 2 if it is acceptable to any 4 friends and so on.^[3 if it is acceptable to 3 friends. 4 if acceptable to 2 friends and 5 if acceptable to 1 friend] Colleges that are not acceptable to any friend should be marked "Unranked".
+
+```{r}
+
+```
+
+
+Want to improve this tutorial? Report any suggestions/bugs/improvements on [here](mailto:anisfeld@uchicago.edu)! We’re interested in learning from you how we can make this tutorial better.
