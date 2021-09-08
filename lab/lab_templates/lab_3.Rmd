@@ -29,7 +29,7 @@ If you followed the set-up from above, you should be able to read the data in yo
 We provide three options dependening on how you have structured your folders. Option 1 is the easiest for a first time user. Keep the data in the same folder as the Rmd. Option 2 and 3 are what you're more likely to see in a professional environment.^[We did a poll among the TAs about their preferred directory structure. We were split between Option 2, Option 3, and a feeling like the choice was "Too personal" to make a cohort wide ]
 
 
-```{r}
+```{r, eval = FALSE}
 # Option 1:
 # data is in the same folder as Rmd
 #
@@ -65,6 +65,11 @@ mrc_data <- read_dta("../data/mrc_table10.dta")
 ```
 
 
+Whichever you chose, write the code in the following code chunk. Notice the above chunk says `eval = FALSE` in the curly brakets and so will not run (evaluate) the code when you knit.
+
+```{r}
+
+```
 
 ## Warm-up: Conditional statements and `ifelse`:
 
@@ -155,7 +160,7 @@ Here's a small example of what we expect. Try reproducing this example and then 
 
 ```{r}
 before <- tibble(fake_data = c(1, 2, NA))
-# write your codes below
+# write your codes below (replace NULL)
 after <- NULL
 ```
 
@@ -187,7 +192,7 @@ mrc_data %>% filter(1330 <= sat_avg_2013, sat_avg_2013 <= 1530)
 mrc_data %>% filter(between(sat_avg_2013, 1330, 1530))
 ```
 
-    a. Figure out whether `between()` use `<` or `<=`? 
+    a. Figure out whether `between()` uses `<` or `<=`? 
 
 3. The final thing is a concept. You're probably about to write code that looks like the following pseudo code.^[pseudo code is a term for fake code that captures the logic of some coding idea without being actual code.]
 
