@@ -45,11 +45,11 @@ election_simulation <-
          probability_support = runif(1000))
 ```
 
-    a. Using `mutate` and `ifelse` create a new column called `voter` that is 1 if the `probablity_vote` is over .5 and 0 otherwise.
-    
-    b. Create a second column called `supporter` that is 1 if `probablity_support` is over .4 and 0 otherwise.
-    
-    c. Create a third column that equals `TRUE` if `voter` and `supporter` are both equal to 1, that equals `FALSE` if `voter` equals 1 but `supporter` is 0 and that is `NA` otherwise.^[There are several ways forward, e.g. using `case_when` or nesting two `ifelse()` statements.]
+a. Using `mutate` and `ifelse` create a new column called `voter` that is 1 if the `probablity_vote` is over .5 and 0 otherwise.
+
+b. Create a second column called `supporter` that is 1 if `probablity_support` is over .4 and 0 otherwise.
+
+c. Create a third column that equals `TRUE` if `voter` and `supporter` are both equal to 1, that equals `FALSE` if `voter` equals 1 but `supporter` is 0 and that is `NA` otherwise.^[There are several ways forward, e.g. using `case_when` or nesting two `ifelse()` statements.]
 
 
 ## Using `if`
@@ -126,15 +126,15 @@ Want to improve this tutorial? Report any suggestions/bugs/improvements on [here
     
 ## if
 
-    ```{r}
-    dice <- sample(c(1:6), 2)
-    
-    if (sum(dice) == 7) {
-      print("You win")
-    } else if(sum(dice) %in% c(6,8)) {
-      print ("Try again")
-    } else {
-      print("You lose")
-    }
-    
-    ```
+```{r}
+dice <- sample(c(1:6), 2)
+
+if (sum(dice) == 7) {
+  print("You win")
+} else if(sum(dice) %in% c(6,8)) {
+  print ("Try again")
+} else {
+  print("You lose")
+}
+
+```
