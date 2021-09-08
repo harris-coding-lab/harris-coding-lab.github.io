@@ -9,30 +9,18 @@ urlcolor: blue
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 options(dplyr.summarise.inform = FALSE)
-library(tidyverse)
-library(tweetrmd)
 ```
 
+Before diving into this lab, please open the pdf and read the background and data sections!
 
-
-We expect you to **watch the `class 4` material**, [here](harris-coding-lab.github.io) prior to lab. In addition, **read the background and data section before lab**.
-
-# Background and data
-
-```{r, echo = FALSE, maxwidth = 150}
-include_tweet("https://twitter.com/nomadj1s/status/1294390352904966151")
-```
-
-
-Follow the [tweet thread](https://twitter.com/nomadj1s/status/1294390352904966151) and you'll see that Prof. Damon Jones, of Harris, gets that data and does some analysis. In this lab, you're going to follow his lead and dig into traffic stop data from the University of Chicago Police Department, one of the largest private police forces in the world.
-
+# Getting the data
 
 Download the data [here](https://github.com/harris-coding-lab/harris-coding-lab.github.io/raw/master/data/data_traffic.csv). You can save the file directly from your browser using ctrl + s or cmd + s. Alternatively, you can read the csv directly from the internet like we saw in lab 0 using the link https://github.com/harris-coding-lab/harris-coding-lab.github.io/raw/master/data/data_traffic.csv
 
 
 # Warm-up
 
-1. Open a new `Rmd` and save it in your coding lab folder; if you downloaded the data, move your data file to your preferred data location. 
+1. Open the `Rmd` and save it in your coding lab folder; if you downloaded the data, move your data file to your preferred data location. 
 
 2. In your `Rmd`, write code to load your packages. If you load packages in the console, you will get an error when you knit because knitting starts a fresh R session.
 
@@ -61,7 +49,7 @@ grouped_data <-
 ```
 
   
-5. Use `group_by()` and `summarize()` to recreate the following table.
+5. Use `group_by()` and `summarize()` to recreate the table in the pdf.
 
 ```{r}
 
@@ -85,9 +73,9 @@ grouped_data <-
 ```
   
 
-2. The frequencies out of context are not super insightful. What additional information do we need to argue the police are disproportionately stopping members of a certain group? (Hint: Prof. Jones shares the information in his tweets.)^[To be fair, even with this information, this is crude evidence that can be explained away in any number of ways. One job of a policy analyst is to bring together evidence from a variety of sources to better understand the issue.]
+2. The frequencies out of context are not super insightful. What additional information do we need to argue the police are disproportionately stopping members of a certain group? (Hint: Prof. Jones shares the information in his tweets.)
 
-3. For the problem above, your groupmate tried the following code. Explain why the frequencies are all 1.^[Hint: This is a lesson about `group_by()`!]
+3. For the problem above, your groupmate tried the following code. Explain why the frequencies are all 1. (Hint: This is a lesson about `group_by()`!)
 
 ```{r}
 traffic_stop_freq_bad <-
@@ -132,10 +120,11 @@ disposition_by_race %>%
   theme_minimal()
 ```
 
-    Let's break down how we got to this code. First, I ran `traffic_data %>% count(Race, Disposition)` and noticed that we have a lot of variety in how officers enter information into the system.^[Try it yourself!] I knew I could deal with some of the issue by standardizing capitalization.  
-    a. In the console, try out `str_to_lower(...)` by replacing the `...` with different strings. The name may be clear enough, but what does  `str_to_lower()` do?^[This code comes from the `stringr` package. Checkout `?str_to_lower` to learn about some related functions.]
+Let's break down how we got to this code. First, I ran `traffic_data %>% count(Race, Disposition)` and noticed that we have a lot of variety in how officers enter information into the system.^[Try it yourself!] I knew I could deal with some of the issue by standardizing capitalization.  
 
-    After using `mutate` with  `str_to_lower()`, I piped into `count()` again and looked for strings that represent the same `Disposition`. I stored terms in character vectors (e.g. `citation_strings`). The purpose is to make the `case_when()` easier to code and read. Once I got that right, I added frequencies to finalize `disposition_by_race`. 
+  a. In the console, try out `str_to_lower(...)` by replacing the `...` with different strings. The name may be clear enough, but what does  `str_to_lower()` do? This code comes from the `stringr` package. Checkout `?str_to_lower` to learn about some related functions.
+
+After using `mutate` with  `str_to_lower()`, I piped into `count()` again and looked for strings that represent the same `Disposition`. I stored terms in character vectors (e.g. `citation_strings`). The purpose is to make the `case_when()` easier to code and read. Once I got that right, I added frequencies to finalize `disposition_by_race`. 
 
 5. To make the graph, I first tried to get all the disposition data on the same plot.
 
@@ -151,14 +140,6 @@ By default, the bar graph is stacked. Look at the resulting graph and discuss th
 
 6. I decided I would focus on citations only and added the `filter(n > 5, Disposition == "citation")` to the code.^[Notice that I get the data exactly how I want it using `dplyr` verbs and then try to make the graph.] What is the impact of filtering based on `n > 5`? Would you make the same choice? This question doesn't have a "right" answer. You should try different options and reflect.
 
-    <!-- The case against: 
-        - We throw away information. 
-        - `n` here is already subdivided based on "Disposition", but it would make more sense to filter based on number of observations for a given race rather than a race-disposition count.
-        The case for: 
-          - small `n` groups can be misleading since one interaction can sway the result significantly.
-        An alternative is to create an "other" category, though that might bury heterogeneity across the smallest groups.
-        -->
-
 
 7. Now, you can create a similar plot based called "Search Rate" using the `Search` variable. Write code to reproduce this plot.
 
@@ -169,10 +150,9 @@ By default, the bar graph is stacked. Look at the resulting graph and discuss th
 
 ## Extension: Revisiting world inequality data
 
-
 When we explored the World Inequality Database data in lab 1, we mimicked grouped analysis by filtering the data to only show data for France and then repeated the analysis for Russia. Using `group_by()`, we can complete the analysis for each country  simultaneously.
 
-1. Read in the `wid_data`.^[If you are still having trouble, you may want to re-download the file [here](https://github.com/harris-coding-lab/harris-coding-lab.github.io/raw/master/data/world_wealth_inequality.xlsx)  and do not open with Excel!]
+1. Read in the `wid_data`.
 
 ```{r}
 wid_data_raw <- 
@@ -205,7 +185,7 @@ wid_data <- wid_data_raw %>%
 ```
 
 
-    a. Which country has the smallest standard deviation in share of wealth owned by the top 10 percent? Use `arrange()` to order the countries by standard deviation. Compare the order to you results above about the number of observation and time horizon.^[Usually when we get more data we expect variances to decreased, but that reasoning assumes independence between observations. In this case, there is high temporal correlation, which means if the top 10 percent own 50 percent of wealth this year, they'll own some proportion near 50 percent in the next year.  South Korean only has observations during a short and highly stable historical period, so that explains the low variance.]
+    a. Which country has the smallest standard deviation in share of wealth owned by the top 10 percent? Use `arrange()` to order the countries by standard deviation. Compare the order to you results above about the number of observation and time horizon.
     
     b. If your code worked, you should be able to make this bar chart.
 
