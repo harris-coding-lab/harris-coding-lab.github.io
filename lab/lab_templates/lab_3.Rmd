@@ -16,7 +16,7 @@ library(haven)
 
 For this lab, we will use data from Opportunity Insights: https://opportunityinsights.org/data/ 
 
-1. Download the Stata file and Readme for "College Level Characteristics from the IPEDS Database and the College Scorecard".
+1. Download the Stata data file (.dta) and Readme for "College Level Characteristics from the IPEDS Database and the College Scorecard".
 
 ## Rmd's and working directories (To be covered by TAs during lab)
 
