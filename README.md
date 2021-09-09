@@ -37,7 +37,7 @@ Your [final project](lab/project_description.pdf) is quite simple. You will pick
 Please send questions via the [Q and A google form](https://forms.gle/HwfVEsw2qJ9wq4Rh7) at least 1 hour prior to Q and A sessions. We will address your questions either in lectures with Ari, in TA sessions or in written form.
 
 
-[**QA Slides Rmd**](qa_material/accelerated_summer/accelerated_summer_qa.Rmd) Note: these are not polished and may contain typos or other ambiguities.
+Link to [QA Slides Rmd](qa_material/accelerated_summer/accelerated_summer_qa.Rmd) Note: these are not polished and may contain typos or other ambiguities.
 
 ### Additional Resources
 - [tidyverse cheetsheets](https://rstudio.com/resources/cheatsheets/) start with `dplyr` and `ggplot`
