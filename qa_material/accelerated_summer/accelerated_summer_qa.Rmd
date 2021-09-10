@@ -647,21 +647,6 @@ typeof(seq(1, 12, 1))
 Tidyverse functions tend to be more careful to avoid this sort of behavior.
 
 
-## Question from QA, what's the deal with subsetting?
-
-How many ways can you pull out the even numbers from `vec`?
-
-```{r}
-vec <- 1:10
-vec[c(2, 4, 6, 8, 10)]
-vec[rep(c(FALSE, TRUE), 5)]
-vec[seq(2, 10, 2)]
-vec[vec %% 2 == 0]
-```
-
-Notice `filter()` works like the final option!
-
-
 
 ## Horoscope game:
 
@@ -679,22 +664,457 @@ e.g.  `birth_month <- 2` the code should return something like `I see penguins i
 
 # Class 4: Grouped analysis
 
-## practice
+## Today's class
 
-We are working in `our_rmd.Rmd` with file structure like so:
+- Review if statements and conditional expressions
+- Review some base R
+- Take questions about grouped analysis
 
-- dir1
-  file1.csv
-  - dir2
-    our_rmd.Rmd
-  - dir3
-    file2.csv
+**For the curious**: `"[\\r]?\\n"` is a "regular expression" which tells `separate()` to look for `"\n"` or `"\r\n"` and separate the data wherever it finds those strings within other strings.
 
-**Question**
+## conditional expressions and missing data
 
-- What is our working directory?
-- How do we access file2.csv?
-- How do we access file1.csv?
+- `NA | TRUE` returns `TRUE`. Why does `FALSE | NA` return `NA`?
+
+Hint: Fill out this table:
+
+| x | y | x OR y|
+|---|---|-------|
+| `FALSE` | `FALSE` | |
+| `FALSE` | `TRUE` | |
+| `TRUE` | `FALSE` | |
+| `TRUE` | `TRUE` | |
+
+## conditional expressions and missing data
+
+- `NA | TRUE` returns `TRUE`. Why does `FALSE | NA` return `NA`?
+
+| x | y | x OR y|
+|---|---|-------|
+| `FALSE` | `FALSE` | `FALSE`  |
+| `FALSE` | `TRUE` |  |
+| `TRUE` | `FALSE` |  |
+| `TRUE` | `TRUE` |  |
+
+## conditional expressions and missing data
+
+- `NA | TRUE` returns `TRUE`. Why does `FALSE | NA` return `NA`?
+
+| x | y | x OR y|
+|---|---|-------|
+| `FALSE` | `FALSE` | `FALSE`  |
+| `FALSE` | `TRUE` | `TRUE` |
+| `TRUE` | `FALSE` | `TRUE` |
+| `TRUE` | `TRUE` | `TRUE` |
+
+
+
+## conditional expressions and missing data
+
+- `NA | TRUE` returns `TRUE`. Why does `FALSE | NA` return `NA`?
+
+
+OR returns TRUE if **any** value is TRUE. Thus, when we have `NA | TRUE`, then we logically know that the result is `TRUE`!
+
+<br>
+<br>
+
+`FALSE | NA` depends on the missing value, so R cannot evaluate the expression.
+
+
+## conditional expressions and missing data
+
+- `TRUE & NA` returns `NA`. Why does `FALSE & NA` return `FALSE`?
+
+| x | y | x AND y|
+|---|---|-------|
+| `FALSE` | `FALSE` | |
+| `FALSE` | `TRUE` | |
+| `TRUE` | `FALSE` | |
+| `TRUE` | `TRUE` | |
+
+
+## conditional expressions and missing data
+
+- `TRUE & NA` returns `NA`. Why does `FALSE & NA` return `FALSE`?
+
+| x | y | x AND y|
+|---|---|-------|
+| `FALSE` | `FALSE` | `FALSE` |
+| `FALSE` | `TRUE` | `FALSE` |
+| `TRUE` | `FALSE` | `FALSE` |
+| `TRUE` | `TRUE` |`TRUE` |
+
+AND requires **all** `TRUE` so R knows `FALSE & NA` is `FALSE`!
+
+## Quick hitter
+
+*Q:* What's the difference between `ifelse()` and `if_else()`
+
+*A:* `tidyverse::if_else()` mimics `base::ifelse()` with two major differences 
+
+## Qh: What's the difference between `ifelse()` and `if_else()`
+
+1. `tidyverse::if_else()` has a built-in way to replace missing data.
+
+```{r}
+ex <- c(1, NA, 0, NA, 1)
+if_else(ex == 1, "Yes", "No", missing = "Eh")
+```
+## Qh: What's the difference between `ifelse()` and `if_else()`
+
+The same behavior requires nesting with `base::ifelse()`
+
+```{r}
+
+ifelse(is.na(ex), 
+       "Eh",
+       ifelse(ex == 1, "Yes", "No"))
+```
+
+
+## Qh:  What's the difference between `ifelse()` and `if_else()`
+
+2. `tidyverse::if_else()` checks for type matching
+
+```{r, eval = FALSE}
+if_else(ex == 1, 1, "No")
+```
+
+*Error: `false` must be a double vector, not a character vector.*
+
+
+## Practice 
+
+```{r, echo = FALSE}
+midwest_binarized <-
+midwest %>%
+  mutate(poverty_status = ifelse(percbelowpoverty < 10, "poverty rate < 10", "poverty rate > 10"),
+         ed_status = ifelse(percollege > 20, "highly educated", "less educated")) 
+```
+
+
+1. Use `mutate()` and `ifelse()` with `midwest` data to create binary variables 
+
+  - `ed_status` = a city is "highly educated" if over 20 percent of residents have college education (`percollege`)
+  - `poverty_status` = distinguish between cities with poverty rates above and below 10 percent.
+
+2. Assign your intermediate data set to a name.
+
+3. Calculate the proportion "highly educated" and proportion "poverty rate < 10" for counties in Ohio.
+
+4. Calculate the proportion "highly educated" and proportion "poverty rate < 10" for counties in Illinois.
+
+## Expected output
+
+```{r}
+midwest_binarized  %>%
+  ggplot(aes(x = ed_status, fill = poverty_status)) + 
+    geom_bar(position = "dodge")
+```
+
+## Practice
+
+- Calculate the proportion "highly educated" and proportion "poverty rate < 10" for counties in Ohio.
+
+```{r, echo = FALSE}
+midwest_binarized %>%
+  filter(state == "OH") %>%
+  summarize(state = first(state),
+            prop_highly_educated = sum(ed_status == "highly educated"),
+            prop_low_poverty = sum(percbelowpoverty < 10),
+            )
+```
+
+- Calculate the proportion "highly educated" and proportion "poverty rate < 10" for counties in IL.
+
+```{r, echo = FALSE}
+midwest_binarized %>%
+  filter(state == "IL") %>%
+  summarize(state = first(state),
+            prop_highly_educated = sum(ed_status == "highly educated"),
+            prop_low_poverty = sum(percbelowpoverty < 10),
+            )
+```
+
+
+## Solutions
+
+```{r, eval = FALSE}
+midwest_binarized <-
+midwest %>%
+  mutate(poverty_status = ifelse(percbelowpoverty < 10, "poverty rate < 10", "poverty rate > 10"),
+         ed_status = ifelse(percollege > 20, "highly educated", "less educated")) 
+
+midwest_binarized %>%
+  filter(state == "IL") %>%
+  summarize(state = first(state),
+            prop_highly_educated = sum(ed_status == "highly educated"),
+            prop_low_poverty = sum(percbelowpoverty < 10),
+            )
+```
+
+
+Is there a better way? What if I want the information for all the states?
+
+## Solutions
+
+Use `group_by()` and summarize!
+
+```{r}
+midwest_binarized %>%
+  group_by(state) %>%
+  summarize(
+            prop_highly_educated = sum(ed_status == "highly educated"),
+            prop_low_poverty = sum(percbelowpoverty < 10)
+            )
+
+```
+
+
+##  Quick hitter: When do we need `ungroup()`?
+
+Recall, `group_by()` adds information about groups "silently" without changing the data
+
+```{r}
+midwest_grouped <- 
+midwest_binarized %>%
+  group_by(state, ed_status, poverty_status) %>%
+  select(poptotal) 
+
+midwest_grouped %>%   glimpse() 
+```
+
+##  Quick hitter: When do we need `ungroup()`?
+
+
+If we want to do analysis where groups get in the way, we need `ungroup()`. 
+
+```{r}
+midwest_grouped %>%
+  ungroup() %>% 
+  glimpse() 
+```
+
+
+##  Quick hitter: When do we need `ungroup()`?
+
+
+If we want to do analysis where groups get in the way, we need `ungroup()`. 
+
+```{r}
+midwest_grouped %>%
+  summarize(biggest_county = max(poptotal))
+```
+
+
+##  Quick hitter: When do we need `ungroup()`?
+
+
+If we want to do analysis where groups get in the way, we need `ungroup()`. 
+
+```{r}
+midwest_grouped %>%
+  ungroup() %>%
+  summarize(biggest_county = max(poptotal))
+```
+
+
+## Sure, but why would I group that data in the first place?
+
+Perhaps you did a `group_by() + summarize()` with multiple groups. 
+
+  - The default is to strip the "last" grouping variable
+
+```{r}
+midwest_grouped %>%
+  summarize(avg_pop = mean(poptotal)) %>%
+  glimpse()
+```
+
+
+## BaseR: what's the deal with subsetting?
+
+How many ways can you pull out the even numbers from `vec`?
+
+```{r}
+vec <- 1:10
+```
+
+
+## BaseR: what's the deal with subsetting?
+
+How many ways can you pull out the even numbers from `vec`?
+
+```{r}
+vec <- 1:10
+vec[c(2, 4, 6, 8, 10)]
+vec[rep(c(FALSE, TRUE), 5)]
+vec[seq(2, 10, 2)]
+vec[vec %% 2 == 0]
+```
+
+Notice `filter()` works like the final option!
+
+## BaseR: what's the deal with subsetting?
+
+Now what if vec is a column in a tibble?
+```{r}
+data <- tibble(vec_col = 1:10, random_col = "A")
+```
+
+
+## BaseR: what's the deal with subsetting?
+
+Now what if vec is a column in a tibble?
+
+```{r, eval = FALSE}
+
+data <- tibble(vec_col = 1:10, random_col = "A")
+
+# equivalent to pull() (with filter)
+data$vec_col[data$vec_col %% 2 == 0] # nicest way
+data[["vec_col"]][c(2, 4, 6, 8, 10)]
+data[rep(c(FALSE, TRUE), 5), ][["vec_col"]]
+
+#equivalent to select() (with filter)
+data[rep(c(FALSE, TRUE), 5), "vec_col" ]
+data[seq(2, 10, 2), "vec_col"]
+
+data %>% 
+  filter(vec_col %% 2 == 0) %>% 
+  select(vec_col)
+```
+
+
+## BaseR: what's the deal with subsetting?
+
+Using `[` with vectors is natural.
+
+- you can extract based on 
+  - indices
+  - a vector of booleans (of equal length)
+  - and names (if there are names)
+
+
+When working with data, use tidyverse verbs to extract data.
+
+- easier to remember words
+- help avoid syntax errors and confusion between `[` `[[` and `$`
+
+
+When googling for help add "in R tidyverse" to your query.
+If you start doing numerical computing, look for a review of `[`  and `[[`.
+
+
+## Wait did you say names for a vector?
+
+Yep, we can have a named vector.
+
+```{r}
+x <- c("a" = 1, "b"= 2)
+x["a"]
+```
+
+
+## Named vectors are not, Lists
+
+Notice this is distinct from a list.
+
+- The key difference is that lists can accept different data types as entries.
+
+```{r}
+c("a" = c(1, 2), "b"= 2)
+list("a" = c(1, 2), "b"= 2)
+```
+
+## Tibbles are built on lists
+
+- but tibbles enforce all entries to be the same length vectors.
+
+```{r}
+my_tib <- tibble(a = c(1, 2),
+       b = "A")
+
+my_list <- list(a = c(1, 2),
+       b = c("A", "A"))
+
+# e.g. 
+my_tib[["b"]]
+my_list[["b"]]
+```
+
+
+
+
+
+
+## Key points: Grouped analysis with `group_by()`
+
+- *groups* are a set of rows that belong together.
+
+  - `group_by()` adds information about groups "silently" without changing the data
+
+- Use `group_by()` with `summarize()` to create summary tables at group-level.
+
+  - Use with functions that *reduce* data from a vector to a single value per group.
+  
+  - Expected output: a table with one row per group and one column per summary statistic (and one column per grouping column.)
+  
+  
+## Key points: Grouped analysis with `group_by()`
+
+- we can also use `group_by()` to do grouped analysis with `mutate()`
+  
+  - you can use a "window function" like `lag()`
+  
+  - or add summary statistics to your main data set for futher analysis
+  
+- `group_by()` also can impact `arrange()` and `filter()`
+
+**Up next:** Grouping() watch video for class 5 on using `loops`. 
+  
+  
+
+##  Discussion
+
+How do we make the data for this graph?
+
+- What "groups" are required for the visualization?
+
+```{r, eval = FALSE, echo = FALSE, message = FALSE, fig.height = 3}
+mean_share_per_country_with_time <-
+  wid_data %>% 
+  filter(country %in% c("China", "India", "USA")) %>%
+  filter(percentile %in% c("p99p100", "p90p100")) %>% 
+  mutate(time_period = case_when(year < 1960 ~ "1959 and earlier",
+                                 year < 1980 ~ "1960 to 1979",
+                                 year < 2000 ~ "1980 to 1999",
+                                 TRUE ~ "2000 to present")) %>%
+  group_by(country, percentile, time_period) %>% 
+  summarise(mean_share = mean(value, na.rm = TRUE),
+            sd_share = sd(value, na.rm = TRUE))
+
+
+ mean_share_per_country_with_time %>%
+      ggplot(aes(x = country, y = mean_share, fill = percentile)) +
+        geom_col(position = "dodge2") + 
+        facet_wrap(~time_period)
+```
+
+## Exercise
+
+A student came during office hours and asked why `mean(percentile=="p90p100")` doesn't calculate the average wealth shares (`value`) for the top 10 percentile group. 
+
+```{r, eval = FALSE}
+wid_data %>%
+  filter(country %in% c("China", "India", "USA")) %>%
+  group_by(country) %>%
+  summarize(p90_mean = mean(percentile == "p90p100", 
+                            na.rm = TRUE))
+```
+
+
 
 # Class 5: Loops
 
