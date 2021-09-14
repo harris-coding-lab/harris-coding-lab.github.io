@@ -114,3 +114,26 @@ How do these estimates differ as you increase the standard deviation?
 
 **Answer:** We can see that as the standard deviation increases, the spread of our mean calculations also increases—the wider the distribution, the larger the draw we require for the sample mean to converge towards the true mean. This makes sense, because as the population standard deviation of the distribution we draw from  increases, the likelier it is we draw extreme numbers.
 
+
+# Making the code more efficient.
+
+At this point in your coding career, efficiency is minimally important. However, we discussed that loops in R are much slower if we build our output item by item (or row by row in this case.) We do better if we preallocate space.
+
+
+```{r}
+set.seed(60637)
+sample_sizes <- 1:30
+estimates <- vector("list", length(sample_sizes))
+
+set.seed(60637)
+for (i in seq_along(sample_sizes)) {
+  sample_mean <- mean(rnorm(sample_sizes[i], mean = 0, sd = 5))
+  estimates[[i]] <- tibble(n = sample_sizes[i], sample_mean = sample_mean)
+}
+
+bind_rows(estimates)
+
+```
+
+
+

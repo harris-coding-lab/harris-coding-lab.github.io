@@ -115,6 +115,16 @@ ___ %>%
 How do these estimates differ as you increase the standard deviation?
 
 
+# Making the code more efficient.
+
+At this point in your coding career, efficiency is minimally important. However, we discussed that loops in R are much slower if we build our output item by item (or row by row in this case.) We do better if we preallocate space.
+
+1. Rewrite your loops where we start with `estimates <- vector("list", n)`. This creates a list of length `n` "filled" with NULL.
+
+1. During each iteration of your loop fill one of the spaces in `estimates` with a named vector (which we think of as a row.) Use `[[` to index into your list.
+
+1. Finally, when your loop terminates, you'll have `estimates` filled with `n` "rows". `bind_rows(estimates)` will convert the list to a tibble.
+
 
 
 Want to improve this tutorial? Report any suggestions/bugs/improvements on [here](mailto:anisfeld@uchicago.edu)! We’re interested in learning from you how we can make this tutorial better.
