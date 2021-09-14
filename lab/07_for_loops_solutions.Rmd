@@ -121,18 +121,33 @@ At this point in your coding career, efficiency is minimally important. However,
 
 
 ```{r}
+build_up <- function(sample_sizes = 1:30){
 set.seed(60637)
-sample_sizes <- 1:30
-estimates <- vector("list", length(sample_sizes))
+estimates <- tibble(n = integer(), sample_mean = double())
 
-set.seed(60637)
-for (i in seq_along(sample_sizes)) {
-  sample_mean <- mean(rnorm(sample_sizes[i], mean = 0, sd = 5))
-  estimates[[i]] <- tibble(n = sample_sizes[i], sample_mean = sample_mean)
+for (n in sample_sizes) {
+  sample_mean <- mean(rnorm(n, mean = 0, sd = 5))
+  estimates <- bind_rows(estimates, c(n = n, sample_mean = sample_mean))
+}
+estimates
 }
 
-bind_rows(estimates)
+prealloc <- function(sample_sizes = 1:30){
+  estimates <- vector("list", length(sample_sizes))
+  set.seed(60637)
+  for (i in seq_along(sample_sizes)) {
+    sample_mean <- mean(rnorm(sample_sizes[i], mean = 0, sd = 5))
+    # if you make this a tibble it's much slower!
+    estimates[[i]] <- c(n = sample_sizes[i], sample_mean = sample_mean)
+  }
+  
+  bind_rows(estimates)
+}
 
+
+bench::mark(prealloc(), 
+            build_up()) %>%
+  select(expression, min, median, mem_alloc)
 ```
 
 

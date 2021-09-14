@@ -119,7 +119,7 @@ How do these estimates differ as you increase the standard deviation?
 
 At this point in your coding career, efficiency is minimally important. However, we discussed that loops in R are much slower if we build our output item by item (or row by row in this case.) We do better if we preallocate space.
 
-1. Rewrite your loops where we start with `estimates <- vector("list", n)`. This creates a list of length `n` "filled" with NULL.
+1. Rewrite your loop from part 1 where we start with `estimates <- vector("list", n)`. This creates a list of length `n` "filled" with NULL.
 
 1. During each iteration of your loop fill one of the spaces in `estimates` with a named vector (which we think of as a row.) Use `[[` to index into your list.
 

@@ -807,7 +807,7 @@ midwest %>%
 
 ## Expected output
 
-```{r}
+```{r, fig.height = 3}
 midwest_binarized  %>%
   ggplot(aes(x = ed_status, fill = poverty_status)) + 
     geom_bar(position = "dodge")
@@ -1117,5 +1117,355 @@ wid_data %>%
 
 
 # Class 5: Loops
+
+##  Today's class
+
+- `case_when()` question
+- Review a few grouped analysis concepts
+- Practice using loops
+
+
+## Quicker hitter
+
+**Q** Why do you end `case_when()` with `TRUE ~ ...`?
+
+```{r}
+x <- 1:35
+case_when(
+  x %% 35 == 0 ~ "fizz buzz",
+  x %% 5 == 0 ~ "fizz",
+  x %% 7 == 0 ~ "buzz",
+  TRUE ~ as.character(x)
+)
+```
+
+## Quicker hitter
+
+**A** If no cases match, NA is returned.
+
+```{r}
+x <- 1:35
+case_when(
+  x %% 35 == 0 ~ "fizz buzz",
+  x %% 5 == 0 ~ "fizz",
+  x %% 7 == 0 ~ "buzz"
+)
+```
+
+
+## **Q:** What does `group_by()` do?
+
+The following command runs without error, but I'm not seeing any change in `grouped_data` compared to  `traffic_data`. 
+
+- Both still have 4478 jobs of 9 variables. 
+
+Am I missing something?
+
+```{r, eval = FALSE}
+ grouped_data <- 
+  traffic_data %>%
+    group_by(Race, Gender)
+```
+
+## Two questions on grouped mutates.
+
+Recall:
+
+- `group_by() + summarize()` **collapses** the data to a row with summary values per group.
+
+- `group_by() + mutate()` maintains the data set, but adds columns that may depend on group membership
+
+  - e.g. `lag()`, `row_number()`
+
+
+## How does `lag()` work?
+
+Find the "previous" (lag()) or "next" (lead()) values in a vector. 
+
+```{r}
+lag(c(1, 2, 3))
+```
+
+## How does `lag()` work?
+
+Useful for comparing values behind of or ahead of the current values.
+
+```{r}
+x <- 1:5
+tibble(behind = lag(x), x, ahead = lead(x))
+```
+
+## How does `lag()` work with grouped data?
+
+- Why is this wrong?
+
+```{r}
+x <- c(2, 3, 30, 20)
+group <- c("A", "A", "B", "B")
+time <- c(1, 2, 2, 1)
+tibble(group, time,  x) %>%
+  mutate(previous = lag(x))
+```
+
+
+## How does `lag()` work with grouped data?
+
+You need to have the data in the correct
+
+  - order
+  - group
+
+
+```{r}
+tibble(time, group,  x) %>%
+  group_by(group) %>%
+  arrange(time) %>%
+  mutate(previous = lag(x))
+```
+
+## Practice
+
+Use `txhousing`, a tidyverse dataset.
+
+- Calculate the monthly change in number of `sales` for each `city`.
+
+  - hint: use `lag()` in a grouped mutate! 
+
+- Calculate the annual change in total `sales` for each `city`.
+
+## **Q**. 
+
+Explain the `rank()` function(s). How is it different than `order()` and `sort()`?
+
+```{r}
+x <- c(10, 0, 1, 2, 3, NA)
+
+rank(x)
+order(x) 
+sort(x)
+row_number(x)
+```
+
+
+## **A**. Sort puts the data in order.
+
+```{r}
+x
+(the_order <- order(x))
+x[the_order]
+sort(x, na.last = TRUE)
+```
+
+## **A**. Rank ranks the data in place.
+
+```{r}
+x
+(the_rank <- rank(x))
+the_order
+```
+
+## `tidyverse` provides 6 ranking functions
+
+```{r, eval = FALSE}
+# the help shows all 6!
+?row_number() 
+```
+
+Explain how the ranking functions interact with a `group_by() + mutate()`.
+
+
+## For loops and iteration
+
+- Iteration is useful when we are repeatedly calling the same block of code or function while changing one (or two) inputs. 
+
+- but if you can, use vectorized operations!
+
+
+## For loops
+\footnotesize
+Compare and contrast the two code blocks
+
+```{r}
+# block a
+x <- -10:10
+y <- integer(length = length(x))
+
+for (i in seq_along(x)) {
+  y[[i]] <- x[[i]]^2 + x[[i]] + 1
+}
+```
+
+and
+
+```{r}
+# block b
+x <- -10:10
+y <- c()
+
+for (item in x) {
+  y <- c(y, item^2 + item + 1)
+}
+```
+
+## loops
+
+|| block a |block  b | 
+|---|---|---|
+|iterates over | indexes | items |
+|preallocates space?| yes | no |
+| vectorized? | no | no|
+
+
+## Vectorized? No.
+
+
+Can you vectorize the code?
+
+```{r}
+# block b
+x <- -10:10
+y <- c()
+
+for (item in x) {
+  y <- c(y, item^2 + item + 1)
+}
+```
+
+## Vectorized? yes.
+
+```{r}
+x <- -10:10
+y <- x^2 + x + 1
+```
+
+
+
+## Is preallocation a big deal?
+
+I encapsulated our code into functions for testing.
+
+\footnotesize
+
+
+```{r}
+preallocate_loop <- function(x){
+  y <- integer(length = length(x))
+  for (i in seq_along(x)) {
+    y[[i]] <- x[[i]]^2 + x[[i]] + 1
+  }
+  y
+}
+```
+
+```{r}
+build_loop <- function(x){
+    y <- c()
+    for (item in x) {
+      y <- c(y, item^2 + item + 1)
+    }
+    y
+  }
+```
+
+## For tiny data sets, it's not a huge deal.
+
+```{r}
+x <- -10:10
+bench::mark(preallocate_loop(x), build_loop(x)) %>%
+  select(expression, min, median, mem_alloc)
+```
+
+## For big data sets, it increasingly becomes a big deal.
+
+<!-- cache = TRUE creates some files to store the results of chunks. 
+It means when you re-knit, you can use the stored results (as long as you don't change the chunk in any way!-->
+```{r, cache = TRUE}
+# warning this test takes a while!
+x <- -1e4:1e4
+bench::mark(preallocate_loop(x), build_loop(x)) %>%
+  select(expression, min, median, mem_alloc)
+```
+
+## vectorized option
+
+```{r}
+vectorized_code <- function(x) {
+  x^2 + x + 1
+}
+```
+
+
+## vectorized option performs favorably
+
+```{r}
+x <- -1e6:1e6
+bench::mark(preallocate_loop(x), 
+            vectorized_code(x)) %>%
+  select(expression, min, median, mem_alloc)
+```
+
+## mea culpa: the case for `[[`
+
+Last class, I encouraged you to not use `[[` for subsetting / indexing. 
+
+- But we need these when indexing into lists!
+
+
+## `list`s
+
+lists are a **data structure** that can store different data types in the same object.
+
+```{r}
+list(c(12, 1), 4, "f")
+```
+
+## `list`s
+
+- tibbles/data.frames are built on lists
+
+```{r}
+(x <- list('int' = c(12L, 1L),
+     'dbl' = c(4.02, pi), 
+     'char' = c("f", "f")))
+```
+
+
+
+
+## Why `[[`
+
+`[[` pulls out the whatever is in the `i`th position of the list while `[` pulls out a subset of the list.
+
+```{r}
+x[1]
+x[[1]]
+```
+
+
+## Why `[[`
+
+When setting the `i`th  stuff in a list we use `[[` so we can place any given object into the list.
+
+```{r}
+# create an empty list
+output <- vector("list", 2)
+(output[1] <- c(1, 2))
+(output[[1]] <- c(1, 2))
+
+```
+
+
+## Key points: for-loops
+
+- If you can't vectorize, for loops work for iteration
+
+    - Clearly define what you will iterate over (values or indicies)
+    - Preallocate space for your output (if you can)
+    - The body of the for-loop has parametrized code based on thing your iterating over
+    - Debug as you code by testing your understanding of what the for-loop should be doing (e.g. using `print()`)
+
+
+Learn more in chapter 21 of r for data science: 
+https://r4ds.had.co.nz/iteration.html
 
 # Class 6: Functions
