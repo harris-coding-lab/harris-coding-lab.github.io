@@ -1118,6 +1118,18 @@ wid_data %>%
 
 # Class 5: Loops
 
+## Feedback
+
+Thank you for filling out the feedback form (we have 30 so far!)
+
+\footnotesize
+- "Would be great if you could post solutions to the labs at the end of each week."  **These are on the course website**
+
+- "Please share qa code". **These are (newly) on the course website**
+
+
+
+
 ##  Today's class
 
 - `case_when()` question
@@ -1403,7 +1415,6 @@ bench::mark(preallocate_loop(x),
             vectorized_code(x)) %>%
   select(expression, min, median, mem_alloc)
 ```
-
 ## mea culpa: the case for `[[`
 
 Last class, I encouraged you to not use `[[` for subsetting / indexing. 
@@ -1468,4 +1479,466 @@ output <- vector("list", 2)
 Learn more in chapter 21 of r for data science: 
 https://r4ds.had.co.nz/iteration.html
 
+
 # Class 6: Functions
+
+## Today's class
+
+- loop questions
+- functions writing concepts
+- primer for lab 6
+
+**Reminder:** Please turn in your final projects on gradescope.
+
+- Suggested deadline Sept 17 (tomorrow)
+- Final deadline Sept 24.
+
+## **Q** Can I pipe a for-loop into `ggplot()`?
+
+```{r, eval = FALSE}
+# psuedo-code
+for (i in seq_along(x)) {
+  results[[i]] <- some_function(x[[i]])
+} %>%
+  ggplot(aes(x = x, y = y))  + ...
+
+```
+
+## **Reframe Q** What is the output of a for-loop? Can it be a tibble?
+
+- Each iteration there's an "intermediate output" which is the final line of code in the loop. (like a function).
+
+\footnotesize
+```{r}
+    x <- c(0, 1, 2)
+    result <- integer(length(x))
+    
+    output <- for (i in seq_along(x)) {
+       result[[i]] <- x[[i]]^2
+       "last line inside loop"
+    } %>% print()
+```
+
+\normalsize
+- The "final output" is NULL
+
+\footnotesize
+``` {r}
+    print(output)
+```
+
+## **Q** Can I pipe a for-loop into `ggplot()`?
+
+If the last line inside the loop is a tibble, then yes (kind of).
+
+  - R doesn't display the output
+  - But we can assign it to a name
+
+\footnotesize
+
+```{r, eval = FALSE}
+my_plot <- vector("list", 3)
+
+for ( i in 1:3) {
+  # do stuff
+  # ...
+  # end with 
+  txhousing
+} %>%
+  ggplot(aes(x = sales, y = volume)) + 
+  geom_point() -> my_plot[[i]]
+
+my_plot[[3]]
+```
+\normalsize
+ - *Don't do it!* More natural to call ggplot w/i the loop or after collecting a dataset.
+
+
+## **Q** How to preallocate space for a tibble?
+
+```{r, eval = FALSE}
+estimates <- tibble(n = integer(), sample_mean = double())
+
+for (n in sample_sizes) {
+  sample_mean <- mean(rnorm(n, mean = 0, sd = 5))
+  estimates <- bind_rows(estimates, 
+              c(n = n, sample_mean = sample_mean))
+}
+estimates
+
+```
+
+## Named vectors behave like "rows"  with a single data type
+
+
+```{r}
+row_1 <- c(a = 1, b = "dog")
+row_2 <- c(a = 2, b = "cat")
+
+bind_rows(row_1, row_2)
+```
+## Named lists behave like "rows"  with a various data type
+
+```{r}
+row_1 <- list(a = 1, b = "dog")
+row_2 <- list(a = 2, b = "cat")
+
+bind_rows(row_1, row_2)
+```
+
+## We could also create one row tibbles
+
+
+```{r}
+tibble_1 <- tibble(a = 1, b = "dog")
+tibble_2 <- tibble(a = 2, b = "cat")
+
+bind_rows(tibble_1, tibble_2)
+```
+
+
+## "rows" can be bound together with `bind_rows()`
+
+```{r}
+row_3 <- list(a = 3, b = "dog")
+data <- bind_rows(row_1, row_2)
+(data <- bind_rows(data, row_3))
+```
+## "rows" can be bound together with `bind_rows()` 
+
+```{r}
+our_rows <- list(row_1, row_2, row_3)
+(data <- bind_rows(our_rows))
+```
+## **Q** How to preallocate space for a tibble?
+
+The previous slide suggest we preallocate a `list` with one slot for each row. 
+
+```{r}
+sample_sizes <- seq(2, 10, 2) # c(2, 4, 6, 8, 10)
+estimates <- vector("list", length(sample_sizes))
+```
+
+## **Q** How to preallocate space for a tibble?
+
+Then in the body of the loop we assign a "row" to the `i`th entry of `estimates`
+
+```{r}
+for (i in seq_along(sample_sizes)) {
+  n <- sample_sizes[[i]]
+  sample_mean <- mean(rnorm(n, mean = 0, sd = 5))
+  estimates[[i]] <- c(n = n, sample_mean = sample_mean)
+}
+
+# estimates is a list of vectors until bind_rows(.)!
+estimates <- bind_rows(estimates)
+```
+
+\footnotesize notice this is the **only time** in coding lab we advocate using lists.
+
+- use vectorized code / use tidyverse code 
+
+## another loop example
+
+Compute the mean of every column in `midwest`
+
+## another ~~loop~~ example
+
+Compute the mean of every column in `midwest`.
+
+- use `across()` \footnotesize (we won't cover this in detail)\normalsize
+
+```{r, message = FALSE, warning = FALSE}
+midwest %>%
+  summarize(across(.fns = mean))
+```
+
+
+## another loop example
+
+Compute the mean of every column in `midwest`
+
+
+- What should we loop over?
+- How do we calculate what we're looking for?
+
+
+## another loop example
+
+**Compute the mean of every column in `midwest`**
+
+```{r}
+mean(midwest[["area"]])
+
+# or 
+midwest %>%
+  pull(area) %>%
+  mean()
+
+# or  
+midwest %>%
+  summarise(area = mean(area))
+```
+
+
+## another loop example
+
+
+```{r, warning = FALSE, message = FALSE}
+# preallocate output
+col_names <- names(midwest)
+midwest_means <- vector("double", ncol(midwest))
+
+# determine what to loop over
+for (i in seq_along(col_names)) {
+  #  body
+  col_name <- col_names[[i]]
+  midwest_means[[i]] <- mean(midwest[[col_name]])
+}
+
+tibble(names = col_names, means = midwest_means)
+```
+
+
+
+
+## function writing concept
+
+- A function maps an input to an output.
+
+  "A user logs into our website. You respond with a greeting."
+
+## fwc: input-output
+
+Write the function!
+
+input: `name`
+output: `greeting`
+
+\footnotesize
+
+Recall
+
+```{r, eval = FALSE}
+#psuedo code for a function
+function_name <- function(inputs) {
+    body
+}
+```
+
+
+## fwc: input-output
+
+```{r}
+greet_user <- function(name) {
+  paste0("Hello ", name, "!")
+}
+
+greet_user("Qiwei")
+```
+
+## fwc: when to write a function?
+
+- If you repeat very similar code more than twice
+- You can easily parameterize the similar code
+
+```{r, eval = FALSE}
+txhousing %>%
+  filter(city == "Austin") %>%
+  mutate(date = year + month / 12) %>%
+  ggplot(aes(x = date, y = sales)) + 
+  geom_line() +
+  labs(title = "Austin's sales volume")
+```
+
+## fwc: don't repeat yourself
+
+```{r}
+sales_trends <- function(city_name){
+  txhousing %>%
+    filter(city == city_name) %>%
+    mutate(date = year + month / 12) %>%
+    ggplot(aes(x = date, y = sales)) + 
+    geom_line() +
+    labs(title = str_c(city_name, "'s sales volume"))
+  }
+```
+
+## fwc: don't repeat yourself
+
+```{r, fig.height= 2.5, eval = FALSE}
+sales_trends("Austin")
+sales_trends("Houston")
+```
+
+## fwc: don't repeat yourself (Advanced)
+
+Extra slick: can we parameterize the `y` variable.
+
+## fwc: test your code as you write it
+
+```{r, eval = FALSE}
+trends <- function(city_name, var){
+txhousing %>%
+  filter(city == city_name) %>%
+  mutate(date = year + month / 12) %>%
+  ggplot(aes(x = date, y = var)) + 
+  geom_line() +
+  labs(title = str_c(city_name, "'s ", var))
+}
+
+trends("Austin", sales, "sales volume")
+```
+
+
+## fwc: don't repeat yourself (Advanced)
+
+Extra slick: can we parameterize the `y` variable.
+
+
+```{r, eval = FALSE}
+trends <- function(city_name, var, var_description){
+txhousing %>%
+  filter(city == city_name) %>%
+  mutate(date = year + month / 12) %>%
+  ggplot(aes(x = date, y = {{ var }})) + 
+  geom_line() +
+  labs(title = str_c(city_name, 
+                     "'s ", 
+                     var_description))
+}
+
+trends("Austin", sales, "sales volume")
+```
+
+## ``{{ }}``? 
+
+``{{ }}`` "forwards" the name `var` from your global environment (where it's undefined) to the tibble's environment (where it's a column name).
+
+- The ideas here are somewhat advanced for coding camp 
+
+## fwc: break big ideas into small ideas
+
+- **problem** encapsulating 100s of lines of data analysis in a single function is a recipe for disaster.
+
+- **solution** break the 100s of lines of analysis into coherent chunks (think high level about input-output!)
+
+
+This is the heart of lab 6.
+
+## Background for the lab
+
+```{r norm, echo = FALSE, cache = TRUE}
+
+sample <- rnorm(1e5)
+pdf_data <- with(density(sample, n = 1000), tibble(x, y))
+
+cutoff <- 1.96
+```
+
+
+## Concepts: `r/q/p/d` functions
+
+R has built-in functions for working with distributions.
+
+| | example | what it does? |
+| -- | -- | -- | 
+| r | `rnorm(n)` | generates a random sample of size n |
+| p | `pnorm(q)` | returns CDF value at q | 
+| q | `qnorm(p)` | returns inverse CDF (the quantile) for a given probability |
+| d | `dnorm(x)` | returns pdf value at x |  
+
+
+We should already be familiar with `r` functions like `rnorm()` and `runif()`.
+
+- These concepts will be taught in stats. We don't expect you to learn them here. We can help you reason through the material enough to do the coding.
+
+## What are `p` and `q`?
+
+```{r, echo = FALSE, cache = TRUE}
+
+pdf_data  %>%
+  ggplot(aes(x = x, y = y)) + 
+  geom_line() +
+  geom_ribbon(aes(ymax = y), ymin=0, fill = "red", alpha = .5, 
+              data = pdf_data %>% filter(x < cutoff)) + 
+  labs(x = "z score",  y = "likelihood",  title = "pdf of standard normal", subtitle = "area under curve is the probability of being less than a cutoff") + 
+  annotate("text", x = 0, y = .1, label = "P(x < 1.96) = .975") + 
+  scale_x_continuous(breaks = c(-1.96,  0, 1.96)) +
+  theme_minimal() 
+```
+
+
+## What are `p` and `q`?
+
+```{r cdf, echo = FALSE, cache = TRUE}
+cdf <- ecdf(sample)
+
+cdf_data <- 
+  tibble(x = sample,
+         y = cdf(sample))
+
+cdf_data %>%
+  ggplot(aes(x = x, y = y)) + 
+  geom_line() +
+  labs(x = "z score (aka q)", title = "cdf of standard normal (the integeral of the pdf)", y = "F(z) = Pr(x < z)  aka p") + 
+  geom_hline(aes(yintercept = pnorm(cutoff)), linetype = "dashed") +
+  geom_vline(aes(xintercept = cutoff), linetype = "dashed") +
+  scale_x_continuous(breaks = c(-1.96,  0, 1.96)) +
+  scale_y_continuous(breaks = c(0, .25, .5, .75, .975, 1)) + 
+  annotate("text", x = -2, y = .9, label = "plug .975 in qnorm()\nto learn cutoff" ) +
+  annotate("text", x = 1, y = .2, label = "plug 1.96 in pnorm()\nto learn P(x < q)" ) +
+  theme_minimal() 
+```
+
+## What are `p` and `q`?
+\footnotesize
+**`pnorm`** returns the probability we observe a value less than or equal to some value `q`.
+
+```{r}
+pnorm(1.96)
+pnorm(0)
+```
+
+**`qnorm`** returns the inverse of `pnorm`. Plug in the probability and get the cutoff.
+
+```{r}
+qnorm(.975)
+qnorm(.5)
+```
+
+
+## Monte Carlo experiments
+
+Monte Carlo is a world gambling hub. 
+
+- Gamblers know that roulette wheels are not made perfectly. 
+
+- If you watch the wheel long enough and take notes you can figure out the empirical probability
+
+<!--![](roullette.jpg)-->
+
+
+## Monte Carlo experiments
+
+Statisticians use the same idea. 
+
+Esp. if we're not sure how to calculate something exactly, but have a model
+  
+  - complicated interacting systems
+  - integrals or other objects without a closed form solution (or a difficult to compute closed form)
+
+## How to do a Monte Carlo Simulation
+
+1. Generate random samples of data using a known process (e.g. `rnorm()`).
+2. Make calculations based on the random sample.
+3. Aggregate the results.
+
+You will do this in the functions lab!
+
+
+## Thank you
+
+It has been a blast.
+
+
