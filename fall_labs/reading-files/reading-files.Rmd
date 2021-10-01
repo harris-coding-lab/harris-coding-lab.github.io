@@ -55,7 +55,8 @@ If not, create one and make sure you know the path to the folder.
 
 4. Create a new R script. Save your script in the `problem_set` folder. From now on, when you start a script or `Rmd` save it there.
 
-5. Download the first data set [here](https://github.com/harris-coding-lab/harris-coding-lab.github.io/blob/master/fall_labs/reading-files/data/area_report_by_year.xlsx) and put the data in your `data` folder.
+5. Download the first data set from
+[`bit.ly/fall_lab_1`](https://github.com/harris-coding-lab/harris-coding-lab.github.io/blob/master/fall_labs/reading-files/data/area_report_by_year.xlsx?raw=true)  and put the data in your `data` folder.
     
 ### Tell R where to find files
 
@@ -65,11 +66,12 @@ If not, create one and make sure you know the path to the folder.
   
     ```{r, eval = FALSE}
     # compare url
-    covid_data <- read_csv("https://data.cdc.gov/api/views/qfhf-uhaa/rows.csv?") 
+    fed_data <-
+    read_xlsx("https://github.com/harris-coding-lab/harris-coding-lab.github.io/blob/master/fall_labs/reading-files/data/area_report_by_year.xlsx?raw=true") 
     # compare path
     fed_data <- 
       read_xlsx(
-        "~/coding-lab/harris-coding-lab.github.io/data/area_report_by_year.xlsx"
+        "~/Documents/coding-lab/data/area_report_by_year.xlsx"
       )
     ```
   6. Add a line to your script where you `setwd()` to your problem set folder.
