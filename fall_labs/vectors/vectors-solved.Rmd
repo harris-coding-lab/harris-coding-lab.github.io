@@ -1,0 +1,273 @@
+---
+title: "Basic Syntax and Operators"
+output: 
+  html_notebook:
+    toc: true
+    toc_float: true
+---
+
+## Warmup
+
+1. The most important warm up question: do you have R and RStudio installed?
+
+2. How do you pull the documentation for a command in R?
+
+- *
+- ?
+- help()
+- documentation()
+
+**Answer:** ?
+
+3. Try to guess the output of the following code:
+
+```{r, eval=FALSE}
+a <- 3
+b <- a^2 + 1
+```
+
+**Answer:** 10
+
+4. Now try to guess again:
+
+```{r, eval=FALSE}
+a <- c(1, 2, 3)
+b <- a^2 + 1
+```
+
+**Answer:** c(2, 5, 10)
+
+5. Will this one run? If it does, what will it return? Will R complain?
+
+```{r, eval=FALSE}
+a <- c(1, 2, 3)
+b <- a^2 + c(1, 2)
+```
+
+**Answer:** It will run and return c(2, 6, 10), but R will complain because the last vector is shorter than the previous one and is not a multiple of it.
+
+6. Finally, what about this one?
+
+```{r, eval=FALSE}
+a <- c(1, 2)
+b <- a^2 + c(1, 2, 3, 4)
+```
+
+**Answer:** This one will run and return c(2, 6, 4, 8), and R will not complain because the vectors' lengths are multiples of each other—the shorter vector gets recycled for the second.
+
+## Calculating Mean and Standard Deviation
+
+### Calculating the Mean
+
+In this exercise, we will calculate the mean of a vector of random numbers. We 
+will practice assigning new variables and using functions in R.
+
+We can run the following code to create a vector of 1000 random numbers. The function `set.seed()` ensures that the process used to generate random numbers 
+is the same across computers.
+
+**Note**: `rf()` is a R command we use to generate 1000 random numbers according to the F distribution, and `10` and `100` are parameters that specify how "peaked" the distribution is.
+
+```{r random-numbers-create}
+set.seed(1)
+random_numbers <- rf(1000, 10, 100)
+```
+
+Write code that gives you the sum of `random_numbers` and saves it to a new variable called `numbers_sum`:
+
+```{r sum}
+numbers_sum <- sum(random_numbers)
+```
+
+**Note**: You don't automatically see the output of `numbers_sum` when you assign it to a variable. Type `numbers_sum` into the console and run it to see the value that you assigned it.
+
+Write code that gives you the number of items in the `random_numbers` vector and saves it to a new variable called `numbers_count`:
+
+```{r count}
+numbers_count <- length(random_numbers)
+```
+
+**Hint:** To count the number of items in a vector, use the `length()` function.
+
+Now write code that uses the above two variables to calculate the average of `random_numbers` and assign it to a new variable called `this_mean`. 
+
+```{r mean}
+this_mean <- numbers_sum/numbers_count
+this_mean
+```
+
+What number did you get? It should have been 1.018. If it isn't, double check your code!
+
+R actually has a built in function to calculate the mean for you, so you don't have to remember how to build it from scratch each time! Check your above answer by using the `mean()` function on the `random_numbers` vector.
+
+```{r mean2}
+mean(random_numbers)
+```
+
+### Calculating the Standard Deviation
+
+Now that you've got that under your fingers, let's move on to standard deviation.
+
+We will be converting the following formula for calculating the sample standard deviation into code:
+
+$s = \sqrt{\frac{\sum_{i=1}^n (x_i - \overline{x})^2} {n-1}}$
+
+For this, we'll review the concept of *vectorization*. This means that an operation like subtraction will act on all numbers in a vector at the same time.
+
+Subtract `this_mean` from the `random_numbers` vector. Did each number in `random_numbers` change?
+
+```{r sdvector}
+vectorized <- random_numbers - this_mean
+```
+
+Try to write the formula for standard deviation in R code using the `sqrt()`, `sum()`, and `length()` functions, along with other operators (`^`, `/`, `-`). Assign it to a new variable called `this_sd`. Watch out for your parentheses!
+
+```{r sd}
+this_sd <- sqrt(sum((random_numbers - this_mean) ^ 2) / (length(random_numbers) - 1))
+
+this_sd
+```
+
+**Hint:** Fill in the following formula: ___ <- sqrt(sum((___ - this_mean) ^ 2) / (length(___) - 1))
+
+What number did you get for `this_sd`, or the standard deviation of `random_numbers`? If you didn't get 0.489704, recheck your code!
+
+R also has a built in function for standard deviation. Check if you calculated the standard deviation correctly by using the `sd()` function on the `random_numbers` vector.
+
+```{r sd2}
+sd(random_numbers)
+```
+
+### Making a Histogram of Our Numbers
+
+What do these random numbers look like, anyway? We can use base plotting in R to visualize the distribution of our random numbers.
+
+Run the following code to visualize the original distribution of `random_numbers` as a histogram.
+
+```{r viz}
+hist(random_numbers)
+```
+
+Notice how most of the values are concentrated on the left-hand side of the graph, while there is a longer "tail" to the right? Counterintuitively, this is known as a right-skewed distribution. When we see a distribution like this, one common thing to do is to normalize it.
+
+This is also known as *calculating a z-score*, which we will cover next.
+
+## Calculating a Z-Score
+
+The formula for calculating a z-score for a single value, or *normalizing* that value, is as follows:
+
+$z = \frac{x - \bar{x}}{s}$
+
+This can be calculated for each value in `random_numbers` in context of the larger set of values.
+
+Can you translate this formula into code?
+
+Using `random_numbers`, `this_mean`, and `this_sd` that are already in your environment, write a formula to transform all the values in `random_numbers` into z-scores, and assign it to the new variable `normalized_data`.
+
+```{r norm-data}
+normalized_data <- (random_numbers - this_mean) / this_sd
+```
+
+**Hint:** R is vectorized, so you can subtract the mean from each random number in `random_numbers` in a straightforward way.
+
+Take the mean of `normalized_data` and assign it to a variable called `normalized_mean`.
+
+**Note**: If you see something that ends in "e-16", that means that it's a very small decimal number (16 places to the right of the decimal point), and is essentially 0.
+
+```{r norm-mean}
+normalized_mean <- sum(normalized_data) / length(normalized_data)
+# or
+normalized_mean <- mean(normalized_data)
+```
+
+Take the standard deviation of `normalized_data` and assign it to a variable called `normalized_sd`.
+
+```{r norm-sd}
+normalized_sd <- sqrt(sum((normalized_data) ^ 2) / (length(normalized_data) - 1))
+# or
+normalized_sd <- sd(normalized_data)
+```
+
+What is the value of `normalized_mean`? What is the value of `normalized_sd`? You should get a vector that is mean zero and has a standard deviation of one, because the data has been normalized.
+
+### Making a Histogram of Z-scores
+
+Let's plot the z-scores and see if our values are still skewed. How does this compare to the histogram of `random_numbers`? 
+
+```{r viz2}
+hist(normalized_data)
+```
+
+Is the resulting data skewed?
+
+## Calculating a T-Score
+
+T-tests are used to determine if two sample means are equal. The formula for calculating a t-score is as follows: 
+
+$t = \frac{\overline{x}_1 - \overline{x}_2}{\sqrt{\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2}}}$
+
+where $\overline{x}_i$ is the mean of the first or second set of data, $s_i$ is the sample standard deviation of the first or second set of data, and $n_i$ is the sample size of the $i$th set of data.
+
+We'll first create two data sets of random numbers following a normal distribution:
+
+```{r data-create}
+set.seed(1)
+data_1 <- rnorm(1000, 3)
+data_2 <- rnorm(100, 2)
+```
+
+Here's how we'll calculate the mean (`x_1`), standard deviation (`s_1`), and sample size (`n_1`) of the first data set:
+
+```{r types-create}
+x_1 <- mean(data_1)
+s_1 <- sd(data_1)
+n_1 <- length(data_1)
+```
+
+What numeric types do you get from doing this? Try running the `typeof()` function on each of `x_1`, `s_1`, and `n_1`. We have you started with `x_1`.
+
+```{r types}
+typeof(x_1)
+typeof(s_1)
+typeof(n_1)
+```
+
+What object type is `n_1`? 
+
+Can you calculate the same values for `data_2`, assigning mean, standard deviation, and length to the variables of `x_2`, `s_2`, and `n_2`, respectively?
+
+```{r data2}
+x_2 <- mean(data_2)
+s_2 <- sd(data_2)
+n_2 <- length(data_2)
+```
+
+What values do you get for `x_2` and `s_2`?
+
+Now, you should be able to translate the t-score formula ($\frac{\overline{x}_1 - \overline{x}_2}{\sqrt{\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2}}}$) into code, based on the above calculated values.
+
+```{r t-score}
+t_score <- (x_1 - x_2)/(sqrt((s_1^2/n_1 + s_2^2/n_2)))
+t_score
+```
+
+What did you get for the t-score? You should have gotten 9.243, if not, double check your code!
+
+The t-score's meaning depends on your sample size, but in general t-scores close to 0 imply that the means are not statistically distinguishable, and large t-scores (e.g. t > 3) imply the data have different means.
+
+## Performing a T-Test
+
+Once again, R has a built in function that will perform a T-test for us, aptly named `t.test()`. Look up the arguments the function `t.test()` takes, and perform a T-test on `data_1` and `data_2`.
+
+```{r t-test}
+t.test(data_1, data_2)
+```
+
+What are the sample means, and are they distinguishable from each other?
+
+Answer: The mean of `data_1` is 2.988, the mean of `data_2` is 1.990, and they are distinguishable from each other.
+
+Well done! You've learned how to work with R to calculate basic statistics. We've had you generate a few by hand, but be sure to use the built-in functions in R in the future.
+
+**Extra time?** Try writing some of this code into a new R script on your own computer.
+
+**Want to improve this tutorial?** Report any suggestions/bugs/improvements on Github [here](https://github.com/harris-coding-lab/codinglab/issues)! We're interested in learning from you how we can make this tutorial better.
