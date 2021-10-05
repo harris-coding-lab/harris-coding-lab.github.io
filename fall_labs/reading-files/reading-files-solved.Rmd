@@ -1,258 +1,323 @@
 ---
-title: "Reading Files"
-output: 
-  html_notebook:
-    toc: true
-    toc_float: true
+title: "Fall Lab 1"
+date: "10/4/2021"
+output: pdf_document
 ---
 
-## Warm up
+# Warm up
 
-1. Which of these are commands from `dplyr`?
+1. How would you install the haven package? Do it now.
 
-- mutate()
-- filter()
-- mean()
-- group_by()
+```{r eval=FALSE}
+install.packages("haven")
+```
 
-**Answers:** all except mean().
+2. In the videos, you learned about head(). What if you wanted to get the tail end of your data instead?
 
-2. In the videos, you learned about `head()`. What if you wanted to get the tail end of your data instead?
+`tail()` returns the end of the data frame.
 
-3. Imagine you have a data set, `df` with 4 variables, `county`, `year`, `income`, and `employment`. You only need the year and employment status of people whose income is below $5000. Which two `dplyr` commands do you need to do this? Can you write the code for this?
+```{r}
+tail(cars)
+```
 
-**Answer:** You need `filter()` and `select()`, and the code would be: 
+3. Recall our dplyr verbs. What is the purpose of each function?
 
-```{r, eval=FALSE}
-df %>% 
-  filter(income < 5000) %>% 
+
+`mutate()` : Adds or changes an existing column in the data frame
+
+`filter()` : Removes rows/observations based on a column or columns
+
+`select()` : Keeps or removes specified columns from the data frame
+
+`arrange()` : Sorts the data frame by a column or column
+
+`summarize()` : Collapse the data frame into aggregated information for specified columns (sum, mean, median, etc.)
+
+and soon we'll add:
+
+`group_by()` : Used with mutate or summarize, to collapse the data frame by smaller groups
+
+4. Imagine you have a data set, df with 4 variables, county, year, income, and employment. You only need the year and employment status of people whose income is below $5000. Which two dplyr commands do you need to do this? Can you write the code for this?
+
+
+```{r eval=FALSE}
+df %>%
+  filter(income < 5000) %>%
   select(year, employment)
 ```
 
-4. Remember the `mean()` function from last time? What `dplyr` commands would we need if we want the average income in each county for each year? How many rows will the resulting dataset be?
+5. Remember the mean() function from last time? What dplyr commands would we need if we want the average income? How many rows will the resulting dataset be?
 
-**Answer:** You need `group_by()` and `summarize()`. The dataset would have as many counties times years you have, and the code would be:
-
-```{r, eval=FALSE}
-df %>% 
-  group_by(county, year) %>% 
-  summarize(average_income = mean(income))
+```{r eval=FALSE}
+df %>%
+  summarise(mean = mean(income))
 ```
 
-## Analyzing Student Loan Debt
+The dataframe is 1 row.
 
-### Data Cleaning
+# Working with data and scripts
 
-We've provided a clean dataset of student loan data for you for this assignment, along with this R Markdown file. Before you start, check the data folder make sure you have the student loan Excel dataset, `"area_report_by_year.xlsx"`. The clean version is `"student_loan_debt.csv"`.
+We recommend a file structure for coding lab. If you have your own preferred way of organizing code feel free to follow it.
 
-The original student loan data looks like this:
+## Setting up working directory and coding environment
 
-**Note**: A sample header and value have been highlighted in orange for you to follow how the data changes as we restructure it. Also, you can see from the line below that inserting images in your notebooks is super easy! Go ahead, insert your favorite meme (but not in an actual class assignment)!
+1. Do you have a folder on your computer for coding lab material? If not, create one and make sure you know the path to the folder.
 
-![](images/01_excel.jpg)
+2. We recommend creating a problem_set folder inside your coding lab folder.
 
-Here's the code we wrote to clean our data. We're including it here so you can see what our data prep looks like, but we don't expect you to know all of the functions in here yet! (You'll learn more about a few of them in a bit.)
+3. Make folder called data inside the problem_set folder.
 
-**Note**: Each of these statements is separated by the "pipe", or `%>%`, which you can read as the word "then". Read the Excel file, *then* filter values, *then* transform the data... 
+## Putting your files in place
 
-```{r clean, eval=FALSE}
+4. Create a new R script. Save your script in the problem_set folder. From now on, when you start a script or Rmd save it there.
+
+5. Download the first data set from bit.ly/fall_lab_1 and put the data in your data folder.
+
+## Tell R where to find files
+
+Local paths are like addresses on your computer.
+
+Use getwd() to see how your computer makes addresses.
+
+6. Add a line to your script where you setwd() to your problem set folder.
+
+```{r eval=FALSE}
+setwd("C:/Users/johnt/Google Drive...")
+```
+
+## Working with the files
+
+7. Finally, we are using data in an excel format. We need the package readxl to process data of this type. In the console, run install.packages("readxl").
+
+```{r eval=FALSE}
+install.packages("readxl")
+```
+
+8. Add code to load the tidyverse.
+
+```{r}
 library(tidyverse)
 library(readxl)
+```
 
-student_loan_debt <- read_xlsx("data/area_report_by_year.xlsx", sheet = "studentloan", skip = 3) %>%
+9. If you did everything correctly you should be able to run the following code:
+
+```{r}
+fed_data <- read_xlsx("data/area_report_by_year.xlsx")
+```
+
+The path is relative to your working directory. R looks for a data folder in your working directory and then for the data file in that folder. You could also give R an absolute file path, such as: "Users/John Smith/Coding Lab/problem_sets/data/area_report_by_year.xlsx".
+
+However, note that this absolute path wouldn’t work in someone else’s computer, and also wouldn’t work if John decides to move his Coding Lab files elsewhere, while the relative path will work just fine as long as the working directory is set.
+
+# Analyzing Student Debt
+
+When you open fed_data you notice there are some issues!
+First, we will walk you through our code we wrote to clean our data. We’re including it here so you can see what our data prep looks like, but we don’t expect you to know all of the functions in here yet!
+Then, you will analyze the data.
+
+## Data Cleaning
+
+```{r}
+library(tidyverse)
+library(readxl)
+student_loan_debt <- read_xlsx("Data/area_report_by_year.xlsx", sheet = "studentloan", skip = 3) %>%
   filter(state != "allUS") %>%
-  gather(key = year, value = per_capita_student_debt, -state) %>% 
+  pivot_longer(cols = -state, names_to = "year", values_to = "per_capita_student_debt") %>%
   mutate(year = str_sub(year, 4, 7),
-         year = as.numeric(year))
+  year = as.numeric(year))
 
 write_csv(student_loan_debt, "student_loan_debt.csv")
 ```
 
-What's going on here? 
+What’s going on here?
 
-```{r clean0, eval=FALSE}
+```{r eval=FALSE}
 library(tidyverse)
 library(readxl)
 ```
 
-0. We **load the packages** that have the functions we need: `tidyverse` and `readxl`.
+We load the packages that have the functions we need: tidyverse and readxl.
 
-```{r clean1, eval=FALSE}
-student_loan_debt <- read_xlsx("data/area_report_by_year.xlsx", sheet = "studentloan", skip = 3) 
+```{r eval=FALSE}
+student_loan_debt <- read_xlsx("Data/area_report_by_year.xlsx", 
+                               sheet = "studentloan", skip = 3)
 ```
 
-1. We tell our `read_xlsx` function to go to the `data` folder where we have the data, then to `"area_report_by_year.xlsx"`, so that it can find the data. We specify the sheet in the Excel workbook we want to read, and we skip the first 3 rows in the sheet, because the data we're interested in starts on line 4. The resulting data looks like this:
+1. We tell our read_xlsx function to go to the data folder where we have the data, then to "area_report_by_year.xlsx", so that it can find the data. We specify the sheet in the Excel workbook we want to read, and we skip the first 3 rows in the sheet, because the data we’re interested in starts on line 4.
 
-![](images/02_wide.jpg)
-
-**Note:** R sets as a working directory (think of it as a root folder) the folder where this R Markdown script is located. In this case, because you unzipped the folder we gave you, we know that wherever this folder is in your computer, there's a `data` folder in it, and the Excel spreadsheet is in it. 
-
-This means that R looks for files *relative* to the current working directory. You could also give R an *absolute* file path, such as: `"Users/John Smith/Dropbox/Coding Lab/reading-files/data/area_report_by_year.xlsx"`. 
-
-However, note that this absolute path wouldn't work in someone else's computer, and also wouldn't work if John decides to move his Coding Lab files elsewhere, while the relative path will work just fine.
-
-Sometimes, you want to set another working directory. If you're writing a regular R script, you can use the `setwd()` command to change it. If you're in an R Markdown file like this one, you need to use a setup code chunk like the following:
-
-```{r, setup, eval=FALSE}
-knitr::opts_knit$set(root.dir = "")
-```
-
-Where your directory goes where the quotation marks are.
-
-**One more thing on this:** To quickly find a file path, select a folder or file on OS X and press Cmd + Alt + C to copy the full path to your clipboard. On Windows, hold Shift, then right click the file or folder, then select "Copy as Path". A small caveat is that on Windows you'll get backslashes instead of forward slashes, which R will not enjoy. There are several ways to fix this, ranging from a simple Ctrl + F replace to much fancier solutions. Google is your friend. The Mac shortcut works right away.
-
-Ok, digression over. Let's continue cleaning the data:
-
-```{r clean2, eval=FALSE}
+```{r eval=FALSE}
 filter(state != "allUS")
 ```
 
-2. We **filter out rows of data** that are for the entire US, leaving only rows that refer to states.
+2. We filter out rows of data that are for the entire US, leaving only rows that refer to states.
 
-```{r clean3, eval=FALSE}
-gather(key = year, value = per_capita_student_debt, -state)
+```{r eval=FALSE}
+pivot_longer(cols = -state, names_to = "year", values_to = "per_capita_student_debt")
 ```
 
-3. We **convert the data from a wide to a long format**, so that `year` is a variable and `per_capita_student_debt` is also a variable. (The reason we do this is so that it is easier for functions in the "tidyverse" to process this type of data for groupwise calculations, e.g. mean debt by year, etc. Read more about [tidy data](https://r4ds.had.co.nz/tidy-data.html#introduction-6) in R for Data Science.)
+3. We convert the data from a wide to a long format, so that year is a variable and per_capita_student_debt is also a variable. (The reason we do this is so that it is easier for functions in the “tidyverse” to process this type of data for groupwise calculations, e.g. mean debt by year, etc. Read more about tidy data in R for Data Science.)
 
-![](images/03_long.jpg)
-
-```{r clean4, eval=FALSE}
+```{r eval=FALSE}
 mutate(year = str_sub(year, 4, 7),
        year = as.numeric(year))
 ```
 
-4. We use **string manipulation** to modify the existing `year` column, and then we **convert the type** of the column.
+4. We use string manipulation to modify the existing year column, and then we convert the type of the column.
 
-![](images/04_final.jpg)
+What was the original type of the year column? What is the new type of the year column?
 
-What was the original type of the `year` column? What is the new type of the `year` column?
+The type was originally string, and now it is a numeric.
 
-```{r clean5, eval=FALSE}
+```{r eval=FALSE}
 write_csv(student_loan_debt, "student_loan_debt.csv")
 ```
 
-5. We **write the cleaned data to a CSV** (comma-separated variables file).
+5. We write the cleaned data to a CSV (comma-separated variables file).
 
-Try running this code locally on your computer! Copy the code to a new script, and save it to the same folder that you've stored your downloaded data in. Make sure to set your new folder as your "working directory" with `setwd()`.
+Try running this code locally on your computer! Copy the code to a new script, and save it to the same folder that you’ve stored your downloaded data in. Make sure to set your new folder as your “working directory” correctly.
 
 ## Exploratory Data Analysis
 
-Ok, now that we've gone over how the file was created, load the cleaned data in your own R session:
+Ok, now that we’ve gone over how the file was created, load the cleaned data in your own R session. If you had trouble with read_xls, we have the csv with the cleaned code here
 
-```{r data-load}
-library(readr)
-library(dplyr)
-
-student_loan_debt <- read_csv("data/student_loan_debt.csv")
+```{r eval=FALSE}
+# library(readr)
+# library(dplyr)
+student_loan_debt <- read_csv("student_loan_debt.csv")
 ```
 
-To look at your data after reading it in, you can use a `tidyverse` function called `glimpse()`. This is a nicer version of a function called `str()`. Try running both `str()` and `glimpse()` on `student_loan_debt`.
+To look at your data after reading it in, you can use a tidyverse function called glimpse(). This is a nicer version of a function called str(). Try running both str() and glimpse() on student_loan_debt.
 
-**Note**: `student_loan_debt` can be long to type, so use **Tab-Autocomplete**. Once you start typing the variable in the function, press **Tab** and wait for the variable name to automatically pop up. Press **Enter** to fill in `student_loan_debt` (or click on it).
-
-```{r glimpse}
-str(student_loan_debt)
+```{r}
+student_loan_debt %>%
+  str()
 ```
 
 ```{r}
-glimpse(student_loan_debt)
+student_loan_debt %>%
+  glimpse()
 ```
 
 
-### Arranging Data
+Note: student_loan_debt can be long to type, so use Tab-Autocomplete. Once you start typing the variable in the function, press Tab and wait for the variable name to automatically pop up. Press Enter to fill in student_loan_debt (or click on it).
 
-We can use the `arrange()` function from `dplyr` to sort the student loan data. The syntax is `arrange(data, variable)`. Arrange the data in `student_loan_debt` by `per_capita_student_debt`. (Can you sort the other way?)
+## Arranging Data
 
-```{r arrange}
-arrange(student_loan_debt, per_capita_student_debt)
-arrange(student_loan_debt, -per_capita_student_debt)
+We can use the arrange() function from dplyr to sort the student loan data. The syntax is arrange(data, variable). Arrange the data in student_loan_debt by per_capita_student_debt. (Can you sort the other way?)
+
+```{r}
+student_loan_debt %>%
+  arrange(per_capita_student_debt) %>%
+  head()
 ```
 
-**Hint:** Look up the arrange() documentation with `?arrange` to figure out how to reverse the order of the sort. The examples at the bottom of the screen may be helpful, and you can run it in R if it helps!
+If we want to sort in descending order:
 
-- Who had the lowest per capita debt in 2003? 
-- How much was the lowest per capita debt in 2003?
-- How much was the highest per capita debt in 2018?
+```{r}
+student_loan_debt %>%
+  arrange(desc(per_capita_student_debt)) %>%
+  head()
+```
 
-**Answers:** PR, 500, 13320.
+Hint: Look up the arrange() documentation with ?arrange to figure out how to reverse the order of the sort. The examples at the bottom of the help screen are useful, and you can run them directly in R, if it helps!
 
-### Filtering Data
+Who had the lowest per capita debt in 2003? How much was the lowest per capita debt in 2003?
+```{r}
+student_loan_debt %>%
+  filter(year == 2003)%>%
+  arrange(per_capita_student_debt) %>%
+  head(1)
+```
+
+How much was the highest per capita debt in 2018?
+
+```{r}
+student_loan_debt %>%
+  filter(year == 2018)%>%
+  arrange(desc(per_capita_student_debt)) %>%
+  head(1)
+```
+
+## Filtering Data
 
 To print the state with the lowest or highest per capita debt, you can subset with base syntax, which looks something like this:
 
-```{r subset, echo=TRUE, eval=FALSE}
+```{r eval=FALSE}
 student_loan_debt[row_number, column_number]
 student_loan_debt[row_condition, ]$column_name
 ```
 
-Or you can subset with the `filter` function from the `tidyverse`, which is a bit easier to read. The `pull` function does the same thing as the `$` sign, which **pulls** a column from a data frame.
+Or you can subset with the filter function from the tidyverse, which is a bit easier to read. The pull
+function does the same thing as the $ sign, which pulls a column from a data frame.
 
-```{r subset2, echo=TRUE, eval=FALSE}
-filter(student_loan_debt, row_condition) %>% 
+```{r eval=FALSE}
+filter(student_loan_debt, row_condition) %>%
   pull(column_name)
 ```
 
-**Note:** Another function you'll run into often that works similarly to `pull()` is `select()`. To put it simply, `pull()` returns a single column, while `select()` can pick more than one variable and returns a data frame with all of those columns. The above code returns a single column vector, `column_name`. If you would have used:
+Note: Another function you’ll run into often that works similarly to pull() is select(). To put it simply, pull() returns the data from a column, while select() can pick more than one variable and returns a tibble or data frame with all of those columns. The above code returns a single column vector, column_name. If you would have used:
 
-```{r subset3, echo=TRUE, eval=FALSE}
-filter(student_loan_debt, row_condition) %>% 
+```{r eval=FALSE}
+filter(student_loan_debt, row_condition) %>%
   select(column_name)
 ```
 
-You would have gotten a data frame that contains one column vector, `column_name`. These two things might appear to be the same at first glance, but over time you'll see they're not! Digression over.
+You would have gotten a data frame that contains one column, column_name. These two things might appear to be the same at first glance, but over time you’ll see they’re not! Digression over.
 
-What is a "row_condition" in this case? It's just something that we want to filter on, for example:
+What is a “row_condition” in this case? It’s just something that we want to filter on, for example:
 
-```{r filter}
-filter(student_loan_debt, per_capita_student_debt < 800)
+```{r}
+filter(student_loan_debt, per_capita_student_debt < 800) %>%
+  head()
 ```
 
-Try writing a `filter` statement to get all states with an average per capita student debt of 5000 or higher in the year 2008. Yes, you can combine multiple criteria - just add a comma and another filtering critera!
-```{r filter2}
-filter(student_loan_debt, per_capita_student_debt >= 5000, year == 2008)
+Try writing a filter statement to get all states with an average per capita student debt of 5000 or higher in the year 2008. Yes, you can combine multiple criteria - just add a comma and another filtering criteria!
+
+Hint: Your code should look like this: filter(data, condition1, condition2).
+
+```{r}
+student_loan_debt %>%
+  filter(per_capita_student_debt > 5000, year == 2008)
 ```
 
-**Hint:** Your code should look like this: filter(data, condition1, condition2).
+Finally, filter is great for helping us figure out where the missing values are in our data.
 
-Finally, `filter` is great for helping us figure out where the missing values are in our data. 
-```{r filter-na, exercise=TRUE, exercise.setup = "data-load"}
+```{r}
 filter(student_loan_debt, is.na(per_capita_student_debt))
 ```
 
 Who is missing data in 2017 and 2018? 
 
-**Answer:** PR.
+Puerto Rico
 
-### Grouping and Summarizing Data
+## Grouping and Summarizing Data
 
 You might notice that our data is a little awkward to work with right now. We have state-year data instead of just yearly data. One thing that R is great at is helping us come up with groupwise averages, minima, maxima, and more!
 
-For example, here is code to take `student_loan_debt`, group it by year, and then find the maximum per capita debt by year.
+For example, here is code to take student_loan_debt, group it by year, and then find the maximum per capita debt by year.
 
-```{r group1}
+```{r}
 max_debt_by_year <- student_loan_debt %>%
-    group_by(year) %>%
-    summarize(max_debt = max(per_capita_student_debt))
+  group_by(year) %>%
+  summarize(max_debt = max(per_capita_student_debt))
 
 max_debt_by_year
 ```
 
-Try calculating the minimum per capita debt by year. Assign it to a new dataframe called `min_debt_by_year` instead of `max_debt_by year`.
+Try calculating the minimum per capita debt by year. Assign it to a new dataframe called min_debt_by_year instead of max_debt_by year.
 
-**Note**: In order to view the `min_debt_by_year` dataframe after you've created it, type it again in the console to print it.
-
-```{r group2}
+```{r}
 min_debt_by_year <- student_loan_debt %>%
-    group_by(year) %>%
-    summarize(min_debt = min(per_capita_student_debt))
+  group_by(year) %>%
+  summarize(min_debt = min(per_capita_student_debt))
 
 min_debt_by_year
 ```
 
-How about the mean per capita debt by year? Let's call this one `student_loan_debt_by_year`.
+How about the mean per capita debt by year? Let’s call this data frame student_loan_debt_by_year, and the variable per_capita_student_debt. Write this one from scratch!
 
-```{r group3}
+```{r}
 student_loan_debt_by_year <- student_loan_debt %>%
   group_by(year) %>%
   summarize(per_capita_student_debt = mean(per_capita_student_debt))
@@ -260,148 +325,141 @@ student_loan_debt_by_year <- student_loan_debt %>%
 student_loan_debt_by_year
 ```
 
-What is the minimum and mean per capita debt in 2011?
+Like with filter, you can have multiple summarize() statements separated by a comma. Combine your work from the three examples into a single block of code that returns a data frame with the min, mean and max debt levels for the US.
 
-**Answer:** The minimum per capita debt is 1510, and the mean debt is 3676
-
-### Dealing with Missing Data
-
-Notice anything strange about the years 2017 and 2018? The values were NA for everything, even though we had data for most states. This is because NAs are "sticky", which means taking the mean of a vector with NAs makes the output NA. You can get around this with the `na.rm = ` argument in `min()`, `max()`, and `mean()`. Try adding it to the `mean()` function.
-```{r group4}
+```{r}
 student_loan_debt_by_year <- student_loan_debt %>%
   group_by(year) %>%
-  summarize(per_capita_student_debt = mean(per_capita_student_debt, na.rm = TRUE))
+  summarize(min_debt = min(per_capita_student_debt),
+            max_debt = max(per_capita_student_debt),
+            per_capita_student_debt = mean(per_capita_student_debt))
 
-student_loan_debt_by_year
+student_loan_debt_by_year %>% 
+  head(3)
 ```
 
-**Hint:** Your mean function inside of summarize should look like this: `mean(variable na.rm = TRUE)`.
+What is the minimum and mean per capita debt in 2011?
 
-What is the mean per capita debt in 2018, excluding Puerto Rico?
+Min: $1,510
+Mean: $3675.96
 
-**Answer:** 5438.
+```{r}
+student_loan_debt_by_year %>% 
+  filter(year == 2011)
+```
 
-## Joining and Plotting Data
+## Dealing with Missing Data
+
+Notice anything strange about the years 2017 and 2018? The values were NA for everything, even though we had data for most states. This is because NAs are “sticky”, which means taking the mean of a vector with NAs makes the output NA. You can get around this with the na.rm = argument in min(), max(), and mean(). Try adding it to the mean() function.
+
+```{r}
+mean(c(NA, 1, 2, 3))
+mean(c(NA, 1, 2, 3),na.rm=TRUE)
+```
+Hint: Your mean function inside of summarize should look like this: mean(variable, na.rm = TRUE).
+
+What is the mean per capita debt in 2018, excluding Puerto Rico (PR)?
+
+```{r}
+student_loan_debt %>%
+  filter(year == 2018) %>%
+  summarise(per_capita_student_debt = mean(per_capita_student_debt,na.rm=TRUE))
+
+student_loan_debt %>%
+  filter(year == 2018, state != "PR") %>%
+  summarise(per_capita_student_debt = mean(per_capita_student_debt))
+```
+
+# Joining and Plotting Data
 
 Our analysis is close now! One thing to note: we took an average of averages so our per capita estimate may be wrong. We saw that DC had very high debt levels. However, it has a small population compared to the states.
 
-To tackle this, we'll use a population dataset from the same spreadsheet. We clean it with the following code, which is similar to what we did before. Here's the code used to clean the data:
+To tackle this, we’ll use a population dataset from the same spreadsheet. We clean it with the following code, which is similar to what we did before. Here’s the code used to clean the data:
 
-```{r cleanpop, eval=FALSE}
-library(tidyverse)
-library(readxl)
-
-population <- read_xlsx("data/area_report_by_year.xlsx", sheet = "population", skip = 3)  %>%
+```{r}
+# library(readxl)
+# library(dplyr)
+population <- read_xlsx("Data/area_report_by_year.xlsx", sheet = "population", skip = 3) %>%
   filter(state != "allUS") %>%
-  gather(key = year, value = population, -state) %>%
+  pivot_longer(cols = -state, names_to = "year", values_to = "population") %>%
   mutate(year = str_sub(year, 4, 7),
          year = as.numeric(year))
 
 write_csv(population, "population.csv")
 ```
 
-After running the above code, our population dataset looks like this:
+The cleaned dataset is population.csv. Let’s load it:
 
-![](images/05_pop.jpg)
-
-The cleaned dataset is `population.csv`. Let's load it:
-
-```{r data2-load}
-population <- read_csv("data/population.csv")
+```{r}
+population <- read_csv("population.csv")
 ```
 
-Let's join the population data to our debt data and then weight the data by population.
+Let’s join the population data to our debt data and then weight the data by population.
 
-```{r join}
+```{r}
 joined_data <- student_loan_debt %>%
-    left_join(population, by = c("state", "year"))
-
-joined_data
+  left_join(population, by = c("state", "year"))
 ```
 
-We essentially use `state` and `year` as ways to link the two dataframes to each other. This is a common functionality in databases (and in SQL), but we can do the same in R!
-
-The joined data looks like this (note the extra column):
-
-![](images/06_joined.jpg)
+We essentially use state and year as ways to link the two dataframes to each other. This is a common functionality in databases (and in SQL), but we can do the same in R!
 
 To reweight, follow the following steps:
 
-1. Use `mutate()` to calculate the total student debt in a state. (pop x debt/person = total debt)
+1. Use mutate() to calculate the total student debt in a state. (pop x debt/person = total debt)
 
-```{r reweight1, eval = FALSE}
-student_loan_debt_by_year_weighted <- ___ %>%
-  mutate(___ = ___ * ___) 
-
-student_loan_debt_by_year_weighted
-```
-
-```{r reweight1_answer}
+```{r}
 student_loan_debt_by_year_weighted <- joined_data %>%
-  mutate(total_student_debt = population * per_capita_student_debt) 
+  mutate(total_debt = population*per_capita_student_debt)
 
-student_loan_debt_by_year_weighted
+student_loan_debt_by_year_weighted %>% head()
 ```
 
-2. Use `group_by()` and `summarize()` to calculate the total debt in the US each year and the population of the US each year. Be wary of NAs.
+2. Use group_by() and summarize() to calculate the total debt in the US each year and the population
+of the US each year. Be wary of NAs.
 
-```{r reweight2, eval = FALSE}
-student_loan_debt_by_year_weighted <- ___ %>%
-  mutate(___ = ___ * ___) %>% 
-  group_by(___) %>%
-  summarize(___ = sum(___, na.rm=___),
-            ___ = sum(___, na.rm=___)) 
-
-student_loan_debt_by_year_weighted
-```
-
-```{r reweight2_answer}
+```{r}
 student_loan_debt_by_year_weighted <- joined_data %>%
-  mutate(total_student_debt = population * per_capita_student_debt) %>% 
+  mutate(total_debt = population*per_capita_student_debt) %>%
   group_by(year) %>%
-  summarize(population = sum(population, na.rm = TRUE),
-            annual_student_debt = sum(total_student_debt, na.rm = TRUE)) 
+  summarize(total_US_debt = sum(total_debt, na.rm=TRUE),
+            total_US_pop = sum(population, na.rm=TRUE))
 
-student_loan_debt_by_year_weighted
+
+student_loan_debt_by_year_weighted %>% head()
 ```
 
-3. Use `mutate()` to calculate the per capita student debt.
+3. Use mutate() to calculate the per capita student debt.
 
-```{r reweight3, eval = FALSE}
-student_loan_debt_by_year_weighted <- ___ %>%
-  mutate(___ = ___ * ___) %>% 
-  group_by(___) %>%
-  summarize(___ = sum(___, na.rm=___),
-            ___ = sum(___, na.rm=___)) %>% 
-  mutate(___ = ___/___)
-
-student_loan_debt_by_year_weighted
-```
-
-```{r reweight3_answer}
+```{r}
 student_loan_debt_by_year_weighted <- joined_data %>%
-  mutate(total_student_debt = population * per_capita_student_debt) %>% 
+  mutate(total_debt = population*per_capita_student_debt) %>%
   group_by(year) %>%
-  summarize(population = sum(population, na.rm = TRUE),
-            annual_student_debt = sum(total_student_debt, na.rm = TRUE))  %>% 
-  mutate(per_capita_student_debt = annual_student_debt/population)
+  summarize(total_US_debt = sum(total_debt, na.rm=TRUE),
+            total_US_pop = sum(population, na.rm=TRUE)) %>%
+  mutate(per_capita_student_debt = total_US_debt/total_US_pop)
 
-student_loan_debt_by_year_weighted
+student_loan_debt_by_year_weighted %>% head()
 ```
 
-### Plotting our Estimates
+## Plotting our Estimates
 
-One of the nicest things to do in R is custom visualization. One package that is especially good for plotting and graphs is called `ggplot2`.
+One of the nicest things to do in R is custom visualization. One package that is especially good for plotting and graphs is called ggplot2.
 
-Use the following `ggplot2` code to compare your original unweighted estimates in `student_loan_debt_by_year` to the weighted estimates in `student_loan_debt_by_year_weighted`. The unweighted estimates will be in red.
+Use the following ggplot2 code to compare your original unweighted estimates in student_loan_debt_by_year to the weighted estimates in student_loan_debt_by_year_weighted. The unweighted estimates will be in red.
 
-```{r plot}
+```{r}
 library(ggplot2)
-student_loan_debt_by_year_weighted %>%
+student_loan_debt_by_year_weighted %>% 
   ggplot(aes(x = year, y = per_capita_student_debt)) +
   geom_line() +
   theme_minimal() +
   geom_line(data = student_loan_debt_by_year, color = "red")
 ```
 
-If you're interested in learning more about `ggplot2`, [R for Data Science](https://r4ds.had.co.nz/data-visualisation.html) has a great chapter on the package.
+You will see that the red line shows that the unweighted estimates of per capita debt are biased upward.Weights move the whole line downward, but by an economically small amount. Our estimates are lower than you might expect, because they include the full population. To understand how debt effects individual borrowers, we might could get additional data on the number of borrowers say population_of_borrowers and calculate the estimates as:
+
+```{r eval=FALSE}
+mutate(per_borrower_student_debt = total_debt/population_of_borrowers)
+```
+
+If you’re interested in learning more about ggplot2, R for Data Science has a great chapter on the package and we have a “bonus” lesson on the course website.
