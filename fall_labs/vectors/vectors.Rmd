@@ -12,7 +12,10 @@ output:
 1. Before getting started, run the following code in the console. This gives R the necessary tools to make pdfs from your `Rmd`s. 
 
     ```{r, eval = FALSE}
+    # run in the console!
     install.packages("tinytex")
+    # this will install additional software on your computer
+    # that R needs to knit your Rmd to a pdf.
     tinytex::install_tinytex()
     ```
 
@@ -36,12 +39,15 @@ output:
 \newpage
 ## Warmup
 
-1. Which of the following does not create vector with the numbers 1 to 5.
+1. In the lecture, we covered `c()`, `:`, `rep()`, `seq()`, `rnorm()`, `runif()` among other ways to create vectors. Use each of these functions once to create the vectors below.
 
-a. `rep(1, 5)`
-b. `seq(1, 5)`
-c. `1:5`
-d. `c(1, 2, 3, 4, 5)`
+    a. Create an integer vector from 2 to 30.
+    b. Create a numeric vector with 60 draws from the `r`andom `unif`orm distribution 
+    c. Create a character vector with the word "sea" repeated 7 times.
+    d. Create a character vector of length 5 with the items "Nothing" "works" "unless" "you" "do". Call this vector `angelou_quote` using `<-`.
+    e. Create a numeric vector with 1e4 draws^[This is scientific notation. Try `1e4 - 1 + 1` in the console.] from a standard `norm`al distribution.
+    f. Create an integer vector with the numbers 0, 2, 4, ... 20.
+
 
 2. Try to guess the output of the following code:
 
