@@ -1,5 +1,7 @@
 ---
-title: "Basic Syntax and Operators"
+title: "Vectors and Data Types"
+author: "Earnest Salgado"
+date: "10/11/2021"
 output: 
   html_notebook:
     toc: true
@@ -8,18 +10,39 @@ output:
 
 ## Warmup
 
-1. The most important warm up question: do you have R and RStudio installed?
+1. In the lecture, we covered `c()`, `:`, `rep()`, `seq()`, `rnorm()`, `runif()` among other ways to create vectors. Use each of these functions once as you create the vectors required below.
 
-2. How do you pull the documentation for a command in R?
+    a. Create an integer vector from 2 to 30.
+```{r}
+c(7:70)
+```
 
-- *
-- ?
-- help()
-- documentation()
+    b. Create a numeric vector with 60 draws from the `r`andom `unif`orm distribution
+```{r}
+runif(60)
+```
 
-**Answer:** ?
+    c. Create a character vector with the letter "x" repeated 1980 times.
+```{r}
+rep("x", 1980)
+```
 
-3. Try to guess the output of the following code:
+    d. Create a character vector of length 5 with the items "Nothing" "works" "unless" "you" "do". Call this vector `angelou_quote` using `<-`.
+```{r}
+angelou_quote <- c("Nothing", "works", "unless", "you", "do")
+```
+
+    e. Create a numeric vector with 1e4 draws^[This is scientific notation. Try `1e4 - 1 + 1` in the console.] from a standard `norm`al distribution.
+```{r}
+rnorm(1e4)
+```
+
+    f. Create an integer vector with the numbers 0, 2, 4, ... 20.
+```{r}
+seq(0, 20, length.out=11)
+```
+
+2. Try to guess the output of the following code:
 
 ```{r, eval=FALSE}
 a <- 3
@@ -76,8 +99,8 @@ Write code that gives you the sum of `random_numbers` and saves it to a new vari
 
 ```{r sum}
 numbers_sum <- sum(random_numbers)
+numbers_sum
 ```
-
 **Note**: You don't automatically see the output of `numbers_sum` when you assign it to a variable. Type `numbers_sum` into the console and run it to see the value that you assigned it.
 
 Write code that gives you the number of items in the `random_numbers` vector and saves it to a new variable called `numbers_count`:
@@ -119,6 +142,8 @@ Subtract `this_mean` from the `random_numbers` vector. Did each number in `rando
 vectorized <- random_numbers - this_mean
 ```
 
+**Answer:** Each number in the vector `random_numbers` did not change, because it's particular value is saved in our global environment from previous. However if we re-ran the above chunk titled `{r random-numbers-create}` we would see each number in `random_numbers` change.
+
 Try to write the formula for standard deviation in R code using the `sqrt()`, `sum()`, and `length()` functions, along with other operators (`^`, `/`, `-`). Assign it to a new variable called `this_sd`. Watch out for your parentheses!
 
 ```{r sd}
@@ -126,7 +151,6 @@ this_sd <- sqrt(sum((random_numbers - this_mean) ^ 2) / (length(random_numbers) 
 
 this_sd
 ```
-
 **Hint:** Fill in the following formula: ___ <- sqrt(sum((___ - this_mean) ^ 2) / (length(___) - 1))
 
 What number did you get for `this_sd`, or the standard deviation of `random_numbers`? If you didn't get 0.489704, recheck your code!
@@ -141,12 +165,19 @@ sd(random_numbers)
 
 What do these random numbers look like, anyway? We can use base plotting in R to visualize the distribution of our random numbers.
 
-Run the following code to visualize the original distribution of `random_numbers` as a histogram.
+1. Run the following code to visualize the original distribution of `random_numbers` as a histogram.
 
 ```{r viz}
 hist(random_numbers)
 ```
+2. You could also visualize this with ggplot but there are some extra steps. ggplot typically expects a data frame (tibble) in the first position so we need to explicitly tell it that the first position has the aesthetic mapping.
 
+```{r}
+library(ggplot2)
+ggplot(mapping = aes(x = random_numbers)) + 
+  geom_histogram()
+
+```
 Notice how most of the values are concentrated on the left-hand side of the graph, while there is a longer "tail" to the right? Counterintuitively, this is known as a right-skewed distribution. When we see a distribution like this, one common thing to do is to normalize it.
 
 This is also known as *calculating a z-score*, which we will cover next.
@@ -189,6 +220,10 @@ normalized_sd <- sd(normalized_data)
 
 What is the value of `normalized_mean`? What is the value of `normalized_sd`? You should get a vector that is mean zero and has a standard deviation of one, because the data has been normalized.
 
+```{r}
+normalized_mean
+normalized_sd
+```
 ### Making a Histogram of Z-scores
 
 Let's plot the z-scores and see if our values are still skewed. How does this compare to the histogram of `random_numbers`? 
@@ -196,8 +231,9 @@ Let's plot the z-scores and see if our values are still skewed. How does this co
 ```{r viz2}
 hist(normalized_data)
 ```
-
 Is the resulting data skewed?
+
+**Answer:** This is an example of right-skew distribution of data. We can calculate the mean of this data and see that it is to the right of the median.
 
 ## Calculating a T-Score
 
@@ -230,8 +266,8 @@ typeof(x_1)
 typeof(s_1)
 typeof(n_1)
 ```
-
 What object type is `n_1`? 
+**Answer:** `n_1` is "integer" type
 
 Can you calculate the same values for `data_2`, assigning mean, standard deviation, and length to the variables of `x_2`, `s_2`, and `n_2`, respectively?
 
@@ -243,13 +279,19 @@ n_2 <- length(data_2)
 
 What values do you get for `x_2` and `s_2`?
 
+```{r types-create}
+x_2
+s_2
+
+```
+**Answer:** We get 1.99 and 1.03 for `x_2` and `s_2` respectively
+
 Now, you should be able to translate the t-score formula ($\frac{\overline{x}_1 - \overline{x}_2}{\sqrt{\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2}}}$) into code, based on the above calculated values.
 
 ```{r t-score}
 t_score <- (x_1 - x_2)/(sqrt((s_1^2/n_1 + s_2^2/n_2)))
 t_score
 ```
-
 What did you get for the t-score? You should have gotten 9.243, if not, double check your code!
 
 The t-score's meaning depends on your sample size, but in general t-scores close to 0 imply that the means are not statistically distinguishable, and large t-scores (e.g. t > 3) imply the data have different means.
@@ -264,7 +306,7 @@ t.test(data_1, data_2)
 
 What are the sample means, and are they distinguishable from each other?
 
-Answer: The mean of `data_1` is 2.988, the mean of `data_2` is 1.990, and they are distinguishable from each other.
+**Answer:** The mean of `data_1` is 2.988, the mean of `data_2` is 1.990, and they are distinguishable from each other.
 
 Well done! You've learned how to work with R to calculate basic statistics. We've had you generate a few by hand, but be sure to use the built-in functions in R in the future.
 
