@@ -2,10 +2,12 @@
 title: "Vectors and Data Types"
 author: "Earnest Salgado"
 date: "10/11/2021"
-output: 
+output:
+  pdf_document:
+    toc: yes
   html_notebook:
-    toc: true
-    toc_float: true
+    toc: yes
+    toc_float: yes
 ---
 
 ## Warmup
@@ -14,7 +16,7 @@ output:
 
     a. Create an integer vector from 2 to 30.
 ```{r}
-c(7:70)
+c(2:30)
 ```
 
     b. Create a numeric vector with 60 draws from the `r`andom `unif`orm distribution
@@ -23,7 +25,7 @@ runif(60)
 ```
 
     c. Create a character vector with the letter "x" repeated 1980 times.
-```{r}
+```{r, eval=FALSE}
 rep("x", 1980)
 ```
 
@@ -33,7 +35,7 @@ angelou_quote <- c("Nothing", "works", "unless", "you", "do")
 ```
 
     e. Create a numeric vector with 1e4 draws^[This is scientific notation. Try `1e4 - 1 + 1` in the console.] from a standard `norm`al distribution.
-```{r}
+```{r, eval=FALSE}
 rnorm(1e4)
 ```
 
@@ -142,7 +144,7 @@ Subtract `this_mean` from the `random_numbers` vector. Did each number in `rando
 vectorized <- random_numbers - this_mean
 ```
 
-**Answer:** Each number in the vector `random_numbers` did not change, because it's particular value is saved in our global environment from previous. However if we re-ran the above chunk titled `{r random-numbers-create}` we would see each number in `random_numbers` change.
+**Answer:** Each number in the vector `random_numbers` did not change, because it's particular value is saved in our global environment from previous. 
 
 Try to write the formula for standard deviation in R code using the `sqrt()`, `sum()`, and `length()` functions, along with other operators (`^`, `/`, `-`). Assign it to a new variable called `this_sd`. Watch out for your parentheses!
 
@@ -253,7 +255,7 @@ data_2 <- rnorm(100, 2)
 
 Here's how we'll calculate the mean (`x_1`), standard deviation (`s_1`), and sample size (`n_1`) of the first data set:
 
-```{r types-create}
+```{r}
 x_1 <- mean(data_1)
 s_1 <- sd(data_1)
 n_1 <- length(data_1)
