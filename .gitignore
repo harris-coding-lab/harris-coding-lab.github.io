@@ -3,3 +3,4 @@
 .RData
 .Ruserdata
 .DS_Store
+exit_ticket_analysis/**/*.csv
