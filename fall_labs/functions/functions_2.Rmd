@@ -1,10 +1,3 @@
----
-title: "Functions and Coding lab in Review"
-author: "Ari Anisfeld"
-date: "10/28/2021"
-output: html_document
----
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
@@ -28,9 +21,6 @@ for (i in seq_along(x)) {
   y[[i]] <- 4 * e_power
 }
 
-e_power <- exp(-4*x)
-  y <- 4 * e_power
-y <- 4 * exp(-4*x)
 qplot(x, y, geom="line")
 ```
 
@@ -292,7 +282,7 @@ trends <- function(city_name, var, var_description){
 txhousing %>%
   filter(city == city_name) %>%
   group_by(city, year) %>%
-    summarize(y = sum({{ var }})) %>%
+    summarize(y = sum()) %>%
   ggplot(aes(x = year, y = y)) + 
   geom_line() +
   labs(title = str_c(city_name, 
@@ -303,9 +293,9 @@ txhousing %>%
 trends("Austin", listings, "annual listings")
 ```
 
-What is ``{{ }}``? 
+What is ````? 
 
-``{{ }}`` "forwards" the name `var`  from the tibble's environment (where it's a column name) to your global environment (where it's undefined)
+```` "forwards" the name `var`  from the tibble's environment (where it's a column name) to your global environment (where it's undefined)
 
 - The ideas here are somewhat advanced for coding camp 
 
