@@ -28,6 +28,9 @@ for (i in seq_along(x)) {
   y[[i]] <- 4 * e_power
 }
 
+e_power <- exp(-4*x)
+  y <- 4 * e_power
+y <- 4 * exp(-4*x)
 qplot(x, y, geom="line")
 ```
 
@@ -137,9 +140,9 @@ Let's simplify our problem even further. Here are minimial input and output.
 
 ```{r}
 ## input: a vector and missing value indicator
-example_input <- c(30, -999, 40, 43) 
+example_input <- c(30, -999, 40, 43, -8888) 
 ## output: a vector with missing values
-desired_output <- c(30, NA, 40, 43)
+desired_output <- c(30, NA, 40, 43, NA)
 ```
 
 Let's write the function `set_nas` togther:
@@ -149,7 +152,7 @@ Let's write the function `set_nas` togther:
 
 Now let's test it.
 ```{r, eval = FALSE}
-set_nas(example_input)
+
 ```
 
 
@@ -164,7 +167,7 @@ fake_survey_data <- tibble(id = 1:6,
 
 fake_survey_data %>%
   mutate(age = set_nas(age, c(-999, -888)),
-         income = set_nas(age, c(-999, -777)))
+         income = set_nas(income, c(-999, -777)))
 ```
 
 
@@ -188,7 +191,7 @@ txhousing %>%
 
 ```
 
-Now wrap it with a function! called `sales_trends`
+Now wrap it with a function! called `plot_sales_trends`
 
 ```{r}
 
@@ -197,7 +200,7 @@ Now wrap it with a function! called `sales_trends`
 Test your code! We should see a plot with Houston's data.
 
 ```{r, eval = FALSE}
-sales_trends("Houston")
+plot_sales_trends("Houston")
 ```
 
 
@@ -231,16 +234,6 @@ To compare the two surveys, we may want to "censor" the large values in survey 2
 - what output do we expect?
 - what is a minimal example? 
 
-Here's an example of minimal inputs and output
-
-input: 
-
-- `vector <- c(1, 2, 30, 2)`
-- `threshold <- 5`
-
-output:
-- `c(1, 2, 5, 2)`
-
 Write a function called `censor` to top code the data!
 
 ```{r}
@@ -267,8 +260,6 @@ output:
 Write a new version of `censor`!
 
 ```{r, eval = FALSE}
-
-
 # tests
 censor(c(1, 2, 30, 2), 5)
 censor(c(1, 2, 30, 2), 5, above = FALSE)
