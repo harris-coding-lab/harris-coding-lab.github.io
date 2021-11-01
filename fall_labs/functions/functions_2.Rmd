@@ -1,0 +1,303 @@
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+
+
+## Loops in review
+
+Re-write the loop as vectorized code.
+
+1. Set-up: You want to graph the function $y = 4e^{-4x}$
+
+```{r}
+x <- 1:20 / 20 
+y <- rep(0, length(x))
+
+for (i in seq_along(x)) {
+  # exp() gives use e to a power.
+  e_power <- exp(-4*x[[i]])
+  y[[i]] <- 4 * e_power
+}
+
+qplot(x, y, geom="line")
+```
+
+2.  Set-up: you got some data where years are not numeric and only provide the decade, but you want numeric years in order.
+
+```{r}
+years <- c("85", "90", "95", "00", "05", "10")
+full_years <- c()
+
+for (yr in years) {
+  yr <- as.numeric(yr)
+  
+  if (yr >= 85) {
+    temp <- 1900 + yr
+  } else {
+    temp <- 2000 + yr
+  }
+  
+  full_years <- c(full_years, temp)
+  
+}
+
+full_years
+```
+
+3. Use case: you have a vector of weekly salaries and want to calculate the annual salary
+
+```{r}
+set.seed(100)
+weekly_salary <- runif(52, min = 400, max = 800)
+
+annual_salary <- 0
+
+for (wage in weekly_salary) {
+  annual_salary <- annual_salary + wage
+}
+
+annual_salary
+```
+
+
+
+## Vectorized code in a data context.
+
+Take your code from the previous exercises and incorporate them into a data context.
+
+1. Use mutate to create a column called $y = 4e^{-4x}$, then plot your line.
+
+```{r, eval = FALSE}
+data <- tibble(x = 1:20 / 20)
+
+
+
+____ %>% # your adjusted data
+  ggplot(aes(x=x, y=y)) +
+  geom_line()
+```
+
+
+2.  Use mutate to recreate the column years with numeric values.
+
+```{r, eval = FALSE}
+econ_data <- tibble(years = c("85", "90", "95", "00", "05", "10"),
+               gdp = c(1490, 2560, 4825, 9370, 14900, 16700))
+
+
+____ %>% # your adjusted data
+  ggplot(aes(x=years, y=gdp)) +
+  geom_line()
+  
+```
+
+3. We use group_by and summarize to show the annual salaries of two people in our fake data set.
+
+```{r, eval = FALSE}
+# We make fake_data with two people in it to justify using group_by(). 
+fake_data <- tibble(weekly_salary = c(runif(52, min = 400, max = 800),
+                               runif(52, min = 500, max = 900)),
+                    person = c(rep(c(1, 2), each = 52)))
+ 
+fake_data %>%
+  group_by() %>%
+  summarize()
+
+```
+
+
+
+## Functions
+
+# Example 1
+
+1. Use case: We have a survey where the missing values in several columns are indicated by -999. We want to replace -999 with `NA`.
+There are many columns, so we want a function to do it.
+
+To fix ideas consider the fake survey data below.
+```{r}
+fake_survey_data <- tibble(id = 1:5,
+                           age = c(30, -999, 40, 43, -999),
+                           income = c(6e5, -999, -999, 1e6, 1e6))
+
+fake_survey_data
+```
+
+
+Let's simplify our problem even further. Here are minimial input and output.
+
+```{r}
+## input: a vector and missing value indicator
+example_input <- c(30, -999, 40, 43, -8888) 
+## output: a vector with missing values
+desired_output <- c(30, NA, 40, 43, NA)
+```
+
+Let's write the function `set_nas` togther:
+```{r, eval = FALSE}
+
+```
+
+Now let's test it.
+```{r, eval = FALSE}
+
+```
+
+
+Finally, what should we do if we find out there are several different numbers used to show missing values e.g. there are indicators for "refused to answer", "unknown" and simply "missing". 
+
+Adjust `set_nas()` above so that we remove all the missing value indicators below.
+
+```{r, eval = FALSE}
+fake_survey_data <- tibble(id = 1:6,
+                           age = c(30, -999, 40, 43, -999, -888),
+                           income = c(6e5, -999, -999, 1e6, 1e6, -777))
+
+fake_survey_data %>%
+  mutate(age = set_nas(age, c(-999, -888)),
+         income = set_nas(income, c(-999, -777)))
+```
+
+
+## Example 2
+
+2. You want to create a pitch deck that shows this graph for various cities.
+
+```{r, echo = FALSE}
+txhousing %>%
+  filter(city == "Austin") %>%
+  group_by(city, year) %>%
+  summarize(sales = sum(sales)) %>%
+  ggplot(aes(x = year, y = sales)) + 
+  geom_line() +
+  labs(title = "Austin's annual sales volume")
+```
+
+**Think:** Can I parameterize this code so that it still works?
+
+```{r, echo = FALSE}
+
+```
+
+Now wrap it with a function! called `plot_sales_trends`
+
+```{r}
+
+```
+
+Test your code! We should see a plot with Houston's data.
+
+```{r, eval = FALSE}
+plot_sales_trends("Houston")
+```
+
+
+
+## you try
+
+Use case: You're analyzing two surveys together. In one survey a number of variables are *top coded*.
+
+Survey 1: Cut off variables at `$60000`
+
+|id|consumption | income| 
+|--|--|---|
+| 1 | 60000 | 60000 |
+| 2 | 50400 | 60000 |
+| 3 | 14000 |24000 |
+| ... | ... | ...|
+
+
+Survey 2: (different people) not top coded
+
+|id|consumption | income| 
+|--|--|---|
+| "b1" | 14000 | 50000 |
+| "b2" | 40400 | 70000 |
+| "b3" | 95000 | 120000 |
+| ... | ... | ...|
+
+To compare the two surveys, we may want to "censor" the large values in survey 2. 
+
+- what is the input? 
+- what output do we expect?
+- what is a minimal example? 
+
+Write a function called `censor` to top code the data!
+
+```{r}
+
+```
+
+
+You wrote `censor`! But then you realize some things are thresholded from below!
+
+e.g.
+
+input: 
+  
+- vector <- c(1, 2, 30, 2) 
+- threshold <- 5
+
+output:
+- c(5, 5, 30, 5)
+
+## Extending funtionality
+
+- Add an input argument called `above` that is logical (TRUE or FALSE)
+
+Write a new version of `censor`!
+
+```{r, eval = FALSE}
+# tests
+censor(c(1, 2, 30, 2), 5)
+censor(c(1, 2, 30, 2), 5, above = FALSE)
+```
+
+
+**Hint**
+
+- Use an `if()` statement with `above` to determine which direction to censor.
+
+```{r, eval = FALSE}
+# This is a skelton for the **body** of your function!
+if(above==TRUE){
+  # censore high values
+  ...
+} else {
+  # censore low values
+  ...
+}
+```
+
+
+
+
+## Bonus material -- passing column names to functions
+Extra slick: can we parameterize the `y` variable.
+
+```{r, eval = FALSE}
+trends <- function(city_name, var, var_description){
+txhousing %>%
+  filter(city == city_name) %>%
+  group_by(city, year) %>%
+    summarize(y = sum()) %>%
+  ggplot(aes(x = year, y = y)) + 
+  geom_line() +
+  labs(title = str_c(city_name, 
+                     "'s ", 
+                     var_description))
+}
+
+trends("Austin", listings, "annual listings")
+```
+
+What is ````? 
+
+```` "forwards" the name `var`  from the tibble's environment (where it's a column name) to your global environment (where it's undefined)
+
+- The ideas here are somewhat advanced for coding camp 
+
+
+
