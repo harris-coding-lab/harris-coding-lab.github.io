@@ -1,0 +1,28 @@
+"","value","n"
+"1","",523
+"2","Excellent code to complete this question. Good job",8
+"3","Received error when running this code. Would approach this question with something similar to ""our_data <- our_data %>% 
+  mutate(is_missing = ifelse(x == -999, 1, 0))""",8
+"4","Received error when running this code. Also, mutate function missing pipe operator. Would approach this question with something similar to ""our_data <- our_data %>% 
+  mutate(is_missing = ifelse(x == -999, 1, 0))""",6
+"5","Would approach this question with something similar to ""our_data <- our_data %>% 
+  mutate(is_missing = ifelse(x == -999, 1, 0))""",5
+"6","Correct! Would suggest indenting after pipe operator. For example ""our_data <- our_data %>% 
+  mutate(is_missing = ifelse(x == -999, 1, 0))""",4
+"7","Good job. Bonus: Try running this same code without quotation marks on your 1 and 0. Does it still work? Why or why not",4
+"8","What is missing from your code to connect tibble with your use of mutate?",3
+"9","Received error when running this code. Also, mutate function missing tibble and pipe operator. Would approach this question with something similar to ""our_data <- our_data %>% 
+  mutate(is_missing = ifelse(x == -999, 1, 0))""",2
+"10","Would approach this question similar to ""our_data <- our_data %>% 
+  mutate(is_missing = ifelse(x == -999, 1, 0))""",2
+"11","Correct! Would suggest proper indenting after pipe operator. For example ""our_data <- our_data %>% 
+  mutate(is_missing = ifelse(x == -999, 1, 0))""",1
+"12","Excellent code to complete this question. Good job. Would recommend indenting after pipe operator for good formatting purposes",1
+"13","Good job. Possible typo at x = -199? Bonus: Try running this same code without quotation marks on your 1 and 0. Does it still work? Why or why not",1
+"14","mutate function missing tibble and pipe operator. For example ""our_data <- our_data %>% 
+  mutate(is_missing = ifelse(x == -999, 1, 0))""",1
+"15","our_data not needed after mutate... also would suggest indenting after pipe operator. For example ""our_data <- our_data %>% 
+  mutate(is_missing = ifelse(x == -999, 1, 0))""",1
+"16","Received error when running this code. Also, mutate function missing, also pipe operator. Would approach this question with something similar to ""our_data <- our_data %>% 
+  mutate(is_missing = ifelse(x == -999, 1, 0))""",1
+"17","Submitted code is very close, but does not follow Q4 instructions i.e. create a column called is_missing to the given tibble, our_data",1

@@ -3,7 +3,6 @@
 
 library(tidyverse)
 library(reshape2)
-library(stargazer)
 
 # Set working directory to current folder
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
@@ -30,7 +29,7 @@ student_skill_poll <- read.csv("student_skill_poll.csv") %>%
 # I used "Export Evaluations" on Gradescope, which creates a 
 # zipped folder containing a csv for each question on the
 # Gradescope exit ticket. 
-files <- list.files(path = "./PPHA_30111_3_2_1_Coding_Lab_for_Public_Policy_Level_I_comprehension_check_2",
+files <- list.files(path = "./PPHA_30111_3_2_1_Coding_Lab_for_Public_Policy_Level_I_comprehension_check_3",
 # files <- list.files(path = "PATH_TO_GRADESCOPE_EVALUATIONS_FOLDER",
            pattern = "*.csv", 
            full.names = T)
@@ -108,13 +107,14 @@ ggsave("scores_by_exp.png", width = 9, height = 6)
 # - Show common errors.		
 comments <- df %>% 
   select(ends_with("_comment")) %>%
-  pivot_longer(everything())
+  pivot_longer(everything()) %>%
+  replace_na(list(value=""))
 
 comments %>%
   group_by(value) %>%
   count() %>%
-  stargazer(summary = FALSE,
-            out = "comments_and_frequencies.html")
+  arrange(desc(n)) %>%
+  write.csv("comments_and_frequencies.csv")
 
 # IMPORTANT: After producing these plots, please move them to a
 # sub-directory within the repository.
